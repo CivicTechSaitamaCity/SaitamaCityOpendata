@@ -19,6 +19,7 @@ import os
 import shutil
 import sys
 import time
+import urllib.error
 import urllib.parse
 import urllib.request
 from pathlib import Path
@@ -64,8 +65,10 @@ def http_get(url, retries=3):
         try:
             with urllib.request.urlopen(req, timeout=120) as r:
                 return r.read(MAX_BYTES + 1)
-        except Exception:
+        except Exception as e:
             if attempt == retries - 1:
+                if isinstance(e, urllib.error.HTTPError):  # アクセス制限の調査用
+                    print(f'HTTP {e.code} {url}\n{e.headers}{e.read(500)!r}', file=sys.stderr)
                 raise
             time.sleep(5 * (attempt + 1))
 
