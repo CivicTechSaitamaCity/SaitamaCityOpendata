@@ -1,0 +1,2 @@
+feed_publisher_name,feed_publisher_url,feed_lang,feed_start_date,feed_end_date,feed_version
+さいたま市役所,https://www.city.saitama.jp/index.html,ja,20220401,20270331,2026 v1-2026年06月01日 13時07分53秒

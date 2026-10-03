@@ -13,18 +13,20 @@
 
 | 情報源 | 取得内容 |
 |---|---|
-| [埼玉県オープンデータポータルサイト（さいたま市公開分）](https://opendata.pref.saitama.lg.jp/datasets?organization_id=25) | CKAN 互換 API でメタデータを取得し、CSV ファイルをダウンロード |
+| [埼玉県オープンデータポータルサイト（さいたま市公開分）](https://opendata.pref.saitama.lg.jp/datasets?organization_id=25) | CKAN 互換 API でメタデータを取得し、CSV・ZIP ファイルをダウンロード |
 | [G空間情報センター（さいたま市公開分）](https://www.geospatial.jp/ckan/organization/saitama-111007) | 容量が大きいため、データセット一覧（メタデータ）のみ記録 |
 
-PDF・ZIP・画像など CSV 以外のファイルは取得せず、`CATALOG.md` に元ファイルへのリンクを載せています。
+PDF・画像・Excel 単体など CSV・ZIP 以外のファイルは取得せず、`CATALOG.md` に元ファイルへのリンクを載せています。
+ZIP は展開して中身を UTF-8 で保存します。入れ子の ZIP（GTFS-JP）は路線ごとのフォルダに、Excel（さいたま市統計書）はシートごとの CSV に変換します。統計書の表は「時間軸コード」の行から見出しを 1 行にまとめ、ブックごとに `_目次.csv` を作ります。
 データの利用条件は各サイトの利用規約・各データセットのライセンスに従ってください。
 
 ## 構成
 
 ```
 data/
-  raw/<データセットID>/<ファイルID>.csv   取得したままのファイル
-  utf8/<データセットID>/<ファイルID>.csv  UTF-8（BOMなし・改行LF）に変換したもの
+  raw/<データセットID>/<ファイルID>.csv|.zip  取得したままのファイル
+  utf8/<データセットID>/<ファイルID>.csv       UTF-8（BOMなし・改行LF）に変換したもの
+  utf8/<データセットID>/<ファイルID>/…        ZIP を展開・変換したもの
   umap/<データセットID>/<ファイルID>.csv  緯度経度を持つものを uMap 用に変換したもの
 catalog.json      データセット・ファイルのメタデータ、ハッシュ、行数など（機械向け）
 CATALOG.md        データ一覧（人向け）
@@ -50,7 +52,7 @@ scripts/update.py 取得・変換・レポート作成スクリプト
 `scripts/update.py` は次の処理を行います。
 
 1. 両サイトの API からさいたま市分のメタデータを取得し、前回の `catalog.json` と比較する
-2. 最終更新日・サイズ・URL が変わった CSV だけをダウンロードし、SHA-256 で内容の変化を確認する
+2. 最終更新日・サイズ・URL が変わった CSV・ZIP だけをダウンロードし、SHA-256 で内容の変化を確認する
 3. 変化したファイルを UTF-8・uMap 用に変換し、行・列の差分を計算する
 4. 変更があれば `reports/` にレポートを書き、フィード・`CATALOG.md` を更新する
 

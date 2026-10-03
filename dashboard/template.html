@@ -138,7 +138,7 @@ footer { padding-block: 40px 56px; color: var(--muted); font-size: 12px; }
 <nav class="toc" aria-label="目次"><div class="wrap">
   <a href="#overview">概要</a><a href="#population">人口</a><a href="#map-sec">施設マップ</a><a href="#wards">区別比較</a>
   <a href="#care">医療・福祉・子育て</a><a href="#water">水と緑</a><a href="#flow">人の流れ</a><a href="#town">まちづくり・防災</a>
-  <a href="#gov">行政</a><a href="#catalog">データ一覧</a>
+  <a href="#gov">行政</a><a href="#stat">統計書</a><a href="#catalog">データ一覧</a>
 </div></nav>
 
 <main class="wrap">
@@ -161,6 +161,9 @@ footer { padding-block: 40px 56px; color: var(--muted); font-size: 12px; }
     <figure class="card span2" id="c-wardidx"><div class="card-head"><div><h3>区別の人口の伸び</h3><p>2012年8月を100とした指数。縦軸はすべての区で共通です</p></div></div><div class="chart multiples"></div></figure>
     <figure class="card" id="c-pyr"><div class="card-head"><div><h3>人口ピラミッド</h3><p id="pyr-sub">5歳階級・男女別</p></div></div><div class="chips" id="pyr-chips"></div><div class="legend" id="pyr-legend"></div><div class="chart"></div></figure>
     <figure class="card" id="c-aging"><div class="card-head"><div><h3>区別の高齢化率と年少人口率</h3><p>65歳以上・15歳未満の割合</p></div></div><div class="legend" id="aging-legend"></div><div class="chart"></div></figure>
+    <figure class="card" id="c-agets"><div class="card-head"><div><h3>高齢化率と年少人口率の推移</h3><p id="agets-sub">毎月1日時点（%）</p></div></div><div class="legend"></div><div class="chart"></div></figure>
+    <figure class="card" id="c-hh"><div class="card-head"><div><h3>区別の1世帯あたり人員</h3><p id="hh-sub"></p></div></div><div class="chart"></div></figure>
+    <figure class="card" id="c-hhtop"><div class="card-head"><div><h3>世帯数の多い町丁字</h3><p id="hhtop-sub"></p></div></div><div class="chart"></div></figure>
     <figure class="card span2" id="c-age1"><div class="card-head"><div><h3>1歳ごとの人口</h3><p>0歳から100歳以上まで。団塊世代と団塊ジュニア世代の山が見えます</p></div></div><div class="chart"></div></figure>
   </div>
 </section>
@@ -178,6 +181,11 @@ footer { padding-block: 40px 56px; color: var(--muted); font-size: 12px; }
       </div>
     </div>
   </figure>
+  <div class="grid" style="margin-top:16px">
+    <figure class="card span2" id="c-bus"><div class="card-head"><div><h3>コミュニティバス・乗合タクシーの路線</h3><p id="bus-sub">GTFS-JP の運行経路（shapes）と停留所</p></div></div>
+      <div class="mapwrap"><div id="busmap" role="img" aria-label="コミュニティバス・乗合タクシー路線図" style="position:relative;aspect-ratio:1/.78;max-width:100%"><canvas style="width:100%;height:100%;display:block"></canvas></div>
+      <div class="mapside"><div class="legend" id="bus-legend"></div><div class="chart" id="bus-bars"></div></div></div></figure>
+  </div>
 </section>
 
 <section id="wards">
@@ -196,6 +204,7 @@ footer { padding-block: 40px 56px; color: var(--muted); font-size: 12px; }
     <figure class="card" id="c-med"><div class="card-head"><div><h3>医療機関の種類</h3><p id="med-sub"></p></div></div><div class="stat-row" id="med-stats"></div><div class="chart"></div></figure>
     <figure class="card" id="c-sej"><div class="card-head"><div><h3>施術所の業種</h3><p>1施設で複数の業種を届け出ている場合はそれぞれ数えています</p></div></div><div class="chart"></div></figure>
     <figure class="card span2" id="c-sejy"><div class="card-head"><div><h3>現存する施術所の開設年</h3><p>いま営業している施術所が、いつ開設されたか</p></div></div><div class="chart"></div></figure>
+    <figure class="card span2" id="c-churn"><div class="card-head"><div><h3>医療機関・施術所の開設と廃止</h3><p>前月末のファイルと比べて、名称と所在地の組が新たに現れた・消えた件数</p></div></div><div class="legend"></div><div class="chart"></div></figure>
     <figure class="card" id="c-hoiku"><div class="card-head"><div><h3>保育施設の定員</h3><p>施設の種類別の定員合計（施設数）</p></div></div><div class="chart"></div></figure>
     <figure class="card" id="c-shigen"><div class="card-head"><div><h3>いきいき活動リストの活動内容</h3><p>地域の支え合い・交流の場（上位15）</p></div></div><div class="chart"></div></figure>
   </div>
@@ -207,8 +216,12 @@ footer { padding-block: 40px 56px; color: var(--muted); font-size: 12px; }
   <div class="grid">
     <figure class="card" id="c-wtemp"><div class="card-head"><div><h3>水温と気温</h3><p>給水栓での採水時、月平均（℃）</p></div></div><div class="legend"></div><div class="chart"></div></figure>
     <figure class="card" id="c-wcl"><div class="card-head"><div><h3>遊離残留塩素</h3><p>月平均（mg/L）。給水栓では 0.1 mg/L 以上を保つことが水道法で定められています</p></div></div><div class="chart"></div></figure>
+    <figure class="card span2" id="c-wqall"><div class="card-head"><div><h3>水質検査の全項目</h3><p id="wqall-sub">項目を選ぶと、給水栓15系統の月平均（線）と最小〜最大（帯）を表示します</p></div></div>
+      <select class="search" id="wq-sel" aria-label="検査項目"></select><div class="chart"></div></figure>
     <figure class="card" id="c-meter"><div class="card-head"><div><h3>時間帯別の使用水量</h3><p>スマート水道メーター28件の1時間あたり合計の平均（m³）</p></div></div><div class="chart"></div></figure>
     <figure class="card" id="c-meterm"><div class="card-head"><div><h3>月別の使用水量</h3><p>スマート水道メーター28件の合計（m³）</p></div></div><div class="chart"></div></figure>
+    <figure class="card" id="c-metersum"><div class="card-head"><div><h3>1件あたりの使用水量</h3><p id="metersum-sub"></p></div></div><div class="stat-row" id="metersum-stats"></div></figure>
+    <figure class="card" id="c-kyusui"><div class="card-head"><div><h3>応急給水場所</h3><p>災害時に水を受け取れる場所。区別・種類別</p></div></div><div class="legend"></div><div class="chart"></div></figure>
     <figure class="card" id="c-sewer"><div class="card-head"><div><h3>下水道普及率の推移</h3><p>市全体（%）</p></div></div><div class="chart"></div></figure>
     <figure class="card" id="c-sewerw"><div class="card-head"><div><h3>区別の下水道普及率</h3><p id="sewerw-sub"></p></div></div><div class="legend" id="sewerw-legend"></div><div class="chart"></div></figure>
     <figure class="card" id="c-parkt"><div class="card-head"><div><h3>公園の種別と面積</h3><p id="parkt-sub"></p></div></div><div class="chart"></div></figure>
@@ -223,6 +236,7 @@ footer { padding-block: 40px 56px; color: var(--muted); font-size: 12px; }
   <div class="grid">
     <figure class="card" id="c-flowh"><div class="card-head"><div><h3 id="flowh-title">時間帯別の滞在人口</h3><p id="flowh-sub"></p></div></div><div class="legend"></div><div class="chart"></div></figure>
     <figure class="card" id="c-flowt"><div class="card-head"><div><h3 id="flowt-title">14時の滞在人口の推移</h3><p>2018年1月から。2020年春の落ち込みが見えます</p></div></div><div class="legend"></div><div class="chart"></div></figure>
+    <figure class="card" id="c-flowa"><div class="card-head"><div><h3 id="flowa-title">平日14時の年代構成</h3><p>直近12か月平均（人）</p></div></div><div class="chart"></div></figure>
     <figure class="card span2" id="c-flowc"><div class="card-head"><div><h3>平日14時に誰がいるか</h3><p>居住者・勤務者・来街者の構成比（直近12か月平均）</p></div></div><div class="legend"></div><div class="chart"></div></figure>
   </div>
 </section>
@@ -237,6 +251,9 @@ footer { padding-block: 40px 56px; color: var(--muted); font-size: 12px; }
     <figure class="card" id="c-hyd"><div class="card-head"><div><h3>公設消火栓の数</h3><p>管轄署所（区）別</p></div></div><div class="chart"></div></figure>
     <figure class="card" id="c-land"><div class="card-head"><div><h3>未利用市有地</h3><p>面積区分別の件数</p></div></div><div class="chart"></div></figure>
     <figure class="card" id="c-bunka"><div class="card-head"><div><h3>市所有の文化財</h3><p>指定の種類 × 文化財の種別</p></div></div><div class="tbl" style="max-height:none"></div></figure>
+    <figure class="card" id="c-shiei"><div class="card-head"><div><h3>市営住宅等</h3><p>区別・種別の団地数</p></div></div><div class="legend"></div><div class="chart"></div></figure>
+    <figure class="card" id="c-jichi"><div class="card-head"><div><h3>自治会の数</h3><p id="jichi-sub"></p></div></div><div class="chart"></div></figure>
+    <figure class="card" id="c-jokaso"><div class="card-head"><div><h3>浄化槽保守点検業者の所在地</h3><p id="jokaso-sub"></p></div></div><div class="chart"></div></figure>
   </div>
 </section>
 
@@ -248,14 +265,37 @@ footer { padding-block: 40px 56px; color: var(--muted); font-size: 12px; }
     <figure class="card" id="c-teian"><div class="card-head"><div><h3>「わたしの提案」の月別提出件数</h3><p>市長への提案制度。年度ごとに比較</p></div></div><div class="legend"></div><div class="chart"></div></figure>
     <figure class="card" id="c-teiana"><div class="card-head"><div><h3>「わたしの提案」提出者の年代</h3><p id="teiana-sub"></p></div></div><div class="chart"></div></figure>
     <figure class="card" id="c-shitei"><div class="card-head"><div><h3>指定管理者制度の導入施設</h3><p id="shitei-sub"></p></div></div><div class="stat-row" id="shitei-stats"></div><div class="chart"></div></figure>
+    <figure class="card" id="c-shiteie"><div class="card-head"><div><h3>指定管理の期間が終わる年度</h3><p>現在の指定期間の終了年度別の施設数</p></div></div><div class="chart"></div></figure>
+    <figure class="card" id="c-shiteio"><div class="card-head"><div><h3>指定管理者（施設数の多い順）</h3><p>複数の施設を管理している団体</p></div></div><div class="chart"></div></figure>
     <figure class="card span2" id="c-tax"><div class="card-head"><div><h3>市税の使いみち（世帯モデル別）</h3><p>年間の市税負担額を、使いみちの分野ごとに分けたもの（円）</p></div></div><div class="legend"></div><div class="chart"></div></figure>
     <figure class="card" id="c-vote"><div class="card-head"><div><h3>投票所の数</h3><p>衆議院議員総選挙の投票所、区別</p></div></div><div class="chart"></div></figure>
     <figure class="card" id="c-gsp"><div class="card-head"><div><h3>G空間情報センターのデータ</h3><p>容量が大きいため一覧のみ。ファイル合計サイズ</p></div></div><div class="chart"></div></figure>
   </div>
 </section>
 
+<section id="stat">
+  <div class="sec-head"><span class="no">10 / 統計書</span><h2>さいたま市統計書から</h2>
+    <p id="stat-lead">統計書の全表を CSV に変換して保存しています。ここでは代表的な表をグラフにしました。</p></div>
+  <div class="grid">
+    <figure class="card span2" id="c-statidx"><div class="card-head"><div><h3>章ごとの表の数</h3><p>「表で見る」で全表の一覧</p></div></div><div class="chart"></div></figure>
+    <figure class="card" id="c-wx"><div class="card-head"><div><h3 id="wx-title">月別の気温</h3><p>気象庁さいたま観測所（℃）</p></div></div><div class="legend"></div><div class="chart"></div></figure>
+    <figure class="card" id="c-rain"><div class="card-head"><div><h3 id="rain-title">月別の降水量</h3><p>合計降水量（mm）</p></div></div><div class="chart"></div></figure>
+    <figure class="card" id="c-vital"><div class="card-head"><div><h3>出生数と死亡数</h3><p>人口動態統計（人）。2020年から死亡が出生を上回っています</p></div></div><div class="legend"></div><div class="chart"></div></figure>
+    <figure class="card" id="c-tfr"><div class="card-head"><div><h3>合計特殊出生率</h3><p>1人の女性が一生に産む子どもの数の推計</p></div></div><div class="chart"></div></figure>
+    <figure class="card" id="c-death"><div class="card-head"><div><h3 id="death-title">主要死因別の死亡者数</h3><p>人</p></div></div><div class="chart"></div></figure>
+    <figure class="card" id="c-amb"><div class="card-head"><div><h3 id="amb-title">救急出場の事故種別</h3><p>件</p></div></div><div class="chart"></div></figure>
+    <figure class="card" id="c-ambt"><div class="card-head"><div><h3>救急出場件数と搬送人員の推移</h3><p>件・人</p></div></div><div class="legend"></div><div class="chart"></div></figure>
+    <figure class="card" id="c-fire"><div class="card-head"><div><h3>火災発生件数</h3><p>年次（件）</p></div></div><div class="chart"></div></figure>
+    <figure class="card" id="c-gomi"><div class="card-head"><div><h3>1人1日あたりのごみ収集量</h3><p>収集量 ÷ 人口 ÷ 365（g）</p></div></div><div class="chart"></div></figure>
+    <figure class="card" id="c-jr"><div class="card-head"><div><h3 id="jr-title">JR駅別の1日平均乗車人員</h3><p>人</p></div></div><div class="chart"></div></figure>
+    <figure class="card" id="c-tour"><div class="card-head"><div><h3>入込観光客数</h3><p>観光地点・イベント別（人）</p></div></div><div class="legend"></div><div class="chart"></div></figure>
+    <figure class="card" id="c-finr"><div class="card-head"><div><h3 id="finr-title">一般会計の歳入（決算）</h3><p>億円</p></div></div><div class="chart"></div></figure>
+    <figure class="card" id="c-fine"><div class="card-head"><div><h3 id="fine-title">一般会計の歳出（決算）</h3><p>億円</p></div></div><div class="chart"></div></figure>
+  </div>
+</section>
+
 <section id="catalog">
-  <div class="sec-head"><span class="no">10 / データ一覧</span><h2>すべてのデータセット</h2>
+  <div class="sec-head"><span class="no">11 / データ一覧</span><h2>すべてのデータセット</h2>
     <p>埼玉県オープンデータポータルに公開されている、さいたま市のデータセットです。名前で絞り込めます。</p></div>
   <figure class="card">
     <input class="search" id="q" type="search" placeholder="データセット名・分類で絞り込む" aria-label="データセットを絞り込む">
@@ -419,7 +459,7 @@ function lines(el, w, o) {
   const m = { t: 14, r: showEnd ? 92 : 12, b: 26, l: o.ml || 50 };
   const n = o.x.length;
   const x = d3.scaleLinear().domain([0, n - 1]).range([m.l, w - m.r]);
-  const all = o.series.flatMap(s => s.values).filter(v => v != null);
+  const all = o.series.flatMap(s => s.values).concat(o.band ? [...o.band.lo, ...o.band.hi] : []).filter(v => v != null);
   const dom = o.yDomain || [o.zero === false ? d3.min(all) : Math.min(0, d3.min(all)), d3.max(all)];
   const y = d3.scaleLinear().domain(dom).nice().range([h - m.b, m.t]);
   const svg = d3.select(el).append('svg').attr('width', w).attr('height', h);
@@ -439,6 +479,10 @@ function lines(el, w, o) {
     svg.append('text').attr('class', 'dlab').attr('x', m.l + 4).attr('y', y(o.ref.v) - 5).text(o.ref.label);
   }
   const line = d3.line().defined(v => v != null).x((v, i) => x(i)).y(v => y(v)).curve(d3.curveMonotoneX);
+  if (o.band) {
+    const band = d3.area().defined((v, i) => o.band.lo[i] != null && o.band.hi[i] != null).x((v, i) => x(i)).y0((v, i) => y(o.band.lo[i])).y1((v, i) => y(o.band.hi[i])).curve(d3.curveMonotoneX);
+    svg.append('path').attr('d', band(o.band.lo)).style('fill', o.band.color).style('opacity', .16);
+  }
   o.series.forEach(s => {
     if (o.area && o.series.length === 1) {
       const area = d3.area().defined(v => v != null).x((v, i) => x(i)).y0(y(y.domain()[0])).y1(v => y(v)).curve(d3.curveMonotoneX);
@@ -991,8 +1035,263 @@ source('c-tax', [1205]);
 chart('c-vote', (el, w) => hbar(el, w, WARDS.map((wd, i) => ({ label: wd, value: D.matrix.vote[i] })), { unit: 'か所', labelW: 70 }));
 tableView('c-vote', ['区', '投票所'], WARDS.map((wd, i) => [wd, D.matrix.vote[i]]));
 source('c-vote', [3449]);
-chart('c-gsp', (el, w) => hbar(el, w, D.gsp.map(g => ({ label: g.title, value: g.size / 1048576, note: `${g.n}ファイル・${g.fmts.join('/')}・${g.modified}` })), { fmt: v => v >= 1 ? nf(v, 0) + ' MB' : nf(v * 1024, 0) + ' KB', labelW: Math.min(200, w * .45), trunc: 15, rowH: 22, valW: 70 }));
+chart('c-gsp', (el, w) => hbar(el, w, D.gsp.map(g => ({ label: g.title, value: g.size / 1048576, note: `${g.n}ファイル・${g.fmts.join('/')}・${g.modified}` })), { fmt: v => !v ? 'サイズ不明' : v >= 1 ? nf(v, 0) + ' MB' : nf(v * 1024, 0) + ' KB', valW: 76, labelW: Math.min(200, w * .45), trunc: 15, rowH: 22 }));
 tableView('c-gsp', ['データセット', 'ファイル数', 'サイズ（MB）', '更新日'], D.gsp.map(g => [g.title, g.n, Math.round(g.size / 1048576), g.modified]));
+{ const cap = document.createElement('figcaption'); cap.textContent = '県ポータルの「都市計画基礎調査（基準年令和2年）」（ID 979）は、ここにある G空間情報センターのデータへのリンクです。'; document.getElementById('c-gsp').append(cap); }
+
+/* ---------- 追加: 人口 ---------- */
+{
+  const A = D.age_series;
+  document.getElementById('agets-sub').textContent = `${ym(A[0][0])}〜${ym(A.at(-1)[0])}、毎月1日時点（%）`;
+  legend(document.querySelector('#c-agets .legend'), [['65歳以上', S(0)], ['15歳未満', S(1)]], true);
+  chart('c-agets', (el, w) => lines(el, w, { x: A.map(a => a[0]), series: [{ name: '65歳以上', values: A.map(a => a[2]), color: S(0) }, { name: '15歳未満', values: A.map(a => a[3]), color: S(1) }], yDomain: [0, 30], yfmt: v => nf(v, 0) + '%', unit: '', tipTitle: ym, xfmt: s => ym(s).replace('年', '/').replace('月', ''), tickW: 60 }));
+  tableView('c-agets', ['時点', '総人口', '65歳以上（%）', '15歳未満（%）'], A.map(a => [ym(a[0]), a[1], a[2], a[3]]));
+  source('c-agets', [2412]);
+  const H = D.households;
+  document.getElementById('hh-sub').textContent = `${H.year}年。人口 ÷ 世帯数（人）`;
+  chart('c-hh', (el, w) => hbar(el, w, [...H.wards].sort((a, b) => b[2] - a[2]).map(r => ({ label: r[0], value: r[2], note: `${nf(r[1])}世帯` })), { fmt: v => nf(v, 2), labelW: 70, unit: '人' }));
+  tableView('c-hh', ['区', '世帯数', '1世帯あたり人員'], H.wards);
+  source('c-hh', [3314]);
+  document.getElementById('hhtop-sub').textContent = `${H.year}年・全 ${nf(H.towns)} 町丁字のうち上位15`;
+  chart('c-hhtop', (el, w) => hbar(el, w, H.top.map(r => ({ label: `${r[0]}（${r[1]}）`, value: r[2] })), { unit: '世帯', labelW: Math.min(190, w * .44), trunc: 15, rowH: 22 }));
+  tableView('c-hhtop', ['町丁字', '区', '世帯数'], H.top);
+  source('c-hhtop', [3314]);
+}
+
+/* ---------- 追加: バス路線図 ---------- */
+const BUS = D.gtfs;
+const KIND = ['コミュニティバス', '乗合タクシー'];
+const busEl = document.getElementById('busmap'), busCanvas = busEl.querySelector('canvas');
+let busPts = [], busDel = null, busHi = null;
+document.getElementById('bus-sub').textContent = `コミュニティバス ${BUS.filter(b => b.kind === KIND[0]).length}路線・乗合タクシー ${BUS.filter(b => b.kind === KIND[1]).length}地区。線は運行経路、点は停留所`;
+legend(document.getElementById('bus-legend'), [['消火栓（背景）', 'var(--axis)'], ...KIND.map((k, i) => [k, S(i)])]);
+function drawBus() {
+  const w = busEl.clientWidth, h = busEl.clientHeight, dpr = devicePixelRatio || 1;
+  busCanvas.width = w * dpr; busCanvas.height = h * dpr;
+  const ctx = busCanvas.getContext('2d'); ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, w, h);
+  const B = D.base, kx = Math.cos(35.9 * Math.PI / 180);
+  let x0 = 1e9, x1 = -1e9, y0 = 1e9, y1 = -1e9;
+  for (let i = 0; i < B.length; i += 2) { x0 = Math.min(x0, B[i]); x1 = Math.max(x1, B[i]); y0 = Math.min(y0, B[i + 1]); y1 = Math.max(y1, B[i + 1]); }
+  const pad = 14, sc = Math.min((w - 2 * pad) / ((x1 - x0) * kx), (h - 2 * pad) / (y1 - y0));
+  const ox = (w - (x1 - x0) * kx * sc) / 2, oy = (h - (y1 - y0) * sc) / 2;
+  const pr = (qx, qy) => [ox + (qx - x0) * kx * sc, h - oy - (qy - y0) * sc];
+  ctx.fillStyle = cssv('--base-dot');
+  for (let i = 0; i < B.length; i += 2) { const [px, py] = pr(B[i], B[i + 1]); ctx.fillRect(px - .7, py - .7, 1.4, 1.4); }
+  ctx.font = `700 12px ${cssv('--f-body')}`; ctx.textAlign = 'center'; ctx.fillStyle = cssv('--muted');
+  for (const [wd, [qx, qy]] of Object.entries(D.centroids)) { const [px, py] = pr(qx, qy); ctx.fillText(wd, px, py); }
+  busPts = [];
+  BUS.forEach(f => {
+    const col = cssv(`--s${KIND.indexOf(f.kind) + 1}`), dim = busHi && busHi !== f.name;
+    ctx.globalAlpha = dim ? .18 : 1;
+    ctx.strokeStyle = col; ctx.lineWidth = busHi === f.name ? 3 : 2; ctx.lineJoin = 'round';
+    for (const L of f.lines) { ctx.beginPath(); for (let i = 0; i < L.length; i += 2) { const [px, py] = pr(L[i], L[i + 1]); i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); } ctx.stroke(); }
+    ctx.fillStyle = cssv('--surface'); ctx.lineWidth = 1.5;
+    for (const s of f.stops) { const [px, py] = pr(s[0], s[1]); ctx.beginPath(); ctx.arc(px, py, 2.6, 0, Math.PI * 2); ctx.fill(); ctx.stroke(); busPts.push([px, py, s[2], f.name, col]); }
+  });
+  ctx.globalAlpha = 1;
+  busDel = d3.Delaunay.from(busPts, d => d[0], d => d[1]);
+}
+busCanvas.addEventListener('pointermove', ev => {
+  const b = busCanvas.getBoundingClientRect(), mx = ev.clientX - b.left, my = ev.clientY - b.top;
+  const p = busPts[busDel.find(mx, my)];
+  if (!p || Math.hypot(p[0] - mx, p[1] - my) > 16) return hideTip();
+  showTip(ev, p[3], [[p[2], '停留所', p[4]]]);
+});
+busCanvas.addEventListener('pointerleave', hideTip);
+drawBus(); charts.push(drawBus);
+{
+  const el = document.getElementById('bus-bars');
+  const run = () => {
+    el.replaceChildren();
+    const rows = [...BUS].sort((a, b) => b.trips_wd - a.trips_wd).map(f => ({ label: f.name.replace('コミュニティバス', 'コミバス'), value: f.trips_wd, color: S(KIND.indexOf(f.kind)), note: `平日の便数・停留所 ${f.n_stops}`, key: f.name }));
+    hbar(el, Math.max(240, el.clientWidth), rows, { labelW: 120, trunc: 10, rowH: 22, valW: 40 });
+    d3.select(el).selectAll('g.mk').on('pointerenter.hi', (ev, d) => { busHi = d.key; drawBus(); }).on('pointerleave.hi', () => { busHi = null; drawBus(); });
+  };
+  run(); charts.push(run);
+  const p = document.createElement('p'); p.className = 'note'; p.textContent = '棒は平日1日の便数。棒に合わせるとその路線を強調します'; el.after(p);
+}
+tableView('c-bus', ['路線', '種別', '平日便数', '停留所数'], BUS.map(f => [f.name, f.kind, f.trips_wd, f.n_stops]));
+source('c-bus', [1225]);
+
+/* ---------- 追加: 医療機関・施術所の開設と廃止 ---------- */
+function vgroup(el, w, cats, series, o = {}) {
+  const h = o.h || 200, m = { t: 16, r: 8, b: 26, l: 40 };
+  const x0 = d3.scaleBand().domain(cats).range([m.l, w - m.r]).paddingInner(.3);
+  const x1 = d3.scaleBand().domain(series.map((s, i) => i)).range([0, x0.bandwidth()]).paddingInner(.12);
+  const y = d3.scaleLinear().domain([0, d3.max(series.flatMap(s => s.values))]).nice().range([h - m.b, m.t]);
+  const svg = d3.select(el).append('svg').attr('width', w).attr('height', h);
+  for (const t of y.ticks(4)) {
+    svg.append('line').attr('class', t ? 'gridl' : 'base').attr('x1', m.l).attr('x2', w - m.r).attr('y1', y(t)).attr('y2', y(t));
+    svg.append('text').attr('class', 'tick').attr('x', m.l - 6).attr('y', y(t)).attr('dy', '.35em').attr('text-anchor', 'end').text(nf(t));
+  }
+  cats.forEach((c, ci) => {
+    svg.append('text').attr('class', 'tick').attr('x', x0(c) + x0.bandwidth() / 2).attr('y', h - m.b + 16).attr('text-anchor', 'middle').text(o.xfmt ? o.xfmt(c) : c);
+    series.forEach((s, si) => {
+      const v = s.values[ci], g = svg.append('g').attr('class', 'mk');
+      g.append('path').attr('class', 'bar').attr('d', vbarPath(x0(c) + x1(si), y(v), x1.bandwidth(), y(0) - y(v), Math.min(4, x1.bandwidth() / 2))).style('fill', s.color);
+      g.append('text').attr('class', 'val').attr('x', x0(c) + x1(si) + x1.bandwidth() / 2).attr('y', y(v) - 5).attr('text-anchor', 'middle').text(nf(v));
+      hover(g.append('rect').attr('class', 'hit').attr('x', x0(c) + x1(si)).attr('width', x1.bandwidth()).attr('y', m.t).attr('height', h - m.t - m.b),
+        () => o.tip ? o.tip(ci, si) : [`${c} ${s.name}`, [[nf(v), '', s.color]]]);
+    });
+  });
+}
+{
+  const C = D.churn, cats = C.med.map(c => c.month);
+  const SER = [['医療機関 開設', S(0)], ['医療機関 廃止', S(1)], ['施術所 開設', S(2)], ['施術所 廃止', S(3)]];
+  legend(document.querySelector('#c-churn .legend'), SER);
+  chart('c-churn', (el, w) => vgroup(el, w, cats, [
+    { name: SER[0][0], values: C.med.map(c => c.new), color: S(0) }, { name: SER[1][0], values: C.med.map(c => c.closed), color: S(1) },
+    { name: SER[2][0], values: C.sej.map(c => c.new), color: S(2) }, { name: SER[3][0], values: C.sej.map(c => c.closed), color: S(3) }],
+    { h: 200, xfmt: ym, tip: (ci, si) => { const src = si < 2 ? C.med[ci] : C.sej[ci], list = si % 2 ? src.closed_list : src.new_list; return [`${ym(cats[ci])} ${SER[si][0]}（${list.length}件）`, list.slice(0, 6).map(n => [n, '', cssv(`--s${si + 1}`)])]; } }));
+  const rows = [];
+  for (const [k, lab] of [['med', '医療機関'], ['sej', '施術所']]) for (const c of C[k]) { for (const n of c.new_list) rows.push([ym(c.month), lab, '開設', n]); for (const n of c.closed_list) rows.push([ym(c.month), lab, '廃止', n]); }
+  tableView('c-churn', ['月', '種類', '区分', '名称'], rows);
+  source('c-churn', [1230, 1525]);
+}
+
+/* ---------- 追加: 水質の全項目・メーター・応急給水 ---------- */
+{
+  const sel = document.getElementById('wq-sel');
+  for (const it of D.wq_items) { const o = document.createElement('option'); o.value = it.name; o.textContent = `${it.name}${it.unit ? `（${it.unit}）` : ''}`; sel.append(o); }
+  sel.value = D.wq_items.find(i => i.name === '総トリハロメタン') ? '総トリハロメタン' : D.wq_items[0].name;
+  let run;
+  chart('c-wqall', (el, w) => {
+    run = () => {
+      el.replaceChildren();
+      const it = D.wq_items.find(i => i.name === sel.value);
+      document.getElementById('wqall-sub').textContent = `給水栓15系統の月平均（線）と最小〜最大（帯）。基準値: ${it.std || 'なし'}${it.nd ? `。定量下限未満など数値でない結果 ${nf(it.nd)}件は除外` : ''}`;
+      lines(el, Math.max(260, el.clientWidth), { x: W.months, series: [{ name: it.name, values: it.avg, color: S(0) }], band: { lo: it.min, hi: it.max, color: S(0) }, zero: false,
+        yfmt: v => Math.abs(v) < 1 ? nf(v, 3) : nf(v, 1), unit: it.unit ? ' ' + it.unit : '', tickIdx: i => W.months[i].endsWith('-04'), xfmt: s => s.slice(0, 4) + '年4月', tipTitle: wl, h: 220 });
+    };
+    run();
+  });
+  sel.addEventListener('change', () => run());
+  tableView('c-wqall', ['項目', '単位', '基準値', '測定数（数値）', '数値以外'], [...D.wq_items.map(i => [i.name, i.unit, i.std, i.avg.filter(v => v != null).length, i.nd]), ...D.wq_nonnum.map(n => [n, '', '', 0, '（すべて定量下限未満など）'])]);
+  source('c-wqall', [1213]);
+
+  const MS = D.meter_sum;
+  document.getElementById('metersum-sub').textContent = `${MS[0]['計測期間']}・口径${MS[0]['口径']}mm・${MS[0]['件数']}件の平均（m³）`;
+  const st = document.getElementById('metersum-stats');
+  for (const r of MS) { const d = document.createElement('div'); d.className = 'stat'; const b = document.createElement('b'); b.textContent = nf(+r['1件平均'], 2) + ' m³'; const s = document.createElement('span'); s.textContent = `${r['集計単位'].replace('毎', '')}あたり`; d.append(b, s); st.append(d); }
+  tableView('c-metersum', Object.keys(MS[0]), MS.map(r => Object.values(r)));
+  source('c-metersum', [3076]);
+
+  const K = D.kyusui;
+  legend(document.querySelector('#c-kyusui .legend'), K.types.map((t, i) => [t, S(i)]));
+  chart('c-kyusui', (el, w) => stackH(el, w, WARDS.map((wd, i) => ({ label: wd, values: K.types.map(t => K.counts[t][i]) })), K.types, K.types.map((t, i) => S(i)), { unit: 'か所', labelW: 70, rowH: 24, bh: 14 }));
+  tableView('c-kyusui', ['区', ...K.types], WARDS.map((wd, i) => [wd, ...K.types.map(t => K.counts[t][i])]));
+  source('c-kyusui', [1207]);
+}
+
+/* ---------- 追加: 人の流れ（年代） ---------- */
+{
+  const AG = ['20代', '30代', '40代', '50代', '60代', '70歳以上'];
+  let run;
+  chart('c-flowa', (el, w) => {
+    run = () => { el.replaceChildren(); document.getElementById('flowa-title').textContent = `${flowArea}：平日14時の年代構成`; vbar(el, Math.max(260, el.clientWidth), F[flowArea].ages.map((v, i) => ({ label: AG[i], value: v })), { h: 190, unit: '人', tickW: 30, highlight: d3.range(6) }); };
+    run();
+  });
+  document.querySelectorAll('#flow-chips .chip').forEach(b => b.addEventListener('click', () => run()));
+  tableView('c-flowa', ['エリア', ...AG], AREAS.map(a => [a, ...F[a].ages]));
+  source('c-flowa', [1224]);
+}
+
+/* ---------- 追加: まちづくり（市営住宅・自治会・浄化槽） ---------- */
+{
+  const SI = D.shiei, short = t => t.replace(/[()（）]/g, ' ').replace(/\s+/g, ' ').trim();
+  legend(document.querySelector('#c-shiei .legend'), SI.types.map((t, i) => [short(t), S(i)]));
+  chart('c-shiei', (el, w) => stackH(el, w, WARDS.map((wd, i) => ({ label: wd, values: SI.types.map(t => SI.counts[t][i]) })), SI.types.map(short), SI.types.map((t, i) => S(i)), { unit: '団地', labelW: 70, rowH: 24, bh: 14 }));
+  tableView('c-shiei', ['名称', '種別', '住所'], SI.items);
+  source('c-shiei', [1192]);
+
+  const J = D.jichikai;
+  document.getElementById('jichi-sub').textContent = `市全体 ${nf(d3.sum(WARDS, w => J[w].total))}自治会。（ ）内は地区連合会の数`;
+  chart('c-jichi', (el, w) => hbar(el, w, WARDS.map(wd => ({ label: `${wd}（${J[wd].unions.filter(u => u[0] !== '連合会未加入').length}）`, value: J[wd].total })).sort((a, b) => b.value - a.value), { unit: '自治会', labelW: 90 }));
+  tableView('c-jichi', ['区', '地区連合会', '自治会数'], WARDS.flatMap(wd => J[wd].unions.map(u => [wd, u[0], u[1]])));
+  source('c-jichi', [1199]);
+
+  const JK = D.jokaso;
+  document.getElementById('jokaso-sub').textContent = `登録業者 ${nf(d3.sum(JK.in) + JK.out_total)}。市内 ${nf(d3.sum(JK.in))}・市外 ${nf(JK.out_total)}`;
+  chart('c-jokaso', (el, w) => hbar(el, w, [...WARDS.map((wd, i) => ({ label: wd, value: JK.in[i] })).sort((a, b) => b.value - a.value), ...JK.out.slice(0, 6).map(([k, v]) => ({ label: `市外・${k}`, value: v, color: 'var(--axis)' }))], { unit: '業者', labelW: 100, rowH: 21 }));
+  tableView('c-jokaso', ['所在地', '保守点検業者', '清掃業者'], [...WARDS.map((wd, i) => [wd, JK.in[i], JK.seisou[i]]), ...JK.out.map(([k, v]) => [k, v, '—']), ['市外 合計', JK.out_total, JK.seisou_out]]);
+  source('c-jokaso', [1219]);
+}
+
+/* ---------- 追加: 指定管理 ---------- */
+chart('c-shiteie', (el, w) => vbar(el, w, D.shitei_end.map(([y, n]) => ({ label: String(y), full: `${y}年度に終了`, value: n })), { h: 180, unit: '施設', tickW: 30, highlight: d3.range(D.shitei_end.length) }));
+tableView('c-shiteie', ['終了年度', '施設数'], D.shitei_end);
+source('c-shiteie', [1204]);
+chart('c-shiteio', (el, w) => hbar(el, w, D.shitei_ops.map(([k, v]) => ({ label: k, value: v })), { unit: '施設', labelW: Math.min(220, w * .5), trunc: 17, rowH: 22 }));
+tableView('c-shiteio', ['指定管理者', '施設数'], D.shitei_ops);
+source('c-shiteio', [1204]);
+
+/* ---------- 追加: 統計書 ---------- */
+{
+  const ST = D.stat;
+  document.getElementById('stat-lead').textContent = `${ST.edition}の全 ${nf(d3.sum(ST.index, c => c.tables.length))} 表を CSV に変換して保存しています（data/utf8/2318）。ここでは代表的な表をグラフにしました。`;
+  chart('c-statidx', (el, w) => hbar(el, w, ST.index.map(c => ({ label: `${c.no} ${c.chapter}`, value: c.tables.length })), { unit: '表', labelW: 150, rowH: 21 }));
+  tableView('c-statidx', ['章', '表'], ST.index.flatMap(c => c.tables.map(t => [`${c.no} ${c.chapter}`, t[1] || t[0]])));
+  source('c-statidx', [2318]);
+
+  const WX = ST.weather;
+  document.getElementById('wx-title').textContent = `${WX.label}年の月別気温`;
+  legend(document.querySelector('#c-wx .legend'), [['最高', S(1)], ['平均', S(0)], ['最低', S(2)]], true);
+  chart('c-wx', (el, w) => lines(el, w, { x: WX.months, series: [{ name: '最高', values: WX.max, color: S(1) }, { name: '平均', values: WX.avg, color: S(0) }, { name: '最低', values: WX.min, color: S(2) }], zero: false, yfmt: v => nf(v, 0), unit: '℃', tickW: 30 }));
+  tableView('c-wx', ['月', '平均', '最高', '最低', '降水量', '日照時間'], WX.months.map((m, i) => [m, WX.avg[i], WX.max[i], WX.min[i], WX.rain[i], WX.sun[i]]));
+  document.getElementById('rain-title').textContent = `${WX.label}年の月別降水量`;
+  chart('c-rain', (el, w) => vbar(el, w, WX.rain.map((v, i) => ({ label: WX.months[i].replace('月', ''), full: WX.months[i], value: v })), { h: 190, unit: ' mm', tickW: 22, highlight: [d3.maxIndex(WX.rain)] }));
+  tableView('c-rain', ['年', '平均気温', '年間降水量'], WX.years);
+  source('c-wx', [2318]); source('c-rain', [2318]);
+
+  const V = ST.vital;
+  legend(document.querySelector('#c-vital .legend'), [['死亡', S(1)], ['出生', S(0)]], true);
+  chart('c-vital', (el, w) => lines(el, w, { x: V.years, series: [{ name: '死亡', values: V.deaths, color: S(1) }, { name: '出生', values: V.births, color: S(0) }], unit: '人', tickW: 40 }));
+  tableView('c-vital', ['年', '出生', '死亡', '婚姻', '合計特殊出生率'], V.years.map((y, i) => [y, V.births[i], V.deaths[i], V.marriage[i], V.tfr[i]]));
+  chart('c-tfr', (el, w) => lines(el, w, { x: V.years, series: [{ name: '合計特殊出生率', values: V.tfr, color: S(0) }], yDomain: [1, 1.4], yfmt: v => nf(v, 2), tickW: 40, area: true }));
+  tableView('c-tfr', ['区', '出生', '死亡'], V.wards);
+  source('c-vital', [2318]); source('c-tfr', [2318]);
+
+  const DE = ST.death;
+  document.getElementById('death-title').textContent = `主要死因別の死亡者数（${DE.year}年）`;
+  chart('c-death', (el, w) => hbar(el, w, DE.causes.map(([k, v]) => ({ label: k, value: v, color: k.startsWith('その他') ? 'var(--axis)' : S(0) })), { unit: '人', labelW: Math.min(190, w * .44), trunc: 14, rowH: 21 }));
+  tableView('c-death', ['年', '総数', '悪性新生物', '老衰'], DE.trend);
+  source('c-death', [2318]);
+
+  const AM = ST.amb;
+  document.getElementById('amb-title').textContent = `救急出場の事故種別（${AM.year}年）`;
+  chart('c-amb', (el, w) => hbar(el, w, AM.kinds.filter(k => k[1] > 0).map(([k, v]) => ({ label: k, value: v })), { unit: '件', labelW: 90, rowH: 21 }));
+  tableView('c-amb', ['事故種別', '件数'], AM.kinds);
+  legend(document.querySelector('#c-ambt .legend'), [['出場件数', S(0)], ['搬送人員', S(1)]], true);
+  chart('c-ambt', (el, w) => lines(el, w, { x: AM.years.map(r => r[0]), series: [{ name: '出場件数', values: AM.years.map(r => r[1]), color: S(0) }, { name: '搬送人員', values: AM.years.map(r => r[2]), color: S(1) }], tickW: 40, yfmt: v => nf(v / 10000, 1) + '万' }));
+  tableView('c-ambt', ['年', '出場件数', '搬送人員'], AM.years);
+  source('c-amb', [2318]); source('c-ambt', [2318]);
+
+  chart('c-fire', (el, w) => vbar(el, w, ST.fire.map(r => ({ label: r[0], value: r[1] })), { h: 180, unit: '件', tickW: 30, highlight: d3.range(ST.fire.length) }));
+  tableView('c-fire', ['年', '火災件数', '死者', '負傷者'], ST.fire);
+  source('c-fire', [2318]);
+  chart('c-gomi', (el, w) => lines(el, w, { x: ST.gomi.map(r => r[0] + '年度'), series: [{ name: 'g/人日', values: ST.gomi.map(r => r[3]), color: S(0) }], zero: false, unit: ' g', yfmt: v => nf(v, 0), xfmt: s => s.replace('年度', ''), tickW: 40, area: true }));
+  tableView('c-gomi', ['年度', '収集量（t）', '人口', '1人1日（g）', '資源化・有効利用（t）'], ST.gomi);
+  source('c-gomi', [2318]);
+
+  document.getElementById('jr-title').textContent = `JR駅別の1日平均乗車人員（${ST.jr.fy}年度）`;
+  chart('c-jr', (el, w) => hbar(el, w, ST.jr.daily.map(([k, v]) => ({ label: k, value: v })), { unit: '人', labelW: 100, rowH: 20 }));
+  tableView('c-jr', ['年度', '市内JR駅の乗車人員（年間合計）'], ST.jr.years);
+  source('c-jr', [2318]);
+  legend(document.querySelector('#c-tour .legend'), [['観光地点', S(0)], ['イベント', S(1)]]);
+  chart('c-tour', (el, w) => stackH(el, w, ST.tour.map(r => ({ label: r[0] + '年', values: [r[1], r[2]] })), ['観光地点', 'イベント'], [S(0), S(1)], { unit: '人', labelW: 60, fmt: v => nf(v / 10000, 0) + '万' }));
+  tableView('c-tour', ['年', '観光地点', 'イベント'], ST.tour);
+  source('c-tour', [2318]);
+
+  const FI = ST.fin;
+  document.getElementById('finr-title').textContent = `一般会計の歳入（${FI.fy}決算）`;
+  document.getElementById('fine-title').textContent = `一般会計の歳出（${FI.fy}決算）`;
+  const top = (arr, n) => { const t = arr.slice(0, n), rest = arr.slice(n); if (rest.length) t.push(['その他', d3.sum(rest, r => r[1])]); return t; };
+  chart('c-finr', (el, w) => hbar(el, w, top(FI.rev, 9).map(([k, v]) => ({ label: k, value: v / 1e5, color: k === 'その他' ? 'var(--axis)' : S(0) })), { fmt: v => nf(v, 0), unit: '億円', labelW: 120, rowH: 21 }));
+  chart('c-fine', (el, w) => hbar(el, w, top(FI.exp, 9).map(([k, v]) => ({ label: k, value: v / 1e5, color: k === 'その他' ? 'var(--axis)' : S(0) })), { fmt: v => nf(v, 0), unit: '億円', labelW: 120, rowH: 21 }));
+  tableView('c-finr', ['区分', '決算額（千円）'], FI.rev);
+  tableView('c-fine', ['区分', '決算額（千円）'], FI.exp);
+  source('c-finr', [2318]); source('c-fine', [2318]);
+}
 
 /* ---------- 10 データ一覧 ---------- */
 function drawCatalog() {

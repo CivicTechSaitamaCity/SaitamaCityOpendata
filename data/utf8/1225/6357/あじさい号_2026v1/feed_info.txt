@@ -1,0 +1,2 @@
+feed_publisher_name,feed_publisher_url,feed_lang,feed_start_date,feed_end_date,feed_version,feed_contact_email,feed_contact_url
+さいたま市役所,https://www.city.saitama.jp/index.html,ja,20250601,20270331,2026 v1-2026年06月05日 15時02分36秒,kotsu-seisaku@city.saitama.lg.jp,

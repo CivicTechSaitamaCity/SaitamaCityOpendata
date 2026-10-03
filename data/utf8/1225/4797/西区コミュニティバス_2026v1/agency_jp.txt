@@ -1,0 +1,2 @@
+agency_id,agency_official_name,agency_zip_number,agency_address
+2000020111007_1,さいたま市役所交通政策課,3309588,さいたま市浦和区常盤６-4-４

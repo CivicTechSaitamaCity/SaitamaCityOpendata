@@ -1,0 +1,2 @@
+agency_id,agency_name,agency_url,agency_timezone,agency_lang,agency_phone
+2000020111007_13,さいたま市乗合タクシー,https://www.city.saitama.jp/index.html,Asia/Tokyo,ja,048-829-1054

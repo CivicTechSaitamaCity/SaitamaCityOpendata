@@ -1,0 +1,2 @@
+route_id,agency_id,route_short_name,route_long_name,route_desc,route_type,route_color,route_text_color
+1,2000020111007_13,,和土地区乗合タクシー「レインボー号」,,3,,000000

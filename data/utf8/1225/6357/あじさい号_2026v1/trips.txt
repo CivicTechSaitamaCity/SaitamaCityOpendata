@@ -1,0 +1,7 @@
+route_id,service_id,trip_id,trip_headsign,direction_id,shape_id
+1,平日,1++平日+1,西楽園,,SHP0001
+1,平日,1++平日+2,西楽園,,SHP0002
+1,平日,1++平日+3,西楽園,,SHP0003
+1,平日,1++平日+4,西楽園,,SHP0002
+1,平日,1++平日+5,西楽園,,SHP0003
+1,平日,1++平日+6,西楽園,,SHP0003

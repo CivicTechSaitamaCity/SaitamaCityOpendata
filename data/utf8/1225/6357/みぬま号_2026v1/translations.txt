@@ -1,0 +1,14 @@
+table_name,field_name,language,translation,record_id,field_value
+stops,stop_name,ja-Hrkt,とろえき,,土呂駅
+stops,stop_name,ja-Hrkt,さいのくにひがしおおみやめでぃかるせんたー,,彩の国東大宮メディカルセンター
+stops,stop_name,ja-Hrkt,しみんのもり,,市民の森
+stops,stop_name,ja-Hrkt,わしじんじゃまえ,,鷲神社前
+stops,stop_name,ja-Hrkt,もみじがおか,,紅葉ヶ丘
+stops,stop_name,ja-Hrkt,おおさとちゅうがっこう,,大砂土中学校
+stops,stop_name,ja-Hrkt,すなちょう,,砂町
+stops,stop_name,ja-Hrkt,ひがしおおみやごちょうめ,,東大宮五丁目
+stops,stop_name,ja-Hrkt,はれのてらす,,ハレノテラス
+stops,stop_name,ja-Hrkt,すなちょうはらやま,,砂町原山
+stops,stop_name,ja-Hrkt,ひがしおおみやえき,,東大宮駅
+trips,trip_headsign,ja-Hrkt,ひがしおおみやえき,,東大宮駅
+trips,trip_headsign,ja-Hrkt,とろえき,,土呂駅

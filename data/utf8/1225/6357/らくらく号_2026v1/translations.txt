@@ -1,0 +1,14 @@
+table_name,field_name,language,translation,record_id,field_value
+stops,stop_name,ja-Hrkt,えくれーるよんばんかん,,エクレール四番館
+stops,stop_name,ja-Hrkt,えくれーるさんばんかん,,エクレール三番館
+stops,stop_name,ja-Hrkt,えくれーるにばんかん,,エクレール二番館
+stops,stop_name,ja-Hrkt,えくれーるいちばんかん,,エクレール一番館
+stops,stop_name,ja-Hrkt,なみきちょういっちょうめ,,並木町一丁目
+stops,stop_name,ja-Hrkt,なみきちょうじちかいかんまえ,,並木町自治会館前
+stops,stop_name,ja-Hrkt,かくらさかした,,加倉坂下
+stops,stop_name,ja-Hrkt,かくらじゅうたく,,加倉住宅
+stops,stop_name,ja-Hrkt,たかはしいいんまえ,,高橋医院前
+stops,stop_name,ja-Hrkt,やおこーいわつきにしまちてん,,ヤオコー岩槻西町店
+stops,stop_name,ja-Hrkt,いわつきえきにしぐち,,岩槻駅西口
+stops,stop_name,ja-Hrkt,じどうせんたー,,児童センター
+stops,stop_name,ja-Hrkt,まるやまきねんそうごうびょういん,,丸山記念総合病院

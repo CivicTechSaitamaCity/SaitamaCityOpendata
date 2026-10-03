@@ -1,0 +1,9 @@
+fare_id,price,currency_type,payment_method,transfers,ic_price
+Fare180yen_00,180,JPY,0,0,178
+Fare200yen_00,200,JPY,0,0,210
+Fare210yen_00,210,JPY,0,0,220
+Fare250yen_00,250,JPY,0,0,242
+Fare270yen_00,270,JPY,0,0,263
+Fare240yen_00,240,JPY,0,0,231
+Fare260yen_00,260,JPY,0,0,252
+Fare190yen_00,190,JPY,0,0,199

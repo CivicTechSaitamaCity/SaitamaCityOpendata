@@ -7,6 +7,33 @@
   "language": "ja",
   "items": [
     {
+      "id": "tag:github.com,2026:CivicTechSaitamaCity/SaitamaCityOpendata/reports/2026/2026-10-03-2",
+      "url": "https://github.com/CivicTechSaitamaCity/SaitamaCityOpendata/blob/main/reports/2026/2026-10-03-2.md",
+      "title": "2026-10-03 「さいたま市統計書」ほか1件を更新",
+      "summary": "データセット 更新2件",
+      "content_html": "<p>データセット 更新2件</p><h2>埼玉県オープンデータポータル</h2><ul><li>【更新】<a href=\"https://opendata.pref.saitama.lg.jp/datasets/2318\">【さいたま市】さいたま市統計書</a><ul><li>ファイル更新: さいたま市統計書(令和７年版) — 取得を開始（さいたま市統計書(令和７年版)（ZIP・263ファイルを展開））</li><li>ファイル更新: さいたま市統計書(令和６年版) — 取得を開始（さいたま市統計書(令和６年版)（ZIP・263ファイルを展開））</li></ul></li><li>【更新】<a href=\"https://opendata.pref.saitama.lg.jp/datasets/1225\">【さいたま市】コミュニティバス・乗合タクシーのバス情報(GTFS-JP)</a><ul><li>ファイル更新: 【さいたま市】全区コミュニティバスのバス情報(GTFS-JP) — 取得を開始（【さいたま市】全区コミュニティバスのバス情報(GTFS-JP)（ZIP・89ファイルを展開））</li><li>ファイル更新: 【さいたま市】全地区乗合タクシーのバス情報(GTFS-JP) — 取得を開始（【さいたま市】全地区乗合タクシーのバス情報(GTFS-JP)（ZIP・112ファイルを展開））</li></ul></li></ul><p><a href=\"https://github.com/CivicTechSaitamaCity/SaitamaCityOpendata/blob/main/reports/2026/2026-10-03-2.md\">詳細なレポート</a></p>",
+      "date_published": "2026-10-03T17:32:43+09:00",
+      "_saitama": {
+        "counts": {
+          "updated": 2
+        },
+        "datasets": [
+          {
+            "source": "pref",
+            "kind": "updated",
+            "title": "【さいたま市】さいたま市統計書",
+            "url": "https://opendata.pref.saitama.lg.jp/datasets/2318"
+          },
+          {
+            "source": "pref",
+            "kind": "updated",
+            "title": "【さいたま市】コミュニティバス・乗合タクシーのバス情報(GTFS-JP)",
+            "url": "https://opendata.pref.saitama.lg.jp/datasets/1225"
+          }
+        ]
+      }
+    },
+    {
       "id": "tag:github.com,2026:CivicTechSaitamaCity/SaitamaCityOpendata/reports/2026/2026-10-03",
       "url": "https://github.com/CivicTechSaitamaCity/SaitamaCityOpendata/blob/main/reports/2026/2026-10-03.md",
       "title": "2026-10-03 初回取得（60データセット）",

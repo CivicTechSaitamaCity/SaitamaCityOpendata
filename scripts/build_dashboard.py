@@ -5,6 +5,7 @@
 """
 import collections
 import csv
+import io
 import json
 import math
 import re
@@ -129,6 +130,8 @@ LAYERS = [
     ('ido', '移動販売', 2466, 7229),
     ('absentee', '不在者投票指定施設', 1203, 4747),
     ('greens', '公開型緑地', 1211, 4761),
+    ('kodomo', '放課後子ども居場所', 2615, 7470),
+    ('muryo', '無料低額診療施設', 1217, 4774),
     ('land', '未利用市有地', 1193, 4723),
     ('tank', '防火水槽', 1208, 4756),
 ]
@@ -430,6 +433,245 @@ hyd_station = collections.Counter(p['row'].get('管轄署所', '').strip() for p
 
 vote_ward = matrix['vote']
 
+# ---------------------------------------------------------------- 追加データ（応急給水・市営住宅・自治会・浄化槽）
+
+def ward_counts(pairs, keys):
+    c = collections.Counter(pairs)
+    return {k: [c[(w, k)] for w in WARDS] for k in keys}
+
+
+kyusui_rows = table(1207, 4752)
+kyusui_types = [k for k, _ in collections.Counter(r['種類'] for r in kyusui_rows).most_common()]
+kyusui = {'types': kyusui_types, 'counts': ward_counts(((r['区名'], r['種類']) for r in kyusui_rows), kyusui_types)}
+
+shiei_rows = table(1192, 4722)
+shiei_types = [k for k, _ in collections.Counter(r['種別'] for r in shiei_rows).most_common()]
+shiei = {'types': shiei_types, 'counts': ward_counts(((ward_in(r['住所']) or ward_in(r['住所（所在地）']), r['種別']) for r in shiei_rows), shiei_types),
+         'items': [[r['名称'], r['種別'], r['住所']] for r in shiei_rows]}
+
+jichikai, cur = {w: {'total': 0, 'unions': []} for w in WARDS}, None
+for row in records(1199, 4740):
+    head = row[0].replace('　', '').replace(' ', '')
+    if head in WARDS:
+        cur = head
+        continue
+    if not cur:
+        continue
+    n = num(row[3]) if len(row) > 3 else None
+    if head.isdigit() and n:
+        jichikai[cur]['unions'].append([row[1], int(n)])
+    elif head.startswith('地区連合会未加入') and n:
+        jichikai[cur]['unions'].append(['連合会未加入', int(n)])
+    elif head.endswith('合計') and head.startswith(cur) and n:
+        jichikai[cur]['total'] = int(n)
+
+jokaso_out = collections.Counter()
+jokaso_in = collections.Counter()
+for r in table(1219, 4777):
+    addr = r['住所'].replace(' ', '')
+    if addr.startswith('さいたま市'):
+        jokaso_in[ward_in(addr) or '不明'] += 1
+    else:
+        m = re.match(r'(?:埼玉県)?(.+?[市町村])', addr)
+        jokaso_out[m.group(1) if m else 'その他'] += 1
+seisou = collections.Counter(ward_in(r['住所']) or '市外' for r in table(1219, 4778))
+jokaso = {'in': [jokaso_in[w] for w in WARDS], 'out': jokaso_out.most_common(10), 'out_total': sum(jokaso_out.values()),
+          'seisou': [seisou[w] for w in WARDS], 'seisou_out': seisou['市外']}
+
+# ---------------------------------------------------------------- GTFS（コミュニティバス・乗合タクシー）
+
+def gtfs_feeds():
+    feeds = []
+    for rid, kind in ((4797, 'コミュニティバス'), (6357, '乗合タクシー')):
+        base = ROOT / PREF['1225']['resources'][str(rid)]['file']['utf8']
+        for d in sorted(p for p in base.iterdir() if p.is_dir()):
+            def rd(name):
+                f = d / name
+                return list(csv.DictReader(io.StringIO(f.read_text(encoding='utf-8')))) if f.exists() else []
+            weekday = {c['service_id'] for c in rd('calendar.txt') if c.get('monday') == '1'}
+            trips = rd('trips.txt')
+            routes = {r['route_id']: r.get('route_long_name') or r.get('route_short_name') or '' for r in rd('routes.txt')}
+            shapes = collections.defaultdict(list)
+            for s in rd('shapes.txt'):
+                shapes[s['shape_id']].append((int(s['shape_pt_sequence']), float(s['shape_pt_lat']), float(s['shape_pt_lon'])))
+            used = {t.get('shape_id') for t in trips if t.get('shape_id')}
+            lines = []
+            for sid in sorted(used):
+                pts = [q(y, x) for _, y, x in sorted(shapes.get(sid, []))]
+                if len(pts) > 1:
+                    lines.append([v for p in pts for v in p])
+            stops = [q(float(s['stop_lat']), float(s['stop_lon'])) + [s['stop_name']] for s in rd('stops.txt')
+                     if s.get('stop_lat') and s.get('location_type', '0') in ('', '0')]
+            wd_trips = sum(1 for t in trips if t['service_id'] in weekday)
+            feeds.append({'name': d.name.rsplit('_', 1)[0], 'kind': kind, 'routes': sorted(set(routes.values())),
+                          'trips_wd': wd_trips, 'n_stops': len(stops), 'lines': lines, 'stops': stops})
+    return feeds
+
+
+gtfs = gtfs_feeds()
+
+# ---------------------------------------------------------------- さいたま市統計書（最新版）
+
+STAT_RID = max((r for r in PREF['2318']['resources'].values() if r.get('file') and r['file'].get('utf8')), key=lambda r: r['name'])
+STAT_DIR = ROOT / STAT_RID['file']['utf8']
+
+
+def stat(book_prefix, sheet):
+    book = next(p for p in STAT_DIR.iterdir() if p.is_dir() and re.match(rf'{book_prefix}\D', p.name))
+    rows = list(csv.reader(io.StringIO((book / f'{sheet}.csv').read_text(encoding='utf-8'))))
+    head = [h.strip() for h in rows[0]]
+    return [dict(zip(head, r)) for r in rows[1:] if any(r)]
+
+
+def col(row, prefix):
+    k = next((k for k in row if k.startswith(prefix)), None)
+    return num(row[k]) if k else None
+
+
+def wareki(label):
+    m = re.match(r'(令和|平成)(\d+|元)年', label)
+    if not m:
+        return label
+    n = 1 if m.group(2) == '元' else int(m.group(2))
+    return str((2018 if m.group(1) == '令和' else 1988) + n)
+
+
+stat_index = []
+for book in sorted((p for p in STAT_DIR.iterdir() if p.is_dir()), key=lambda p: int(re.match(r'\d+', p.name).group())):
+    idx = list(csv.DictReader(io.StringIO((book / '_目次.csv').read_text(encoding='utf-8')))) if (book / '_目次.csv').exists() else []
+    stat_index.append({'chapter': re.sub(r'^\d+\s*', '', book.name), 'no': int(re.match(r'\d+', book.name).group()),
+                       'tables': [[i['シート'], i['表題']] for i in idx]})
+
+wx = [r for r in stat('1', '1-7') if '月' in r['年月']]
+weather = {'label': wareki(wx[0]['年月']) if wx else '', 'months': [re.search(r'(\d+)月', r['年月']).group(1) + '月' for r in wx],
+           'avg': [col(r, '平均気温') for r in wx], 'max': [col(r, '最高気温') for r in wx], 'min': [col(r, '最低気温') for r in wx],
+           'rain': [col(r, '合計降水量') for r in wx], 'sun': [col(r, '合計日照時間') for r in wx],
+           'years': [[wareki(r['年月']), col(r, '平均気温'), col(r, '合計降水量')] for r in stat('1', '1-7') if '月' not in r['年月']]}
+
+jr = stat('13', '13-1')
+jr_daily = next(r for r in jr if '1日平均' in ''.join(r.values()))
+stations = [k for k in jr[0] if k and k not in ('', '時間軸コード', '年度', '平均')]
+jr_out = {'daily': sorted([[s.split('_')[0], num(jr_daily[s])] for s in stations if num(jr_daily.get(s)) is not None], key=lambda x: -x[1]),
+          'years': [[wareki(r['年度']), sum(num(r[s]) or 0 for s in stations)] for r in jr if '1日平均' not in ''.join(r.values())],
+          'fy': wareki(jr_daily['年度'])}
+
+vital = [r for r in stat('2', '2-8') if r.get('市区名', '').startswith('さいたま市')]
+vital_w = [r for r in stat('2', '2-8') if any(r.get('市区名', '').startswith(w) for w in WARDS)]
+vit = {'years': [wareki(r['年次']) for r in vital], 'births': [col(r, '出生_総数') for r in vital], 'deaths': [col(r, '死亡_総数') for r in vital],
+       'tfr': [col(r, '合計特殊出生率') for r in vital], 'marriage': [col(r, '婚姻') for r in vital],
+       'wards': [[next(w for w in WARDS if r['市区名'].startswith(w)), col(r, '出生_総数'), col(r, '死亡_総数')] for r in vital_w]}
+
+death = stat('16', '16-14')
+last_d = death[-1]
+death_out = {'year': wareki(last_d['年次']), 'causes': sorted([[k.split('_')[0], num(v)] for k, v in last_d.items()
+                                                              if k not in ('', '時間軸コード', '年次') and not k.startswith('総数') and '_うち' not in k and num(v)], key=lambda x: -x[1]),
+             'trend': [[wareki(r['年次']), col(r, '総数'), col(r, '悪性新生物'), col(r, '老衰')] for r in death]}
+
+gomi = stat('16', '16-16')
+gomi_out = [[wareki(r['年度']), col(r, '収集量_総数_（'), col(r, '人口'),
+             round(col(r, '収集量_総数_（') * 1e6 / col(r, '人口') / 365, 1), col(r, '資源化・有効利用_総数')] for r in gomi]
+
+fire = [r for r in stat('18', '18-12') if r.get('市区名', '').startswith('さいたま市')]
+fire_out = [[wareki(r['年次']), col(r, '火災発生件数_総数'), col(r, '死傷者数_死者'), col(r, '死傷者数_傷者')] for r in fire]
+amb = stat('18', '18-14')
+amb_city = [r for r in amb if r.get('消防署別', '').startswith('総数')]
+kinds = [k for k in amb[0] if k.startswith('事故種別出場件数_') and not k.endswith('総数_（件）')]
+amb_out = {'years': [[wareki(r['年次']), col(r, '事故種別出場件数_総数'), col(r, '搬送人員_総数') or next((num(v) for k, v in r.items() if '搬送' in k and '総数' in k), None)] for r in amb_city],
+           'kinds': sorted([[k.split('_')[1], num(amb_city[-1][k]) or 0] for k in kinds], key=lambda x: -x[1]),
+           'year': wareki(amb_city[-1]['年次'])}
+
+fin = stat('20', '20-1')
+fin_last = max((r['年度'] for r in fin if r['区分2'] == '総額' and r['区分1'].startswith('歳出') and (col(r, '決算額') or 0) > 0), key=wareki)
+fin_out = {'fy': wareki(fin_last) + '年度',
+           'rev': sorted([[r['区分2'], col(r, '決算額')] for r in fin if r['年度'] == fin_last and r['区分1'].startswith('歳入') and r['区分2'] != '総額' and col(r, '決算額')], key=lambda x: -x[1]),
+           'exp': sorted([[r['区分2'], col(r, '決算額')] for r in fin if r['年度'] == fin_last and r['区分1'].startswith('歳出') and r['区分2'] != '総額' and col(r, '決算額')], key=lambda x: -x[1]),
+           'total': [[wareki(r['年度']), r['区分1'][:2], col(r, '決算額')] for r in fin if r['区分2'] == '総額' and (col(r, '決算額') or 0) > 0]}
+
+tour = [[wareki(r['年次']), col(r, '観光地点'), col(r, 'イベント')] for r in stat('15', '15-31')]
+
+# ---------------------------------------------------------------- 水質（全項目）
+
+wq_all = collections.defaultdict(lambda: collections.defaultdict(list))
+wq_std, wq_unit, wq_nd = {}, {}, collections.Counter()
+for r in PREF['1213']['resources'].values():
+    for row in table(1213, r['id']):
+        place = row.get('採水場所') or row.get('場所') or ''
+        if not place.startswith('給水'):
+            continue
+        ym_ = re.search(r'(\d{4})年(\d+)月', row.get('採水年月') or row.get('採水年月日') or '')
+        item = re.sub(r'\s+', '', row.get('項目') or '')
+        if not ym_ or not item or item.startswith('"') or len(item) < 2:
+            continue
+        key = f'{ym_.group(1)}-{int(ym_.group(2)):02d}'
+        raw_v = (row.get('検査結果') or '').strip()
+        v = num(raw_v)
+        wq_std.setdefault(item, (row.get('水質基準値') or '').strip())
+        wq_unit.setdefault(item, (row.get('単位') or '').strip())
+        if v is None:
+            wq_nd[item] += 1
+        else:
+            wq_all[item][key].append(v)
+wq_items = []
+for item in sorted(wq_all, key=lambda k: -sum(len(v) for v in wq_all[k].values())):
+    if sum(len(v) for v in wq_all[item].values()) < 10:
+        continue
+    wq_items.append({'name': item, 'std': wq_std.get(item, ''), 'unit': wq_unit.get(item, ''), 'nd': wq_nd[item],
+                     'avg': [avg(wq_all[item].get(m, [])) for m in wmonths],
+                     'min': [min(wq_all[item][m]) if wq_all[item].get(m) else None for m in wmonths],
+                     'max': [max(wq_all[item][m]) if wq_all[item].get(m) else None for m in wmonths]})
+non_numeric = sorted(k for k in wq_nd if k not in {i['name'] for i in wq_items})
+
+# ---------------------------------------------------------------- 医療機関・施術所の開設・廃止
+
+def churn(dsid, name_key, addr_key):
+    res = sorted((r for r in PREF[str(dsid)]['resources'].values() if r.get('file') and r['file'].get('utf8')), key=lambda r: r['name'])
+    out, prev = [], None
+    for r in res:
+        m = re.search(r'令和(\d+)年(\d+)月', r['name'])
+        label = f'{2018 + int(m.group(1))}-{int(m.group(2)):02d}'
+        rows = table(dsid, r['id'])
+        cur = {(x[name_key].strip(), re.sub(r'\s', '', x[addr_key])): x for x in rows}
+        if prev is not None:
+            new, gone = cur.keys() - prev.keys(), prev.keys() - cur.keys()
+            out.append({'month': label, 'new': len(new), 'closed': len(gone),
+                        'new_list': sorted(k[0] for k in new)[:30], 'closed_list': sorted(k[0] for k in gone)[:30]})
+        prev = cur
+    return out
+
+
+churn_med = churn(1230, '名称', '所在地＿連結表記')
+churn_sej = churn(1525, '施設名', '所在地')
+
+# ---------------------------------------------------------------- 年齢別人口の推移・世帯・水道メーター集計・指定管理
+
+age_series = []
+for d in sorted({r['調査年月日'] for r in ap}):
+    rs = [r for r in ap if r['調査年月日'] == d and r['地域名'] in WARDS]
+    tot = sum(num(r['総人口']) for r in rs)
+    old = sum(num(v) or 0 for r in rs for k, v in r.items() if re.match(r'(6[5-9]|[7-9]\d)-?\d*歳|85歳以上', k))
+    young = sum(num(v) or 0 for r in rs for k, v in r.items() if re.match(r'(0-4|5-9|10-14)歳', k))
+    age_series.append([d[:7], tot, round(old / tot * 100, 2), round(young / tot * 100, 2)])
+
+hh_rows = table(3314, 8694)
+hh_ward = collections.Counter()
+for r in hh_rows:
+    hh_ward[r['区名']] += num(r['世帯数']) or 0
+pop_ward26 = {w: sum(pyramid['data'][w]['m']) + sum(pyramid['data'][w]['f']) for w in WARDS}
+households = {'wards': [[w, hh_ward[w], round(pop_ward26[w] / hh_ward[w], 2) if hh_ward[w] else None] for w in WARDS],
+              'top': sorted([[r['町（丁）字名'].replace(r['区名'], ''), r['区名'], num(r['世帯数'])] for r in hh_rows], key=lambda x: -(x[2] or 0))[:15],
+              'year': hh_rows[0]['年'], 'towns': len(hh_rows)}
+
+meter_sum = [{k.strip(): v for k, v in r.items()} for r in table(3076, 8307)]
+
+def reiwa_end(period):
+    m = re.search(r'[～〜~]\s*([RHＲ])(\d+)\.', period)
+    if not m:
+        return None
+    return (2018 if m.group(1) in 'RＲ' else 1988) + int(m.group(2))
+
+shitei_end = collections.Counter(reiwa_end(r['指定期間']) for r in shitei if reiwa_end(r.get('指定期間', '')))
+shitei_ops = collections.Counter(r['指定管理者'].replace('\n', '').strip() for r in shitei if r.get('指定管理者', '').strip())
+
 # ---------------------------------------------------------------- カタログ
 
 cat_rows = table(1151, 4651)
@@ -478,6 +720,12 @@ DATA = {
     'shigen': shigen.most_common(), 'hoiku': hoiku, 'land': sorted(land.items()),
     'bunka': [[a, b, n] for (a, b), n in bunka.items()], 'hyd_station': hyd_station.most_common(),
     'datasets': datasets, 'gsp': gsp,
+    'kyusui': kyusui, 'shiei': shiei, 'jichikai': jichikai, 'jokaso': jokaso, 'gtfs': gtfs,
+    'stat': {'edition': STAT_RID['name'].replace('さいたま市統計書', '').strip('()（）'), 'index': stat_index, 'weather': weather, 'jr': jr_out,
+             'vital': vit, 'death': death_out, 'gomi': gomi_out, 'fire': fire_out, 'amb': amb_out, 'fin': fin_out, 'tour': tour},
+    'wq_items': wq_items, 'wq_nonnum': non_numeric, 'churn': {'med': churn_med, 'sej': churn_sej},
+    'age_series': age_series, 'households': households, 'meter_sum': meter_sum,
+    'shitei_end': sorted(shitei_end.items()), 'shitei_ops': shitei_ops.most_common(10),
 }
 
 out = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / 'dashboard' / 'index.html'

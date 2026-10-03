@@ -16,9 +16,12 @@ import html
 import io
 import json
 import os
+import re
 import shutil
 import sys
 import time
+import xml.etree.ElementTree as ET
+import zipfile
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -315,10 +318,163 @@ def process_csv(dsid, rid, raw, label, warnings):
     return info
 
 
+# ---------------------------------------------------------------- ZIP 処理（GTFS・Excel）
+
+XNS = {'m': 'http://schemas.openxmlformats.org/spreadsheetml/2006/main',
+       'r': 'http://schemas.openxmlformats.org/officeDocument/2006/relationships'}
+
+
+def zip_name(info):
+    if info.flag_bits & 0x800:
+        return info.filename
+    try:
+        return info.filename.encode('cp437').decode('cp932')
+    except (UnicodeEncodeError, UnicodeDecodeError):
+        return info.filename
+
+
+def xlsx_sheets(data):
+    """xlsx の各シートを (シート名, 行のリスト) で返す. ふりがな（rPh）は除く."""
+    z = zipfile.ZipFile(io.BytesIO(data))
+    m = '{%s}' % XNS['m']
+
+    def text(el):
+        return ''.join(t.text or '' for r in [el] + el.findall(f'{m}r') for t in r.findall(f'{m}t'))
+
+    shared = []
+    if 'xl/sharedStrings.xml' in z.namelist():
+        shared = [text(si) for si in ET.fromstring(z.read('xl/sharedStrings.xml')).findall(f'{m}si')]
+    wb = ET.fromstring(z.read('xl/workbook.xml'))
+    rels = {r.get('Id'): r.get('Target') for r in ET.fromstring(z.read('xl/_rels/workbook.xml.rels'))}
+    for sh in wb.find(f'{m}sheets'):
+        target = rels[sh.get('{%s}id' % XNS['r'])].lstrip('/')
+        path = target if target.startswith('xl/') else 'xl/' + target
+        rows = []
+        for row in ET.fromstring(z.read(path)).iter(f'{m}row'):
+            cells = {}
+            for c in row.findall(f'{m}c'):
+                ref = ''.join(ch for ch in c.get('r') if ch.isalpha())
+                col = 0
+                for ch in ref:
+                    col = col * 26 + ord(ch) - 64
+                v, t = c.find(f'{m}v'), c.get('t')
+                if t == 'inlineStr':
+                    val = text(c.find(f'{m}is'))
+                elif v is None:
+                    continue
+                elif t == 's':
+                    val = shared[int(v.text)]
+                else:
+                    val = v.text or ''
+                    if t is None and re.fullmatch(r'-?\d+\.\d{9,}', val):
+                        val = f'{float(val):.10g}'
+                cells[col - 1] = val.strip()
+            if cells:
+                rows.append([cells.get(i, '') for i in range(max(cells) + 1)])
+        yield sh.get('name'), rows
+
+
+def tidy_sheet(rows):
+    """統計書の表: 「時間軸コード」の行から見出しを1行にまとめる. 該当しなければそのまま返す."""
+    hi = next((i for i, r in enumerate(rows) if '時間軸コード' in r), None)
+    if hi is None:
+        return rows
+    first = next((i for i in range(hi + 1, len(rows)) if any(re.fullmatch(r'\d{10}', c) for c in rows[i])), len(rows))
+    width = max(len(r) for r in rows[hi:first]) if first > hi else len(rows[hi])
+    head = []
+    for c in range(width):
+        parts = []
+        for r in rows[hi:first]:
+            v = r[c] if c < len(r) else ''
+            if v and v != '-' and v not in parts:
+                parts.append(v)
+        head.append('_'.join(parts))
+    return [head] + rows[first:]
+
+
+def safe_name(name):
+    return re.sub(r'[\\/:*?"<>|\s]+', '_', name).strip('_')
+
+
+def extract_zip(raw, outdir):
+    """ZIP を展開し、テキスト・表を UTF-8 で outdir 以下に書き出す. {相対パス: sha256} を返す."""
+    files = {}
+
+    def put(rel, text):
+        text = text.replace('\r\n', '\n').replace('\r', '\n')
+        write_text(outdir / rel, text)
+        files[rel] = hashlib.sha256(text.encode('utf-8')).hexdigest()
+
+    def walk(data, prefix):
+        z = zipfile.ZipFile(io.BytesIO(data))
+        for info in z.infolist():
+            name = zip_name(info)
+            base = name.rsplit('/', 1)[-1]
+            if info.is_dir() or base.startswith('~$'):
+                continue
+            body = z.read(info)
+            stem, _, ext = base.rpartition('.')
+            ext = ext.lower()
+            if ext == 'zip':
+                walk(body, f'{prefix}{safe_name(stem)}/')
+            elif ext in ('csv', 'txt'):
+                text, _ = decode(body)
+                if text is not None:
+                    put(f'{prefix}{safe_name(base)}', text)
+            elif ext == 'xlsx':
+                index = []
+                for sheet, rows in xlsx_sheets(body):
+                    if not rows or sheet in ('目次',) or re.fullmatch(r'Sheet\d+', sheet):
+                        continue
+                    title = next((c for r in rows[:8] for c in r if re.match(r'\d+\s*[-－]\s*\d+', c) and len(c) > 4), '')
+                    index.append([sheet, re.sub(r'\s+', ' ', title)])
+                    rows = tidy_sheet(rows)
+                    buf = io.StringIO()
+                    csv.writer(buf, lineterminator='\n').writerows(rows)
+                    put(f'{prefix}{safe_name(stem)}/{safe_name(sheet)}.csv', buf.getvalue())
+                if index:
+                    buf = io.StringIO()
+                    csv.writer(buf, lineterminator='\n').writerows([['シート', '表題']] + index)
+                    put(f'{prefix}{safe_name(stem)}/_目次.csv', buf.getvalue())
+
+    walk(raw, '')
+    return files
+
+
+def process_zip(dsid, rid, raw, label, warnings):
+    raw_path = DATA / 'raw' / dsid / f'{rid}.zip'
+    out = DATA / 'utf8' / dsid / rid
+    raw_path.parent.mkdir(parents=True, exist_ok=True)
+    raw_path.write_bytes(raw)
+    shutil.rmtree(out, ignore_errors=True)
+    try:
+        files = extract_zip(raw, out)
+    except (zipfile.BadZipFile, KeyError, ET.ParseError) as e:
+        warnings.append(f'{label}: ZIP を展開できませんでした（{e}）')
+        files = {}
+    return {
+        'sha256': hashlib.sha256(raw).hexdigest(), 'bytes': len(raw),
+        'raw': raw_path.relative_to(ROOT).as_posix(),
+        'utf8': out.relative_to(ROOT).as_posix() if files else None,
+        'umap': None, 'encoding': None, 'rows': None, 'columns': [],
+        'files': dict(sorted(files.items())),
+    }
+
+
+def zip_diff(old_files, new_files):
+    old_files, new_files = old_files or {}, new_files or {}
+    return {
+        'zip': True,
+        'added': sorted(new_files.keys() - old_files.keys()),
+        'removed': sorted(old_files.keys() - new_files.keys()),
+        'changed': sorted(k for k in old_files.keys() & new_files.keys() if old_files[k] != new_files[k]),
+    }
+
+
 def read_old_utf8(old_file):
     if old_file and old_file.get('utf8'):
         p = ROOT / old_file['utf8']
-        if p.exists():
+        if p.is_file():
             return p.read_text(encoding='utf-8')
     return None
 
@@ -327,7 +483,10 @@ def remove_files(file_info):
     for k in ('raw', 'utf8', 'umap'):
         if file_info and file_info.get(k):
             p = ROOT / file_info[k]
-            p.unlink(missing_ok=True)
+            if p.is_dir():
+                shutil.rmtree(p)
+            else:
+                p.unlink(missing_ok=True)
             try:
                 p.parent.rmdir()
             except OSError:
@@ -337,7 +496,7 @@ def remove_files(file_info):
 # ---------------------------------------------------------------- 更新処理
 
 def is_target(res):
-    return res['format'] == 'csv' and urllib.parse.urlparse(res['url']).hostname == PREF_HOST
+    return res['format'] in ('csv', 'zip') and urllib.parse.urlparse(res['url']).hostname == PREF_HOST
 
 
 def update_pref(old, new, force, report):
@@ -374,6 +533,11 @@ def update_pref(old, new, force, report):
             if same and not force:
                 res['file'] = old_file
                 continue
+            if res['format'] == 'zip':
+                res['file'] = process_zip(dsid, rid, raw, label, report['warnings'])
+                if old_file and not same:
+                    res['content_diff'] = zip_diff(old_file.get('files'), res['file']['files'])
+                continue
             old_text = read_old_utf8(old_file)
             res['file'] = process_csv(dsid, rid, raw, label, report['warnings'])
             if old_file and not same:
@@ -403,6 +567,8 @@ def describe_res(res):
     f = res.get('file')
     if f and f.get('rows') is not None:
         return f'{res["name"]}（{fmt}・{f["rows"]:,}行）'
+    if f and f.get('files'):
+        return f'{res["name"]}（{fmt}・{len(f["files"])}ファイルを展開）'
     return f'{res["name"]}（{fmt}・{fmt_size(res["size"])}）'
 
 
@@ -442,12 +608,23 @@ def diff_catalog(source, old, new):
             changed = []
             if ro['name'] != rn['name']:
                 changed.append(f'名称変更（旧: {ro["name"]}）')
+            if not ro.get('file') and rn.get('file'):
+                changed.append(f'取得を開始（{describe_res(rn)}）')
+            elif ro.get('file') and not rn.get('file'):
+                changed.append('取得対象から外れました')
             if ro['last_modified'] != rn['last_modified']:
                 changed.append(f'最終更新日 {fmt_date(ro["last_modified"])} → {fmt_date(rn["last_modified"])}')
             if ro['size'] != rn['size'] and not cd:
                 changed.append(f'サイズ {fmt_size(ro["size"])} → {fmt_size(rn["size"])}')
             if ro['url'] != rn['url']:
                 changed.append('URL変更')
+            if cd and cd.get('zip'):
+                parts = [f'{k} {len(cd[key])}件' for k, key in (('追加', 'added'), ('削除', 'removed'), ('変更', 'changed')) if cd[key]]
+                changed.append('ZIP 内のファイル ' + ('・'.join(parts) if parts else '変更なし（圧縮形式のみ変更）'))
+                names = (cd['added'] + cd['changed'] + cd['removed'])[:SAMPLE_ROWS]
+                if names:
+                    changed.append('例: ' + '、'.join(names))
+                cd = None
             if cd:
                 changed.append(f'行数 {cd["rows_before"]:,} → {cd["rows_after"]:,}'
                                f'（追加 {cd["rows_added"]:,}・削除 {cd["rows_removed"]:,}）')
@@ -633,7 +810,7 @@ def write_catalog_md(pref, gsp, latest):
             f = r.get('file')
             if f:
                 links = [f'[raw]({f["raw"]})'] + [f'[{k}]({f[k]})' for k in ('utf8', 'umap') if f.get(k)]
-                rows = f'{f["rows"]:,}行・' if f.get('rows') is not None else ''
+                rows = f'{f["rows"]:,}行・' if f.get('rows') is not None else f'{len(f["files"])}ファイル・' if f.get('files') else ''
                 files.append(f'{md_cell(r["name"])}（{rows}{"・".join(links)}）')
             else:
                 files.append(f'{md_cell(r["name"])}（{(r["format"] or "?").upper()}・[元ファイル]({r["url"]})）')

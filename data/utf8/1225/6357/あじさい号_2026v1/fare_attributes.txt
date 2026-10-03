@@ -1,0 +1,2 @@
+fare_id,price,currency_type,payment_method,transfers,transfer_duration,agency_id
+Fare0_00,0,JPY,0,0,,2000020111007_8
