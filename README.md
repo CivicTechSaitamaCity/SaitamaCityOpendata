@@ -74,6 +74,16 @@ git add -A data catalog.json CATALOG.md reports docs
 git diff --cached --quiet || { git commit -F /tmp/msg.txt && git push; }
 ```
 
+## ダッシュボード
+
+取得したデータを集計し、グラフと地図で見られる HTML を生成します（D3.js を CDN から読み込みます）。
+
+```sh
+python3 scripts/build_dashboard.py dashboard/index.html
+```
+
+`dashboard/template.html` に集計データを埋め込んで出力します。区別の集計は、区名が明記された地点（公園・AED・公共施設）のうち近い 5 地点の多数決で各地点の区を推定しています。
+
 ## 旧データ
 
 2022〜2023 年に手作業で取得したデータ（旧 `raw/`・`utf8/`・`umap/`）は、タグ [`v2022-snapshot`](https://github.com/CivicTechSaitamaCity/SaitamaCityOpendata/tree/v2022-snapshot) から参照できます。

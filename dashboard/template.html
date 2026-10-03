@@ -1,0 +1,1029 @@
+<title>さいたま市オープンデータ白書</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=BIZ+UDGothic:wght@400;700&display=swap">
+<style>
+/* Layout: 左寄せの一段組み。上部に固定の目次、セクションごとに見出し → カードのグリッド。地図とカタログは全幅。 */
+:root {
+  --plane: #f3f4f1; --surface: #fcfcfb; --ink: #0b0b0b; --ink2: #52514e; --muted: #75746e;
+  --grid: #e4e3dc; --axis: #c3c2b7; --border: rgba(11,11,11,.10); --wash: rgba(42,120,214,.08);
+  --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s4: #eda100; --s5: #e87ba4; --s6: #008300; --s7: #4a3aa7; --s8: #e34948;
+  --good: #0ca30c; --warn: #fab219; --serious: #ec835a; --crit: #d03b3b; --none: #c3c2b7;
+  --seq-lo: #e6effa; --seq-hi: #104281; --base-dot: rgba(11,11,11,.16);
+  --f-body: "BIZ UDPGothic", "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", system-ui, sans-serif;
+  --f-data: "BIZ UDGothic", "Osaka-Mono", "MS Gothic", ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --plane: #0d0d0d; --surface: #1a1a19; --ink: #ffffff; --ink2: #c3c2b7; --muted: #95948d;
+  --grid: #2c2c2a; --axis: #46463f; --border: rgba(255,255,255,.10); --wash: rgba(57,135,229,.14);
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500; --s5: #d55181; --s6: #008300; --s7: #9085e9; --s8: #e66767;
+  --none: #4a4a45; --seq-lo: #1d2836; --seq-hi: #8fbdf2; --base-dot: rgba(255,255,255,.16); color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --plane: #0d0d0d; --surface: #1a1a19; --ink: #ffffff; --ink2: #c3c2b7; --muted: #95948d;
+  --grid: #2c2c2a; --axis: #46463f; --border: rgba(255,255,255,.10); --wash: rgba(57,135,229,.14);
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500; --s5: #d55181; --s6: #008300; --s7: #9085e9; --s8: #e66767;
+  --none: #4a4a45; --seq-lo: #1d2836; --seq-hi: #8fbdf2; --base-dot: rgba(255,255,255,.16); color-scheme: dark; }
+
+* { box-sizing: border-box; }
+body { background: var(--plane); color: var(--ink); font-family: var(--f-body); font-size: 14px; line-height: 1.7; }
+a { color: var(--s1); }
+.wrap { max-width: 1280px; margin: 0 auto; padding-inline: 20px; }
+@media (max-width: 520px) { .wrap { padding-inline: 16px; } }
+
+header.top { padding-block: 40px 28px; display: grid; gap: 20px; }
+.eyebrow { font-family: var(--f-data); font-size: 12px; color: var(--muted); letter-spacing: .06em; display: flex; flex-wrap: wrap; gap: 4px 16px; }
+h1 { margin: 0; font-size: clamp(28px, 4.4vw, 44px); line-height: 1.2; font-weight: 700; letter-spacing: .01em; text-wrap: balance; }
+h1 small { display: block; font-size: .42em; color: var(--ink2); font-weight: 400; margin-top: 10px; letter-spacing: .02em; }
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.kpi { background: var(--surface); padding: 14px 16px; display: grid; gap: 2px; min-width: 0; }
+.kpi b { font-size: 26px; font-weight: 700; line-height: 1.2; }
+.kpi span { font-size: 12px; color: var(--ink2); }
+.kpi em { font-style: normal; font-size: 11px; color: var(--muted); }
+
+nav.toc { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: color-mix(in srgb, var(--plane) 92%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); }
+nav.toc .wrap { display: flex; gap: 4px; overflow-x: auto; padding-block: 8px; scrollbar-width: none; }
+nav.toc a { flex: none; color: var(--ink2); text-decoration: none; font-size: 13px; padding: 4px 10px; border-radius: 999px; }
+nav.toc a:hover, nav.toc a:focus-visible { background: var(--wash); color: var(--ink); outline: none; }
+
+section { padding-block: 36px 8px; scroll-margin-top: 52px; }
+.sec-head { display: grid; gap: 4px; margin-bottom: 16px; max-width: 72ch; }
+.sec-head .no { font-family: var(--f-data); font-size: 12px; color: var(--s1); letter-spacing: .08em; }
+h2 { margin: 0; font-size: 24px; line-height: 1.3; text-wrap: balance; }
+.sec-head p { margin: 0; color: var(--ink2); }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr)); gap: 16px; }
+.span2 { grid-column: 1 / -1; }
+figure.card { margin: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px 12px; display: grid; gap: 10px; min-width: 0; align-content: start; }
+.card-head { display: flex; gap: 12px; align-items: flex-start; justify-content: space-between; }
+.card-head > div { min-width: 0; }
+h3 { margin: 0; font-size: 15px; line-height: 1.4; text-wrap: balance; }
+.card-head p { margin: 2px 0 0; font-size: 12px; color: var(--ink2); }
+.tbtn { flex: none; font: inherit; font-size: 12px; color: var(--ink2); background: transparent; border: 1px solid var(--border); border-radius: 6px; padding: 2px 8px; cursor: pointer; }
+.tbtn:hover, .tbtn:focus-visible { background: var(--wash); color: var(--ink); outline: none; }
+.tbtn[aria-pressed="true"] { background: var(--wash); color: var(--ink); border-color: var(--s1); }
+.chart { min-width: 0; position: relative; }
+.chart svg { display: block; overflow: visible; }
+figcaption { font-size: 11px; color: var(--muted); border-top: 1px solid var(--grid); padding-top: 8px; display: flex; flex-wrap: wrap; gap: 2px 12px; }
+figcaption a { color: var(--muted); }
+.tbl { overflow-x: auto; max-height: 340px; overflow-y: auto; border: 1px solid var(--grid); border-radius: 6px; }
+table { border-collapse: collapse; width: 100%; font-size: 12px; font-variant-numeric: tabular-nums; }
+th, td { padding: 4px 8px; border-bottom: 1px solid var(--grid); text-align: left; white-space: nowrap; }
+th { position: sticky; top: 0; background: var(--surface); color: var(--ink2); font-weight: 700; }
+td.n, th.n { text-align: right; font-family: var(--f-data); }
+
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { font: inherit; font-size: 12px; color: var(--ink2); background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 3px 10px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+.chip:hover, .chip:focus-visible { background: var(--wash); color: var(--ink); outline: none; }
+.chip[aria-pressed="true"] { color: var(--ink); border-color: currentColor; font-weight: 700; }
+.chip i { width: 9px; height: 9px; border-radius: 50%; background: var(--none); flex: none; }
+.chip .ct { font-family: var(--f-data); font-size: 11px; color: var(--muted); font-weight: 400; }
+
+.legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 12px; color: var(--ink2); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend i { width: 10px; height: 10px; border-radius: 2px; flex: none; }
+.legend i.ln { height: 2px; width: 14px; border-radius: 1px; }
+
+.lab { font-size: 12px; fill: var(--ink2); }
+.val { font-size: 11px; fill: var(--ink); font-family: var(--f-data); }
+.tick { font-size: 10.5px; fill: var(--muted); font-family: var(--f-data); }
+.dlab { font-size: 11px; fill: var(--ink2); }
+.gridl { stroke: var(--grid); stroke-width: 1; shape-rendering: crispEdges; }
+.base { stroke: var(--axis); stroke-width: 1; shape-rendering: crispEdges; }
+.hit { fill: transparent; cursor: default; }
+.hit:focus-visible { outline: none; stroke: var(--s1); stroke-width: 2; }
+g.mk:hover > .bar, g.mk:focus-within > .bar { filter: brightness(1.12); }
+
+.stat-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; }
+.stat { display: grid; gap: 0; }
+.stat b { font-size: 22px; line-height: 1.25; }
+.stat span { font-size: 12px; color: var(--ink2); }
+.delta-up { color: var(--good); }
+
+.mapwrap { display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: 16px; }
+@media (max-width: 860px) { .mapwrap { grid-template-columns: 1fr; } }
+#map { position: relative; aspect-ratio: 1 / .78; max-width: 100%; border-radius: 8px; background: var(--surface); }
+#map canvas { width: 100%; height: 100%; display: block; }
+.mapside { display: grid; gap: 12px; align-content: start; min-width: 0; }
+.mapside .chips { max-height: 360px; overflow-y: auto; }
+.note { font-size: 12px; color: var(--muted); margin: 0; }
+
+.multiples { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+.mult { display: grid; gap: 0; min-width: 0; }
+.mult b { font-size: 13px; }
+.mult span { font-size: 11px; color: var(--ink2); font-family: var(--f-data); }
+
+.search { font: inherit; font-size: 13px; color: var(--ink); background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 6px 10px; width: min(100%, 320px); }
+.search:focus-visible { outline: 2px solid var(--s1); outline-offset: 1px; }
+.badge { display: inline-block; font-size: 10.5px; padding: 0 6px; border-radius: 4px; border: 1px solid var(--border); color: var(--ink2); margin-left: 4px; }
+.badge.geo { border-color: var(--s3); color: var(--ink); }
+td.wrap-c { white-space: normal; min-width: 220px; }
+
+#tip { position: fixed; z-index: 50; pointer-events: none; background: var(--surface); color: var(--ink); border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; font-size: 12px; box-shadow: 0 6px 24px rgba(0,0,0,.14); max-width: 280px; display: grid; gap: 3px; }
+#tip .tt { color: var(--ink2); font-size: 11.5px; }
+#tip .tr { display: flex; align-items: center; gap: 8px; }
+#tip .tr i { width: 12px; height: 2px; border-radius: 1px; flex: none; }
+#tip .tr b { font-family: var(--f-data); font-size: 13px; }
+#tip .tr span { color: var(--ink2); }
+
+footer { padding-block: 40px 56px; color: var(--muted); font-size: 12px; }
+@media (prefers-reduced-motion: no-preference) { .chip, .tbtn, nav.toc a { transition: background .15s, color .15s; } }
+</style>
+
+<header class="wrap top">
+  <div class="eyebrow"><span>全国地方公共団体コード 111007</span><span>埼玉県さいたま市</span><span id="asof"></span></div>
+  <h1>さいたま市オープンデータ白書<small>埼玉県オープンデータポータルと G空間情報センターで公開されている、さいたま市のオープンデータをまとめて見る</small></h1>
+  <div class="kpis" id="kpis"></div>
+</header>
+
+<nav class="toc" aria-label="目次"><div class="wrap">
+  <a href="#overview">概要</a><a href="#population">人口</a><a href="#map-sec">施設マップ</a><a href="#wards">区別比較</a>
+  <a href="#care">医療・福祉・子育て</a><a href="#water">水と緑</a><a href="#flow">人の流れ</a><a href="#town">まちづくり・防災</a>
+  <a href="#gov">行政</a><a href="#catalog">データ一覧</a>
+</div></nav>
+
+<main class="wrap">
+
+<section id="overview">
+  <div class="sec-head"><span class="no">01 / 概要</span><h2>公開データの全体像</h2>
+    <p>どの分野のデータが、どのくらいの頻度で更新されているか。データセットごとの最終更新日を並べています。</p></div>
+  <div class="grid">
+    <figure class="card span2" id="c-timeline"><div class="card-head"><div><h3>データセットの最終更新日</h3><p>1点が1データセット。更新頻度ごとに段を分けています</p></div></div><div class="chart"></div></figure>
+    <figure class="card" id="c-cat"><div class="card-head"><div><h3>分類別のデータセット数</h3><p>県ポータルの分類（さいたま市分）</p></div></div><div class="chart"></div></figure>
+    <figure class="card" id="c-fmt"><div class="card-head"><div><h3>ファイル形式</h3><p>県ポータル上の全ファイル。CSV を取得・変換しています</p></div></div><div class="chart"></div></figure>
+  </div>
+</section>
+
+<section id="population">
+  <div class="sec-head"><span class="no">02 / 人口</span><h2>人口と年齢構成</h2>
+    <p>町名別人口表（2012年8月から毎月）と町丁字別・年齢別人口から集計しました。</p></div>
+  <div class="grid">
+    <figure class="card span2" id="c-pop"><div class="card-head"><div><h3>総人口の推移</h3><p>毎月1日時点。町名別人口の合計</p></div></div><div class="stat-row" id="pop-stats"></div><div class="chart"></div></figure>
+    <figure class="card span2" id="c-wardidx"><div class="card-head"><div><h3>区別の人口の伸び</h3><p>2012年8月を100とした指数。縦軸はすべての区で共通です</p></div></div><div class="chart multiples"></div></figure>
+    <figure class="card" id="c-pyr"><div class="card-head"><div><h3>人口ピラミッド</h3><p id="pyr-sub">5歳階級・男女別</p></div></div><div class="chips" id="pyr-chips"></div><div class="legend" id="pyr-legend"></div><div class="chart"></div></figure>
+    <figure class="card" id="c-aging"><div class="card-head"><div><h3>区別の高齢化率と年少人口率</h3><p>65歳以上・15歳未満の割合</p></div></div><div class="legend" id="aging-legend"></div><div class="chart"></div></figure>
+    <figure class="card span2" id="c-age1"><div class="card-head"><div><h3>1歳ごとの人口</h3><p>0歳から100歳以上まで。団塊世代と団塊ジュニア世代の山が見えます</p></div></div><div class="chart"></div></figure>
+  </div>
+</section>
+
+<section id="map-sec">
+  <div class="sec-head"><span class="no">03 / 施設マップ</span><h2>位置情報つきデータを地図に重ねる</h2>
+    <p>灰色の点は公設消火栓 約1万3千か所で、市街地の広がりをそのまま描きます。最大3つのデータを重ねて比べられます。</p></div>
+  <figure class="card" id="c-map">
+    <div class="mapwrap">
+      <div id="map" role="img" aria-label="さいたま市の施設分布図"><canvas></canvas></div>
+      <div class="mapside">
+        <div class="legend" id="map-legend"></div>
+        <div class="chips" id="map-chips"></div>
+        <p class="note">消火栓・防火水槽は日本測地系で公開されているため、世界測地系に変換して描いています。</p>
+      </div>
+    </div>
+  </figure>
+</section>
+
+<section id="wards">
+  <div class="sec-head"><span class="no">04 / 区別比較</span><h2>10区の施設数を並べる</h2>
+    <p>位置情報から各地点の区を推定し、施設の種類ごとに数えました。色の濃さは種類ごと（列ごと）の相対値です。</p></div>
+  <figure class="card" id="c-heat"><div class="card-head"><div><h3>区 × 施設の種類</h3><p id="heat-sub">件数</p></div>
+    <div class="chips" id="heat-mode"><button class="chip" aria-pressed="true" data-m="n">件数</button><button class="chip" aria-pressed="false" data-m="p">人口1万人あたり</button></div></div>
+    <div class="tbl" style="max-height:none"></div>
+    <figcaption><span>区の判定: 区名が明記された公園・AED・公共施設 約2,900地点のうち最も近い5地点の多数決（境界付近は誤差あり）</span></figcaption></figure>
+</section>
+
+<section id="care">
+  <div class="sec-head"><span class="no">05 / 医療・福祉・子育て</span><h2>暮らしを支える施設</h2>
+    <p>医療機関・施術所は毎月更新されるデータです。</p></div>
+  <div class="grid">
+    <figure class="card" id="c-med"><div class="card-head"><div><h3>医療機関の種類</h3><p id="med-sub"></p></div></div><div class="stat-row" id="med-stats"></div><div class="chart"></div></figure>
+    <figure class="card" id="c-sej"><div class="card-head"><div><h3>施術所の業種</h3><p>1施設で複数の業種を届け出ている場合はそれぞれ数えています</p></div></div><div class="chart"></div></figure>
+    <figure class="card span2" id="c-sejy"><div class="card-head"><div><h3>現存する施術所の開設年</h3><p>いま営業している施術所が、いつ開設されたか</p></div></div><div class="chart"></div></figure>
+    <figure class="card" id="c-hoiku"><div class="card-head"><div><h3>保育施設の定員</h3><p>施設の種類別の定員合計（施設数）</p></div></div><div class="chart"></div></figure>
+    <figure class="card" id="c-shigen"><div class="card-head"><div><h3>いきいき活動リストの活動内容</h3><p>地域の支え合い・交流の場（上位15）</p></div></div><div class="chart"></div></figure>
+  </div>
+</section>
+
+<section id="water">
+  <div class="sec-head"><span class="no">06 / 水と緑</span><h2>水道・下水道・公園</h2>
+    <p>水質は市内15系統の給水栓で毎月測定された値の平均です。</p></div>
+  <div class="grid">
+    <figure class="card" id="c-wtemp"><div class="card-head"><div><h3>水温と気温</h3><p>給水栓での採水時、月平均（℃）</p></div></div><div class="legend"></div><div class="chart"></div></figure>
+    <figure class="card" id="c-wcl"><div class="card-head"><div><h3>遊離残留塩素</h3><p>月平均（mg/L）。給水栓では 0.1 mg/L 以上を保つことが水道法で定められています</p></div></div><div class="chart"></div></figure>
+    <figure class="card" id="c-meter"><div class="card-head"><div><h3>時間帯別の使用水量</h3><p>スマート水道メーター28件の1時間あたり合計の平均（m³）</p></div></div><div class="chart"></div></figure>
+    <figure class="card" id="c-meterm"><div class="card-head"><div><h3>月別の使用水量</h3><p>スマート水道メーター28件の合計（m³）</p></div></div><div class="chart"></div></figure>
+    <figure class="card" id="c-sewer"><div class="card-head"><div><h3>下水道普及率の推移</h3><p>市全体（%）</p></div></div><div class="chart"></div></figure>
+    <figure class="card" id="c-sewerw"><div class="card-head"><div><h3>区別の下水道普及率</h3><p id="sewerw-sub"></p></div></div><div class="legend" id="sewerw-legend"></div><div class="chart"></div></figure>
+    <figure class="card" id="c-parkt"><div class="card-head"><div><h3>公園の種別と面積</h3><p id="parkt-sub"></p></div></div><div class="chart"></div></figure>
+    <figure class="card" id="c-parkw"><div class="card-head"><div><h3>区別の公園面積</h3><p>人口1万人あたりの開設面積（ha）</p></div></div><div class="chart"></div></figure>
+  </div>
+</section>
+
+<section id="flow">
+  <div class="sec-head"><span class="no">07 / 人の流れ</span><h2>都心・副都心の滞在人口</h2>
+    <p>KDDI の位置情報ビッグデータ（同意を得た au ユーザーから推計）。20代以上・1時間あたりの平均滞在人口です。</p></div>
+  <div class="chips" id="flow-chips" style="margin-bottom:12px"></div>
+  <div class="grid">
+    <figure class="card" id="c-flowh"><div class="card-head"><div><h3 id="flowh-title">時間帯別の滞在人口</h3><p id="flowh-sub"></p></div></div><div class="legend"></div><div class="chart"></div></figure>
+    <figure class="card" id="c-flowt"><div class="card-head"><div><h3 id="flowt-title">14時の滞在人口の推移</h3><p>2018年1月から。2020年春の落ち込みが見えます</p></div></div><div class="legend"></div><div class="chart"></div></figure>
+    <figure class="card span2" id="c-flowc"><div class="card-head"><div><h3>平日14時に誰がいるか</h3><p>居住者・勤務者・来街者の構成比（直近12か月平均）</p></div></div><div class="legend"></div><div class="chart"></div></figure>
+  </div>
+</section>
+
+<section id="town">
+  <div class="sec-head"><span class="no">08 / まちづくり・防災</span><h2>再開発・区画整理・避難場所</h2>
+    <p>市街地再開発事業は1970年代から現在まで、28地区の事業期間を並べています。</p></div>
+  <div class="grid">
+    <figure class="card span2" id="c-redev"><div class="card-head"><div><h3>市街地再開発事業の期間</h3><p>事業開始年度から完了年度まで。完了年度が未定のものは現在まで</p></div></div><div class="legend"></div><div class="chart"></div></figure>
+    <figure class="card" id="c-kukaku"><div class="card-head"><div><h3>土地区画整理事業</h3><p>施行状況別の施行面積（ha）と地区数</p></div></div><div class="chart"></div></figure>
+    <figure class="card" id="c-shelter"><div class="card-head"><div><h3>指定緊急避難場所が使える災害</h3><p id="shelter-sub"></p></div></div><div class="legend"></div><div class="chart"></div></figure>
+    <figure class="card" id="c-hyd"><div class="card-head"><div><h3>公設消火栓の数</h3><p>管轄署所（区）別</p></div></div><div class="chart"></div></figure>
+    <figure class="card" id="c-land"><div class="card-head"><div><h3>未利用市有地</h3><p>面積区分別の件数</p></div></div><div class="chart"></div></figure>
+    <figure class="card" id="c-bunka"><div class="card-head"><div><h3>市所有の文化財</h3><p>指定の種類 × 文化財の種別</p></div></div><div class="tbl" style="max-height:none"></div></figure>
+  </div>
+</section>
+
+<section id="gov">
+  <div class="sec-head"><span class="no">09 / 行政</span><h2>電子申請・市民の提案・税の使いみち</h2>
+    <p>行政サービスの利用状況と、市税がどこに使われているかのモデルケースです。</p></div>
+  <div class="grid">
+    <figure class="card" id="c-eapp"><div class="card-head"><div><h3>電子申請の月別利用件数</h3><p id="eapp-sub"></p></div></div><div class="chart"></div></figure>
+    <figure class="card" id="c-teian"><div class="card-head"><div><h3>「わたしの提案」の月別提出件数</h3><p>市長への提案制度。年度ごとに比較</p></div></div><div class="legend"></div><div class="chart"></div></figure>
+    <figure class="card" id="c-teiana"><div class="card-head"><div><h3>「わたしの提案」提出者の年代</h3><p id="teiana-sub"></p></div></div><div class="chart"></div></figure>
+    <figure class="card" id="c-shitei"><div class="card-head"><div><h3>指定管理者制度の導入施設</h3><p id="shitei-sub"></p></div></div><div class="stat-row" id="shitei-stats"></div><div class="chart"></div></figure>
+    <figure class="card span2" id="c-tax"><div class="card-head"><div><h3>市税の使いみち（世帯モデル別）</h3><p>年間の市税負担額を、使いみちの分野ごとに分けたもの（円）</p></div></div><div class="legend"></div><div class="chart"></div></figure>
+    <figure class="card" id="c-vote"><div class="card-head"><div><h3>投票所の数</h3><p>衆議院議員総選挙の投票所、区別</p></div></div><div class="chart"></div></figure>
+    <figure class="card" id="c-gsp"><div class="card-head"><div><h3>G空間情報センターのデータ</h3><p>容量が大きいため一覧のみ。ファイル合計サイズ</p></div></div><div class="chart"></div></figure>
+  </div>
+</section>
+
+<section id="catalog">
+  <div class="sec-head"><span class="no">10 / データ一覧</span><h2>すべてのデータセット</h2>
+    <p>埼玉県オープンデータポータルに公開されている、さいたま市のデータセットです。名前で絞り込めます。</p></div>
+  <figure class="card">
+    <input class="search" id="q" type="search" placeholder="データセット名・分類で絞り込む" aria-label="データセットを絞り込む">
+    <div class="tbl" style="max-height:640px" id="cat-table"></div>
+  </figure>
+</section>
+</main>
+
+<footer class="wrap">
+  <p>出典: 埼玉県オープンデータポータルサイト（さいたま市公開分）、G空間情報センター（さいたま市公開分）。各データの利用条件は掲載元の利用規約に従ってください。</p>
+  <p>このページは CivicTechSaitamaCity/SaitamaCityOpendata が取得したデータから自動で集計しています。</p>
+</footer>
+
+<div id="tip" hidden></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script>
+const D = /*__DATA__*/null;
+const PORTAL = id => `https://opendata.pref.saitama.lg.jp/datasets/${id}`;
+const WARDS = D.wards;
+const S = i => `var(--s${i + 1})`;
+const nf = (v, d = 0) => v == null || isNaN(v) ? '—' : Number(v).toLocaleString('ja-JP', { maximumFractionDigits: d, minimumFractionDigits: d });
+const pct = (v, d = 1) => v == null ? '—' : nf(v * 100, d) + '%';
+const cssv = name => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+const titleOf = id => (D.datasets.find(d => d.id === id) || {}).title || '';
+
+/* ---------- ツールチップ ---------- */
+const tip = document.getElementById('tip');
+function showTip(ev, title, rows) {
+  tip.replaceChildren();
+  if (title) { const t = document.createElement('div'); t.className = 'tt'; t.textContent = title; tip.append(t); }
+  for (const [value, label, color] of rows) {
+    const r = document.createElement('div'); r.className = 'tr';
+    if (color) { const i = document.createElement('i'); i.style.background = color; r.append(i); }
+    const b = document.createElement('b'); b.textContent = value; r.append(b);
+    if (label) { const s = document.createElement('span'); s.textContent = label; r.append(s); }
+    tip.append(r);
+  }
+  tip.hidden = false;
+  let x, y;
+  if (ev.clientX != null && ev.type !== 'focus') { x = ev.clientX; y = ev.clientY; }
+  else { const b = ev.target.getBoundingClientRect(); x = b.left + b.width / 2; y = b.top; }
+  const w = tip.offsetWidth, h = tip.offsetHeight;
+  tip.style.left = Math.max(8, Math.min(innerWidth - w - 8, x + 14)) + 'px';
+  tip.style.top = Math.max(8, y - h - 12 < 8 ? y + 18 : y - h - 12) + 'px';
+}
+const hideTip = () => { tip.hidden = true; };
+function hover(sel, fn) {
+  sel.attr('tabindex', 0)
+    .on('pointermove focus', (ev, d) => { const [t, r] = fn(d); showTip(ev, t, r); })
+    .on('pointerleave blur', hideTip);
+}
+
+/* ---------- 共通の部品 ---------- */
+const charts = [];
+function chart(cardId, fn) {
+  const card = document.getElementById(cardId);
+  const el = card.querySelector('.chart');
+  const run = () => { el.replaceChildren(); fn(el, Math.max(260, el.clientWidth), card); };
+  charts.push(run); run();
+}
+function source(cardId, ids) {
+  const card = document.getElementById(cardId);
+  let cap = card.querySelector('figcaption');
+  if (!cap) { cap = document.createElement('figcaption'); card.append(cap); }
+  for (const id of ids) {
+    const a = document.createElement('a'); a.href = PORTAL(id); a.target = '_blank'; a.rel = 'noopener';
+    a.textContent = `出典: ${titleOf(id)}（ID ${id}）`; cap.append(a);
+  }
+}
+function tableView(cardId, headers, rows) {
+  const card = document.getElementById(cardId);
+  const head = card.querySelector('.card-head');
+  const btn = document.createElement('button'); btn.className = 'tbtn'; btn.textContent = '表で見る'; btn.setAttribute('aria-pressed', 'false');
+  const box = document.createElement('div'); box.className = 'tbl'; box.hidden = true;
+  box.append(makeTable(headers, rows));
+  btn.addEventListener('click', () => { box.hidden = !box.hidden; btn.setAttribute('aria-pressed', String(!box.hidden)); btn.textContent = box.hidden ? '表で見る' : '表を閉じる'; });
+  head.append(btn);
+  const cap = card.querySelector('figcaption');
+  cap ? card.insertBefore(box, cap) : card.append(box);
+}
+function makeTable(headers, rows) {
+  const t = document.createElement('table');
+  const tr = t.createTHead().insertRow();
+  headers.forEach((h, i) => { const th = document.createElement('th'); th.textContent = h; if (i) th.className = 'n'; tr.append(th); });
+  const tb = t.createTBody();
+  for (const r of rows) {
+    const row = tb.insertRow();
+    r.forEach((v, i) => { const td = row.insertCell(); td.textContent = typeof v === 'number' ? nf(v, Number.isInteger(v) ? 0 : 2) : v; if (i) td.className = 'n'; });
+  }
+  return t;
+}
+function legend(el, items, line = false) {
+  el.replaceChildren();
+  for (const [name, color] of items) {
+    const s = document.createElement('span'); const i = document.createElement('i');
+    if (line) i.className = 'ln'; i.style.background = color; s.append(i, document.createTextNode(name)); el.append(s);
+  }
+}
+const trunc = (s, n) => s.length > n ? s.slice(0, n - 1) + '…' : s;
+// 右端だけ角を丸めた横棒
+function hbarPath(x, y, w, h, r = 4) {
+  if (w <= 0) return '';
+  r = Math.min(r, w, h / 2);
+  return `M${x},${y}h${w - r}a${r},${r} 0 0 1 ${r},${r}v${h - 2 * r}a${r},${r} 0 0 1 ${-r},${r}h${-(w - r)}z`;
+}
+// 上端だけ角を丸めた縦棒
+function vbarPath(x, y, w, h, r = 4) {
+  if (h <= 0) return '';
+  r = Math.min(r, h, w / 2);
+  return `M${x},${y + h}v${-(h - r)}a${r},${r} 0 0 1 ${r},${-r}h${w - 2 * r}a${r},${r} 0 0 1 ${r},${r}v${h - r}z`;
+}
+
+/* 横棒グラフ */
+function hbar(el, w, rows, o = {}) {
+  const rowH = o.rowH || 24, bh = o.bh || 14;
+  const lw = o.labelW || Math.min(170, Math.max(90, w * .34));
+  const vw = o.valW || 76;
+  const h = rows.length * rowH + 4;
+  const max = o.max || d3.max(rows, d => d.value) || 1;
+  const x = d3.scaleLinear().domain([0, max]).range([0, w - lw - vw]);
+  const svg = d3.select(el).append('svg').attr('width', w).attr('height', h);
+  svg.append('line').attr('class', 'base').attr('x1', lw).attr('x2', lw).attr('y1', 0).attr('y2', h);
+  const g = svg.selectAll('g.mk').data(rows).join('g').attr('class', 'mk').attr('transform', (d, i) => `translate(0,${i * rowH})`);
+  g.append('text').attr('class', 'lab').attr('x', lw - 8).attr('y', rowH / 2).attr('dy', '.35em').attr('text-anchor', 'end').text(d => trunc(d.label, o.trunc || 16));
+  g.append('path').attr('class', 'bar').attr('d', d => hbarPath(lw + 1, (rowH - bh) / 2, x(d.value), bh)).style('fill', d => d.color || o.color || S(0));
+  g.append('text').attr('class', 'val').attr('x', d => lw + 1 + x(d.value) + 6).attr('y', rowH / 2).attr('dy', '.35em').text(d => (o.fmt || nf)(d.value));
+  const hit = g.append('rect').attr('class', 'hit').attr('x', 0).attr('y', 0).attr('width', w).attr('height', rowH);
+  hover(hit, d => [d.label, [[(o.fmt || nf)(d.value), d.note || o.unit || '', d.color || o.color || cssv('--s1')]]]);
+}
+
+/* 縦棒グラフ */
+function vbar(el, w, rows, o = {}) {
+  const h = o.h || 200, m = { t: 14, r: 8, b: 26, l: 46 };
+  const x = d3.scaleBand().domain(rows.map((d, i) => i)).range([m.l, w - m.r]).paddingInner(rows.length > 40 ? .15 : .25);
+  const y = d3.scaleLinear().domain([0, o.max || d3.max(rows, d => d.value)]).nice().range([h - m.b, m.t]);
+  const svg = d3.select(el).append('svg').attr('width', w).attr('height', h);
+  for (const t of y.ticks(4)) {
+    svg.append('line').attr('class', t ? 'gridl' : 'base').attr('x1', m.l).attr('x2', w - m.r).attr('y1', y(t)).attr('y2', y(t));
+    svg.append('text').attr('class', 'tick').attr('x', m.l - 6).attr('y', y(t)).attr('dy', '.35em').attr('text-anchor', 'end').text((o.yfmt || nf)(t));
+  }
+  const every = Math.max(1, Math.ceil(rows.length / ((w - m.l) / (o.tickW || 38))));
+  rows.forEach((d, i) => {
+    if (o.tickIdx ? o.tickIdx(d, i) : i % every === 0)
+      svg.append('text').attr('class', 'tick').attr('x', x(i) + x.bandwidth() / 2).attr('y', h - m.b + 16).attr('text-anchor', 'middle').text(d.label);
+  });
+  const g = svg.selectAll('g.mk').data(rows).join('g').attr('class', 'mk');
+  g.append('path').attr('class', 'bar').attr('d', (d, i) => vbarPath(x(i), y(d.value), x.bandwidth(), y(0) - y(d.value), Math.min(4, x.bandwidth() / 2))).style('fill', d => d.color || o.color || S(0));
+  const hit = g.append('rect').attr('class', 'hit').attr('x', (d, i) => x(i) - x.step() * x.paddingInner() / 2).attr('width', x.step()).attr('y', m.t).attr('height', h - m.t - m.b);
+  hover(hit, d => [d.full || d.label, [[(o.fmt || nf)(d.value), o.unit || '', d.color || o.color || cssv('--s1')]]]);
+  if (o.highlight) for (const i of o.highlight) {
+    const d = rows[i];
+    svg.append('text').attr('class', 'val').attr('x', x(i) + x.bandwidth() / 2).attr('y', y(d.value) - 6).attr('text-anchor', 'middle').text((o.fmt || nf)(d.value));
+  }
+}
+
+/* 折れ線グラフ（横軸は等間隔のカテゴリ） */
+function lines(el, w, o) {
+  const h = o.h || 220;
+  const showEnd = o.endLabels !== false && o.series.length <= 4;
+  const m = { t: 14, r: showEnd ? 92 : 12, b: 26, l: o.ml || 50 };
+  const n = o.x.length;
+  const x = d3.scaleLinear().domain([0, n - 1]).range([m.l, w - m.r]);
+  const all = o.series.flatMap(s => s.values).filter(v => v != null);
+  const dom = o.yDomain || [o.zero === false ? d3.min(all) : Math.min(0, d3.min(all)), d3.max(all)];
+  const y = d3.scaleLinear().domain(dom).nice().range([h - m.b, m.t]);
+  const svg = d3.select(el).append('svg').attr('width', w).attr('height', h);
+  for (const t of y.ticks(o.yTicks || 4)) {
+    svg.append('line').attr('class', 'gridl').attr('x1', m.l).attr('x2', w - m.r).attr('y1', y(t)).attr('y2', y(t));
+    svg.append('text').attr('class', 'tick').attr('x', m.l - 6).attr('y', y(t)).attr('dy', '.35em').attr('text-anchor', 'end').text((o.yfmt || nf)(t));
+  }
+  svg.append('line').attr('class', 'base').attr('x1', m.l).attr('x2', w - m.r).attr('y1', h - m.b).attr('y2', h - m.b);
+  const idx = o.tickIdx ? d3.range(n).filter(o.tickIdx) : d3.ticks(0, n - 1, Math.max(2, Math.floor((w - m.l - m.r) / 80))).map(Math.round);
+  const minGap = o.tickW || 54; let lastX = -1e9;
+  for (const i of idx) {
+    if (x(i) - lastX < minGap) continue; lastX = x(i);
+    svg.append('text').attr('class', 'tick').attr('x', x(i)).attr('y', h - m.b + 16).attr('text-anchor', 'middle').text(o.xfmt ? o.xfmt(o.x[i], i) : o.x[i]);
+  }
+  if (o.ref) {
+    svg.append('line').attr('x1', m.l).attr('x2', w - m.r).attr('y1', y(o.ref.v)).attr('y2', y(o.ref.v)).style('stroke', 'var(--crit)').style('stroke-width', 1);
+    svg.append('text').attr('class', 'dlab').attr('x', m.l + 4).attr('y', y(o.ref.v) - 5).text(o.ref.label);
+  }
+  const line = d3.line().defined(v => v != null).x((v, i) => x(i)).y(v => y(v)).curve(d3.curveMonotoneX);
+  o.series.forEach(s => {
+    if (o.area && o.series.length === 1) {
+      const area = d3.area().defined(v => v != null).x((v, i) => x(i)).y0(y(y.domain()[0])).y1(v => y(v)).curve(d3.curveMonotoneX);
+      svg.append('path').attr('d', area(s.values)).style('fill', s.color).style('opacity', .12);
+    }
+    svg.append('path').attr('d', line(s.values)).style('fill', 'none').style('stroke', s.color).style('stroke-width', 2);
+  });
+  if (showEnd) {
+    const ends = o.series.map(s => { let i = s.values.length - 1; while (i > 0 && s.values[i] == null) i--; return { s, i, y: y(s.values[i]) }; });
+    ends.sort((a, b) => a.y - b.y);
+    for (let k = 1; k < ends.length; k++) if (ends[k].y - ends[k - 1].y < 26) ends[k].y = ends[k - 1].y + 26;
+    for (const e of ends) {
+      svg.append('circle').attr('cx', x(e.i)).attr('cy', y(e.s.values[e.i])).attr('r', 4).style('fill', e.s.color).style('stroke', 'var(--surface)').style('stroke-width', 2);
+      const t = svg.append('text').attr('x', x(e.i) + 9).attr('y', e.y - 3);
+      t.append('tspan').attr('class', 'val').text((o.yfmt || nf)(e.s.values[e.i]));
+      if (o.series.length > 1) t.append('tspan').attr('class', 'dlab').attr('x', x(e.i) + 9).attr('dy', 13).text(trunc(e.s.name, 7));
+    }
+  }
+  // 十字線
+  const cross = svg.append('line').attr('y1', m.t).attr('y2', h - m.b).style('stroke', 'var(--axis)').attr('visibility', 'hidden');
+  const dots = o.series.map(s => svg.append('circle').attr('r', 4).style('fill', s.color).style('stroke', 'var(--surface)').style('stroke-width', 2).attr('visibility', 'hidden'));
+  const ov = svg.append('rect').attr('class', 'hit').attr('x', m.l).attr('y', m.t).attr('width', w - m.l - m.r).attr('height', h - m.t - m.b).attr('tabindex', 0);
+  let cur = n - 1;
+  const at = (ev, i) => {
+    cur = Math.max(0, Math.min(n - 1, i));
+    cross.attr('x1', x(cur)).attr('x2', x(cur)).attr('visibility', 'visible');
+    o.series.forEach((s, k) => { const v = s.values[cur]; dots[k].attr('cx', x(cur)).attr('cy', v == null ? -99 : y(v)).attr('visibility', v == null ? 'hidden' : 'visible'); });
+    showTip(ev, o.tipTitle ? o.tipTitle(o.x[cur], cur) : o.x[cur], o.series.map(s => [(o.yfmt || nf)(s.values[cur]) + (o.unit || ''), o.series.length > 1 ? s.name : '', s.color]));
+  };
+  const off = () => { cross.attr('visibility', 'hidden'); dots.forEach(d => d.attr('visibility', 'hidden')); hideTip(); };
+  ov.on('pointermove', ev => at(ev, Math.round(x.invert(d3.pointer(ev)[0])))).on('pointerleave blur', off).on('focus', ev => at(ev, cur))
+    .on('keydown', ev => { if (ev.key === 'ArrowLeft' || ev.key === 'ArrowRight') { ev.preventDefault(); at(ev, cur + (ev.key === 'ArrowLeft' ? -1 : 1)); } });
+}
+
+/* 積み上げ横棒 */
+function stackH(el, w, rows, keys, colors, o = {}) {
+  const rowH = o.rowH || 28, bh = o.bh || 16, lw = o.labelW || Math.min(190, w * .36), vw = o.pct ? 8 : 70;
+  const h = rows.length * rowH + 4;
+  const max = o.pct ? 1 : d3.max(rows, r => d3.sum(r.values));
+  const x = d3.scaleLinear().domain([0, max]).range([0, w - lw - vw]);
+  const svg = d3.select(el).append('svg').attr('width', w).attr('height', h);
+  rows.forEach((r, i) => {
+    const tot = d3.sum(r.values);
+    const g = svg.append('g').attr('transform', `translate(0,${i * rowH})`);
+    g.append('text').attr('class', 'lab').attr('x', lw - 8).attr('y', rowH / 2).attr('dy', '.35em').attr('text-anchor', 'end').text(trunc(r.label, o.trunc || 18));
+    let acc = 0;
+    const segs = r.values.map((v, k) => { const val = o.pct ? v / tot : v; const s = { k, v, val, x0: acc }; acc += val; return s; }).filter(s => s.v > 0);
+    segs.forEach((s, j) => {
+      const x0 = lw + x(s.x0), wd = Math.max(0, x(s.val) - (j < segs.length - 1 ? 2 : 0));
+      const last = j === segs.length - 1;
+      const seg = g.append('g').attr('class', 'mk');
+      seg.append('path').attr('class', 'bar').attr('d', last ? hbarPath(x0, (rowH - bh) / 2, wd, bh) : `M${x0},${(rowH - bh) / 2}h${wd}v${bh}h${-wd}z`).style('fill', colors[s.k]);
+      if (o.pct && wd > 34) seg.append('text').attr('x', x0 + wd / 2).attr('y', rowH / 2).attr('dy', '.35em').attr('text-anchor', 'middle').style('fill', '#fff').style('font-size', '11px').style('font-family', 'var(--f-data)').text(pct(s.v / tot, 0));
+      const hit = seg.append('rect').attr('class', 'hit').attr('x', x0).attr('y', 0).attr('width', Math.max(wd + 2, 6)).attr('height', rowH);
+      hover(hit, () => [`${r.label} — ${keys[s.k]}`, [[(o.fmt || nf)(s.v) + (o.unit || ''), pct(s.v / tot), colors[s.k]]]]);
+    });
+    if (!o.pct) g.append('text').attr('class', 'val').attr('x', lw + x(acc) + 6).attr('y', rowH / 2).attr('dy', '.35em').text((o.fmt || nf)(tot));
+  });
+}
+
+/* 2点比較（ダンベル） */
+function dumbbell(el, w, rows, names, colors, o = {}) {
+  const rowH = 26, lw = 64, m = { t: 22, r: 40, b: 4 };
+  const h = rows.length * rowH + m.t + m.b;
+  const all = rows.flatMap(r => r.v);
+  const x = d3.scaleLinear().domain(o.domain || [d3.min(all), d3.max(all)]).nice().range([lw, w - m.r]);
+  const svg = d3.select(el).append('svg').attr('width', w).attr('height', h);
+  for (const t of x.ticks(5)) {
+    svg.append('line').attr('class', 'gridl').attr('x1', x(t)).attr('x2', x(t)).attr('y1', m.t - 4).attr('y2', h - m.b);
+    svg.append('text').attr('class', 'tick').attr('x', x(t)).attr('y', 10).attr('text-anchor', 'middle').text((o.fmt || nf)(t));
+  }
+  rows.forEach((r, i) => {
+    const cy = m.t + i * rowH + rowH / 2;
+    const g = svg.append('g');
+    g.append('text').attr('class', 'lab').attr('x', lw - 10).attr('y', cy).attr('dy', '.35em').attr('text-anchor', 'end').text(r.label);
+    g.append('line').attr('x1', x(d3.min(r.v))).attr('x2', x(d3.max(r.v))).attr('y1', cy).attr('y2', cy).style('stroke', 'var(--axis)').style('stroke-width', 2);
+    r.v.forEach((v, k) => g.append('circle').attr('cx', x(v)).attr('cy', cy).attr('r', 5).style('fill', colors[k]).style('stroke', 'var(--surface)').style('stroke-width', 2));
+    const hit = g.append('rect').attr('class', 'hit').attr('x', 0).attr('y', cy - rowH / 2).attr('width', w).attr('height', rowH);
+    hover(hit, () => [r.label, r.v.map((v, k) => [(o.fmt || nf)(v), names[k], colors[k]])]);
+  });
+}
+
+/* ---------- ヘッダ ---------- */
+const M = D.meta;
+document.getElementById('asof').textContent = `データ確認日 ${M.checked}`;
+const kpis = [
+  [nf(M.n_pref), 'データセット', '埼玉県オープンデータポータル'],
+  [nf(M.n_gsp), 'データセット', 'G空間情報センター（一覧のみ）'],
+  [nf(M.n_csv), 'CSV ファイル', `うち位置情報つき ${M.geo_files}`],
+  [nf(M.rows), 'データ行', 'CSV の合計'],
+  [nf(M.points), '地点', '地図に描ける位置情報'],
+];
+for (const [v, l, e] of kpis) {
+  const d = document.createElement('div'); d.className = 'kpi';
+  const b = document.createElement('b'); b.textContent = v;
+  const s = document.createElement('span'); s.textContent = l;
+  const em = document.createElement('em'); em.textContent = e;
+  d.append(b, s, em); document.getElementById('kpis').append(d);
+}
+
+/* ---------- 01 概要 ---------- */
+const FREQ = ds => /1\[月\]|１\[月\]|リアルタイム/.test(ds.freq) ? '毎月以上' : /3\[月\]/.test(ds.freq) ? '3か月ごと' : /1\[年\]/.test(ds.freq) ? '毎年' : /不定期/.test(ds.freq) ? '不定期' : '未設定・その他';
+const LANES = ['毎月以上', '3か月ごと', '毎年', '不定期', '未設定・その他'];
+chart('c-timeline', (el, w) => {
+  const m = { t: 10, r: 16, b: 26, l: 110 }, laneH = 40, h = m.t + m.b + LANES.length * laneH;
+  const parse = d3.timeParse('%Y-%m-%d');
+  const ds = D.datasets.map(d => ({ ...d, date: parse(d.modified), lane: FREQ(d) }));
+  const x = d3.scaleTime().domain([d3.min(ds, d => d.date), new Date(M.checked)]).nice().range([m.l, w - m.r]);
+  const svg = d3.select(el).append('svg').attr('width', w).attr('height', h);
+  LANES.forEach((l, i) => {
+    const cy = m.t + i * laneH + laneH / 2;
+    svg.append('line').attr('class', 'gridl').attr('x1', m.l).attr('x2', w - m.r).attr('y1', cy).attr('y2', cy);
+    svg.append('text').attr('class', 'lab').attr('x', m.l - 10).attr('y', cy).attr('dy', '.35em').attr('text-anchor', 'end').text(`${l}（${ds.filter(d => d.lane === l).length}）`);
+  });
+  for (const t of x.ticks(Math.max(3, Math.floor(w / 110)))) {
+    svg.append('text').attr('class', 'tick').attr('x', x(t)).attr('y', h - 8).attr('text-anchor', 'middle').text(d3.timeFormat('%Y年%-m月')(t));
+  }
+  // 同じ日付の点は縦にずらす
+  const seen = {};
+  for (const d of ds) { const k = d.lane + d.modified; d.k = seen[k] = (seen[k] || 0) + 1; }
+  const g = svg.selectAll('g.dot').data(ds).join('g').attr('class', 'dot');
+  g.append('circle').attr('cx', d => x(d.date)).attr('cy', d => m.t + LANES.indexOf(d.lane) * laneH + laneH / 2 + ((d.k - 1) % 5 - 2) * 5)
+    .attr('r', 5).style('fill', 'var(--s1)').style('stroke', 'var(--surface)').style('stroke-width', 2);
+  const hit = g.append('circle').attr('class', 'hit').attr('cx', d => x(d.date)).attr('cy', d => m.t + LANES.indexOf(d.lane) * laneH + laneH / 2).attr('r', 12);
+  hover(hit, d => [d.title, [[d.modified, `最終更新・${d.freq || '更新頻度未設定'}`, cssv('--s1')]]]);
+});
+tableView('c-timeline', ['データセット', '最終更新', '更新頻度'], D.datasets.map(d => [d.title, d.modified, d.freq || '—']));
+
+const cats = d3.rollups(D.datasets, v => v.length, d => d.cat).sort((a, b) => b[1] - a[1]);
+chart('c-cat', (el, w) => hbar(el, w, cats.map(([k, v]) => ({ label: k, value: v })), { unit: 'データセット' }));
+tableView('c-cat', ['分類', 'データセット数'], cats);
+source('c-cat', [1151]);
+const fmts = Object.entries(M.formats).sort((a, b) => b[1] - a[1]).map(([k, v]) => [k === '?' ? '不明' : k, v]);
+chart('c-fmt', (el, w) => hbar(el, w, fmts.map(([k, v], i) => ({ label: k, value: v, color: i ? 'var(--axis)' : S(0) })), { unit: 'ファイル' }));
+tableView('c-fmt', ['形式', 'ファイル数'], fmts);
+
+/* ---------- 02 人口 ---------- */
+const P = D.pop;
+const ym = s => { const [y, m] = s.split('-'); return `${y}年${+m}月`; };
+{
+  const first = P.city[0], last = P.city.at(-1), yAgo = P.city.at(-13);
+  const st = document.getElementById('pop-stats');
+  for (const [v, l, cls] of [[nf(last) + '人', `総人口（${ym(P.dates.at(-1))}）`], ['+' + pct(last / first - 1), `${ym(P.dates[0])}から`, 'delta-up'], [(last - yAgo >= 0 ? '+' : '') + nf(last - yAgo) + '人', '1年間の増減', last >= yAgo ? 'delta-up' : ''], [nf(P.hh.at(-1)) + '世帯', '世帯数']]) {
+    const d = document.createElement('div'); d.className = 'stat'; const b = document.createElement('b'); b.textContent = v; if (cls) b.className = cls;
+    const s = document.createElement('span'); s.textContent = l; d.append(b, s); st.append(d);
+  }
+}
+chart('c-pop', (el, w) => lines(el, w, {
+  x: P.dates, series: [{ name: '総人口', values: P.city, color: S(0) }], area: true, zero: false, h: 240, ml: 64,
+  yfmt: v => nf(v / 10000, 0) + '万', tickIdx: i => P.dates[i].endsWith('-01') && +P.dates[i].slice(0, 4) % 2 === 0, xfmt: s => s.slice(0, 4),
+  tipTitle: s => ym(s), unit: '',
+}));
+tableView('c-pop', ['時点', '総人口', '世帯数'], P.dates.map((d, i) => [ym(d), P.city[i], P.hh[i]]).reverse());
+source('c-pop', [978]);
+
+chart('c-wardidx', (el, w) => {
+  const idx = Object.fromEntries(WARDS.map(wd => [wd, P.wards[wd].map(v => v / P.wards[wd][0] * 100)]));
+  const lo = d3.min(Object.values(idx).flat()), hi = d3.max(Object.values(idx).flat());
+  const order = [...WARDS].sort((a, b) => idx[b].at(-1) - idx[a].at(-1));
+  for (const wd of order) {
+    const box = document.createElement('div'); box.className = 'mult';
+    const b = document.createElement('b'); b.textContent = wd;
+    const s = document.createElement('span'); const g = idx[wd].at(-1) - 100;
+    s.textContent = `${nf(P.wards[wd].at(-1))}人 ${g >= 0 ? '+' : ''}${nf(g, 1)}%`;
+    box.append(b, s); el.append(box);
+    const cw = Math.max(140, box.clientWidth), ch = 64;
+    const x = d3.scaleLinear().domain([0, P.dates.length - 1]).range([2, cw - 6]);
+    const y = d3.scaleLinear().domain([lo, hi]).range([ch - 4, 4]);
+    const svg = d3.select(box).append('svg').attr('width', cw).attr('height', ch);
+    svg.append('line').attr('class', 'gridl').attr('x1', 0).attr('x2', cw).attr('y1', y(100)).attr('y2', y(100));
+    svg.append('path').attr('d', d3.area().x((v, i) => x(i)).y0(y(lo)).y1(v => y(v))(idx[wd])).style('fill', 'var(--s1)').style('opacity', .12);
+    svg.append('path').attr('d', d3.line().x((v, i) => x(i)).y(v => y(v))(idx[wd])).style('fill', 'none').style('stroke', 'var(--s1)').style('stroke-width', 2);
+    svg.append('circle').attr('cx', x(P.dates.length - 1)).attr('cy', y(idx[wd].at(-1))).attr('r', 3.5).style('fill', 'var(--s1)').style('stroke', 'var(--surface)').style('stroke-width', 2);
+    const hit = svg.append('rect').attr('class', 'hit').attr('width', cw).attr('height', ch).attr('tabindex', 0);
+    hit.on('pointermove', ev => { const i = Math.max(0, Math.min(P.dates.length - 1, Math.round(x.invert(d3.pointer(ev)[0])))); showTip(ev, `${wd} ${ym(P.dates[i])}`, [[nf(P.wards[wd][i]) + '人', `指数 ${nf(idx[wd][i], 1)}`, cssv('--s1')]]); })
+      .on('focus', ev => showTip(ev, `${wd} ${ym(P.dates.at(-1))}`, [[nf(P.wards[wd].at(-1)) + '人', `指数 ${nf(idx[wd].at(-1), 1)}`, cssv('--s1')]]))
+      .on('pointerleave blur', hideTip);
+  }
+});
+tableView('c-wardidx', ['区', P.dates[0], P.dates.at(-1), '増減率'], WARDS.map(wd => [wd, P.wards[wd][0], P.wards[wd].at(-1), nf((P.wards[wd].at(-1) / P.wards[wd][0] - 1) * 100, 1) + '%']));
+
+let pyrWard = '市全体';
+const PY = D.pyramid;
+legend(document.getElementById('pyr-legend'), [['男性', S(0)], ['女性', S(1)]]);
+{
+  const box = document.getElementById('pyr-chips');
+  for (const wd of ['市全体', ...WARDS]) {
+    const b = document.createElement('button'); b.className = 'chip'; b.textContent = wd; b.setAttribute('aria-pressed', String(wd === pyrWard));
+    b.addEventListener('click', () => { pyrWard = wd; box.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed', String(c === b))); pyrRun(); });
+    box.append(b);
+  }
+}
+let pyrRun;
+chart('c-pyr', (el, w) => {
+  pyrRun = () => { el.replaceChildren(); drawPyr(el, Math.max(260, el.clientWidth)); };
+  drawPyr(el, w);
+});
+function drawPyr(el, w) {
+  const d = PY.data[pyrWard], bins = PY.bins, rowH = 15, mid = 40, h = bins.length * rowH + 24;
+  const tot = d3.sum(d.m) + d3.sum(d.f);
+  document.getElementById('pyr-sub').textContent = `${PY.year}年・5歳階級・男女別　${pyrWard} ${nf(tot)}人`;
+  const max = d3.max([...d.m, ...d.f]);
+  const half = (w - mid) / 2;
+  const x = d3.scaleLinear().domain([0, max]).range([0, half - 6]);
+  const svg = d3.select(el).append('svg').attr('width', w).attr('height', h);
+  bins.forEach((b, i) => {
+    const yy = (bins.length - 1 - i) * rowH;
+    svg.append('text').attr('class', 'tick').attr('x', w / 2).attr('y', yy + rowH / 2).attr('dy', '.35em').attr('text-anchor', 'middle').text(b);
+    const gm = svg.append('g').attr('class', 'mk'), gf = svg.append('g').attr('class', 'mk');
+    const wm = x(d.m[i]), wf = x(d.f[i]);
+    gm.append('path').attr('class', 'bar').attr('d', `M${half - wm},${yy + 2}h${wm}v${rowH - 4}h${-wm}z`).style('fill', 'var(--s1)');
+    gf.append('path').attr('class', 'bar').attr('d', hbarPath(half + mid, yy + 2, wf, rowH - 4, 3)).style('fill', 'var(--s2)');
+    hover(gm.append('rect').attr('class', 'hit').attr('x', 0).attr('y', yy).attr('width', half).attr('height', rowH), () => [`${pyrWard} ${b}歳 男性`, [[nf(d.m[i]) + '人', pct(d.m[i] / tot, 2), cssv('--s1')]]]);
+    hover(gf.append('rect').attr('class', 'hit').attr('x', half + mid).attr('y', yy).attr('width', half).attr('height', rowH), () => [`${pyrWard} ${b}歳 女性`, [[nf(d.f[i]) + '人', pct(d.f[i] / tot, 2), cssv('--s2')]]]);
+  });
+  for (const t of x.ticks(3).filter(t => t)) {
+    for (const xx of [half - x(t), half + mid + x(t)]) svg.append('text').attr('class', 'tick').attr('x', xx).attr('y', h - 4).attr('text-anchor', 'middle').text(nf(t / 1000, 0) + '千');
+  }
+}
+tableView('c-pyr', ['年齢', '男性（市全体）', '女性（市全体）'], PY.bins.map((b, i) => [b, PY.data['市全体'].m[i], PY.data['市全体'].f[i]]).reverse());
+source('c-pyr', [3314]);
+
+legend(document.getElementById('aging-legend'), [['65歳以上', S(0)], ['15歳未満', S(1)]]);
+chart('c-aging', (el, w) => dumbbell(el, w, [...D.wardstat].sort((a, b) => b.old - a.old).map(s => ({ label: s.ward, v: [s.old * 100, s.young * 100] })), ['65歳以上', '15歳未満'], [S(0), S(1)], { fmt: v => nf(v, 1) + '%', domain: [8, 30] }));
+tableView('c-aging', ['区', '人口', '65歳以上', '15歳未満'], D.wardstat.map(s => [s.ward, s.pop, pct(s.old), pct(s.young)]));
+source('c-aging', [2412]);
+
+chart('c-age1', (el, w) => vbar(el, w, PY.single.map((v, i) => ({ label: i === 100 ? '100+' : String(i), full: i === 100 ? '100歳以上' : `${i}歳`, value: v })), { h: 200, tickIdx: (d, i) => i % 10 === 0, unit: '人' }));
+tableView('c-age1', ['年齢', '人口'], PY.single.map((v, i) => [i === 100 ? '100歳以上' : `${i}歳`, v]));
+source('c-age1', [3314]);
+
+/* ---------- 03 地図 ---------- */
+const LAYERS = D.layers;
+let active = ['park', 'school', 'aed'];
+const mapEl = document.getElementById('map'), canvas = mapEl.querySelector('canvas');
+let proj, delaunay, drawn = [];
+function mapChips() {
+  const box = document.getElementById('map-chips'); box.replaceChildren();
+  for (const L of LAYERS) {
+    const b = document.createElement('button'); b.className = 'chip';
+    const k = active.indexOf(L.key);
+    b.setAttribute('aria-pressed', String(k >= 0));
+    const i = document.createElement('i'); if (k >= 0) i.style.background = S(k);
+    const ct = document.createElement('span'); ct.className = 'ct'; ct.textContent = nf(L.count);
+    b.append(i, document.createTextNode(L.name), ct);
+    b.addEventListener('click', () => {
+      if (k >= 0) active = active.filter(a => a !== L.key);
+      else { active.push(L.key); if (active.length > 3) active.shift(); }
+      mapChips(); drawMap();
+    });
+    box.append(b);
+  }
+  legend(document.getElementById('map-legend'), [['消火栓（背景）', cssv('--axis')], ...active.map((a, i) => [LAYERS.find(l => l.key === a).name, S(i)])]);
+}
+function drawMap() {
+  const w = mapEl.clientWidth, h = mapEl.clientHeight, dpr = devicePixelRatio || 1;
+  canvas.width = w * dpr; canvas.height = h * dpr;
+  const ctx = canvas.getContext('2d'); ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, w, h);
+  const B = D.base, kx = Math.cos(35.9 * Math.PI / 180);
+  let x0 = 1e9, x1 = -1e9, y0 = 1e9, y1 = -1e9;
+  for (let i = 0; i < B.length; i += 2) { x0 = Math.min(x0, B[i]); x1 = Math.max(x1, B[i]); y0 = Math.min(y0, B[i + 1]); y1 = Math.max(y1, B[i + 1]); }
+  const pad = 14, sc = Math.min((w - 2 * pad) / ((x1 - x0) * kx), (h - 2 * pad) / (y1 - y0));
+  const ox = (w - (x1 - x0) * kx * sc) / 2, oy = (h - (y1 - y0) * sc) / 2;
+  proj = (qx, qy) => [ox + (qx - x0) * kx * sc, h - oy - (qy - y0) * sc];
+  ctx.fillStyle = cssv('--base-dot');
+  for (let i = 0; i < B.length; i += 2) { const [px, py] = proj(B[i], B[i + 1]); ctx.fillRect(px - .8, py - .8, 1.6, 1.6); }
+  ctx.font = `700 13px ${cssv('--f-body')}`; ctx.textAlign = 'center'; ctx.fillStyle = cssv('--ink2');
+  ctx.lineWidth = 3; ctx.strokeStyle = cssv('--surface');
+  for (const [wd, [qx, qy]] of Object.entries(D.centroids)) { const [px, py] = proj(qx, qy); ctx.strokeText(wd, px, py); ctx.fillText(wd, px, py); }
+  drawn = [];
+  const r = active.reduce((a, k) => a + LAYERS.find(l => l.key === k).count, 0) > 2500 ? 2.6 : 3.6;
+  active.forEach((key, li) => {
+    const L = LAYERS.find(l => l.key === key), col = cssv(`--s${li + 1}`);
+    ctx.fillStyle = col; ctx.strokeStyle = cssv('--surface'); ctx.lineWidth = 1.2;
+    for (const p of L.pts) {
+      const [px, py] = proj(p[0], p[1]);
+      ctx.beginPath(); ctx.arc(px, py, r, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      drawn.push([px, py, p[2], L.name, WARDS[p[3]], col]);
+    }
+  });
+  delaunay = drawn.length ? d3.Delaunay.from(drawn, d => d[0], d => d[1]) : null;
+}
+canvas.addEventListener('pointermove', ev => {
+  if (!delaunay) return;
+  const b = canvas.getBoundingClientRect(), mx = ev.clientX - b.left, my = ev.clientY - b.top;
+  const i = delaunay.find(mx, my), p = drawn[i];
+  if (Math.hypot(p[0] - mx, p[1] - my) > 18) return hideTip();
+  showTip(ev, `${p[3]}・${p[4]}`, [[p[2] || '（名称なし）', '', p[5]]]);
+});
+canvas.addEventListener('pointerleave', hideTip);
+mapChips(); drawMap(); charts.push(drawMap);
+{
+  source('c-map', [...new Set([1208, ...LAYERS.map(l => l.dataset)])]);
+}
+
+/* ---------- 04 区別比較 ---------- */
+let heatMode = 'n';
+const popOf = Object.fromEntries(D.wardstat.map(s => [s.ward, s.pop]));
+function drawHeat() {
+  const box = document.querySelector('#c-heat .tbl'); box.replaceChildren();
+  document.getElementById('heat-sub').textContent = heatMode === 'n' ? '件数' : '人口1万人あたりの件数';
+  const keys = LAYERS.map(l => l.key).concat(['hydrant']);
+  const names = LAYERS.map(l => l.name).concat([]);
+  const t = document.createElement('table');
+  const hr = t.createTHead().insertRow();
+  const th0 = document.createElement('th'); th0.textContent = '施設の種類'; hr.append(th0);
+  for (const wd of WARDS) { const th = document.createElement('th'); th.className = 'n'; th.textContent = wd; hr.append(th); }
+  const thT = document.createElement('th'); thT.className = 'n'; thT.textContent = '合計'; hr.append(thT);
+  const lo = d3.color(cssv('--seq-lo')), hi = d3.color(cssv('--seq-hi')), ip = d3.interpolateRgb(lo, hi);
+  const tb = t.createTBody();
+  for (const L of LAYERS) {
+    const raw = D.matrix[L.key];
+    const vals = raw.map((v, i) => heatMode === 'n' ? v : v / popOf[WARDS[i]] * 1e4);
+    const mx = d3.max(vals) || 1;
+    const tr = tb.insertRow(); const td0 = tr.insertCell(); td0.textContent = L.name;
+    vals.forEach((v, i) => {
+      const td = tr.insertCell(); td.className = 'n';
+      td.textContent = heatMode === 'n' ? nf(v) : nf(v, 1);
+      const c = d3.color(ip(v / mx)); td.style.background = c.formatRgb();
+      const lum = d3.lab(c).l; td.style.color = lum < 55 ? '#fff' : '#0b0b0b';
+      td.title = `${L.name}・${WARDS[i]}: ${nf(raw[i])}件（人口1万人あたり ${nf(raw[i] / popOf[WARDS[i]] * 1e4, 2)}）`;
+    });
+    const tt = tr.insertCell(); tt.className = 'n'; tt.textContent = nf(d3.sum(raw));
+  }
+  const pr = tb.insertRow(); const p0 = pr.insertCell(); p0.textContent = '人口（参考）'; p0.style.fontWeight = 700;
+  WARDS.forEach(wd => { const td = pr.insertCell(); td.className = 'n'; td.textContent = nf(popOf[wd]); });
+  const pt = pr.insertCell(); pt.className = 'n'; pt.textContent = nf(d3.sum(WARDS, wd => popOf[wd]));
+  box.append(t);
+}
+document.querySelectorAll('#heat-mode .chip').forEach(b => b.addEventListener('click', () => {
+  heatMode = b.dataset.m; document.querySelectorAll('#heat-mode .chip').forEach(c => c.setAttribute('aria-pressed', String(c === b))); drawHeat();
+}));
+drawHeat(); charts.push(drawHeat);
+source('c-heat', [2412]);
+
+/* ---------- 05 医療・福祉・子育て ---------- */
+const MED = D.medical;
+{
+  const st = document.getElementById('med-stats');
+  for (const r of MED.monthly) {
+    const d = document.createElement('div'); d.className = 'stat'; const b = document.createElement('b'); b.textContent = nf(r.count);
+    const s = document.createElement('span'); s.textContent = `${ym(r.label)}末`; d.append(b, s); st.append(d);
+  }
+  document.getElementById('med-sub').textContent = `${ym(MED.monthly.at(-1).label)}末時点の施設数。上は月末ごとの総数`;
+}
+chart('c-med', (el, w) => hbar(el, w, MED.types.map(([k, v]) => ({ label: k, value: v })), { unit: '施設' }));
+tableView('c-med', ['種類', '施設数'], MED.types);
+source('c-med', [1230]);
+chart('c-sej', (el, w) => hbar(el, w, MED.sej.map(([k, v]) => ({ label: k, value: v })), { unit: '施設', labelW: 150 }));
+tableView('c-sej', ['業種', '施設数'], MED.sej);
+source('c-sej', [1525]);
+chart('c-sejy', (el, w) => {
+  const yrs = Object.fromEntries(MED.sej_years); const y0 = +MED.sej_years[0][0], y1 = +MED.sej_years.at(-1)[0];
+  const rows = d3.range(y0, y1 + 1).map(y => ({ label: String(y), full: `${y}年に開設`, value: yrs[y] || 0 }));
+  vbar(el, w, rows, { h: 180, tickIdx: d => +d.label % 10 === 0, unit: '施設' });
+});
+tableView('c-sejy', ['開設年', '施設数'], [...MED.sej_years].reverse());
+source('c-sejy', [1525]);
+chart('c-hoiku', (el, w) => hbar(el, w, D.hoiku.map(h => ({ label: h.type, value: h.cap, note: `${nf(h.count)}施設` })), { unit: '人', labelW: 140 }));
+tableView('c-hoiku', ['種類', '施設数', '定員'], D.hoiku.map(h => [h.type, h.count, h.cap]));
+source('c-hoiku', [1214, 1215]);
+chart('c-shigen', (el, w) => hbar(el, w, D.shigen.slice(0, 15).map(([k, v]) => ({ label: k, value: v })), { unit: '件', trunc: 14, labelW: Math.min(200, w * .42), rowH: 22 }));
+tableView('c-shigen', ['活動内容', '件数'], D.shigen);
+source('c-shigen', [1220]);
+
+/* ---------- 06 水と緑 ---------- */
+const W = D.water;
+const wl = m => ym(m);
+legend(document.querySelector('#c-wtemp .legend'), [['気温', S(1)], ['水温', S(0)]], true);
+chart('c-wtemp', (el, w) => lines(el, w, {
+  x: W.months, series: [{ name: '気温', values: W.series['気温'], color: S(1) }, { name: '水温', values: W.series['水温'], color: S(0) }],
+  yfmt: v => nf(v, 0), unit: '℃', zero: false, tickIdx: i => W.months[i].endsWith('-04'), xfmt: s => s.slice(0, 4) + '年4月', tipTitle: wl,
+}));
+tableView('c-wtemp', ['月', '気温（℃）', '水温（℃）'], W.months.map((m, i) => [wl(m), W.series['気温'][i], W.series['水温'][i]]));
+source('c-wtemp', [1213]);
+chart('c-wcl', (el, w) => lines(el, w, {
+  x: W.months, series: [{ name: '遊離残留塩素', values: W.series['遊離残留塩素'], color: S(0) }], yDomain: [0, 1],
+  yfmt: v => nf(v, 1), unit: ' mg/L', ref: { v: 0.1, label: '0.1 mg/L（下限）' }, tickIdx: i => W.months[i].endsWith('-04'), xfmt: s => s.slice(0, 4) + '年4月', tipTitle: wl,
+}));
+tableView('c-wcl', ['月', '遊離残留塩素（mg/L）', '硬度（mg/L）'], W.months.map((m, i) => [wl(m), W.series['遊離残留塩素'][i], W.series['カルシウム，マグネシウム等（硬度）']?.[i] ?? '—']));
+source('c-wcl', [1213]);
+const hourL = h => `${h}時`;
+chart('c-meter', (el, w) => vbar(el, w, D.meter.hourly.map((v, h) => ({ label: String(h), full: `${h}時〜${h + 1}時`, value: v })), { h: 190, fmt: v => nf(v, 2), yfmt: v => nf(v, 1), unit: ' m³', tickIdx: (d, i) => i % 3 === 0 }));
+tableView('c-meter', ['時間帯', '平均水量（m³）'], D.meter.hourly.map((v, h) => [`${h}時〜${h + 1}時`, v]));
+source('c-meter', [3076]);
+chart('c-meterm', (el, w) => lines(el, w, {
+  x: D.meter.monthly.map(d => d.m), series: [{ name: '使用水量', values: D.meter.monthly.map(d => d.v), color: S(0) }], area: true, zero: false,
+  unit: ' m³', tickIdx: i => /-(01|07)$/.test(D.meter.monthly[i].m), xfmt: s => ym(s), tipTitle: ym, tickW: 70,
+}));
+tableView('c-meterm', ['月', '使用水量（m³）'], D.meter.monthly.map(d => [ym(d.m), d.v]));
+source('c-meterm', [3076]);
+const SW = D.sewer;
+chart('c-sewer', (el, w) => lines(el, w, {
+  x: SW.trend.map(d => d.fy), series: [{ name: '普及率', values: SW.trend.map(d => d.v), color: S(0) }], zero: false, area: true,
+  yfmt: v => nf(v, 0) + '%', xfmt: s => s.replace('年度', ''), tickW: 44,
+}));
+tableView('c-sewer', ['年度', '普及率（%）'], SW.trend.map(d => [d.fy, d.v]));
+source('c-sewer', [1210]);
+document.getElementById('sewerw-sub').textContent = `${SW.labels[1]}と${SW.labels[0]}の比較（%）`;
+legend(document.getElementById('sewerw-legend'), [[SW.labels[1], S(1)], [SW.labels[0], S(0)]]);
+chart('c-sewerw', (el, w) => dumbbell(el, w, [...SW.wards].sort((a, b) => a.now - b.now).map(r => ({ label: r.ward, v: [r.now, r.before] })), [SW.labels[0], SW.labels[1]], [S(0), S(1)], { fmt: v => nf(v, 0) + '%' }));
+tableView('c-sewerw', ['区', SW.labels[1], SW.labels[0]], SW.wards.map(r => [r.ward, r.before, r.now]));
+source('c-sewerw', [1210]);
+const PK = D.park;
+document.getElementById('parkt-sub').textContent = `市所管の公園等 ${nf(PK.total)}か所・合計 ${nf(PK.area, 1)} ha。棒は面積（ha）`;
+const PTYPE = { '街区': '街区公園', '近隣': '近隣公園', '地区': '地区公園', '総合': '総合公園', '運動': '運動公園', '広域': '広域公園', '都緑': '都市緑地', '墓園': '墓園', '緩衝': '緩衝緑地', '緑道': '緑道', '特殊': '特殊公園', '歴史': '歴史公園', '風致': '風致公園', '児童': '児童遊園', '広場': '広場' };
+chart('c-parkt', (el, w) => hbar(el, w, PK.types.slice(0, 12).map(t => ({ label: PTYPE[t.type] || t.type, value: t.area, note: `${nf(t.count)}か所` })), { fmt: v => nf(v, 1), unit: 'ha', labelW: 110 }));
+tableView('c-parkt', ['種別', 'か所数', '面積（ha）'], PK.types.map(t => [PTYPE[t.type] || t.type, t.count, t.area]));
+source('c-parkt', [1201]);
+chart('c-parkw', (el, w) => hbar(el, w, [...PK.wards].sort((a, b) => b.per - a.per).map(r => ({ label: r.ward, value: r.per, note: `${nf(r.count)}か所・${nf(r.area, 1)} ha` })), { fmt: v => nf(v, 2), labelW: 70 }));
+tableView('c-parkw', ['区', 'か所数', '面積（ha）', '1万人あたり（ha）'], PK.wards.map(r => [r.ward, r.count, r.area, r.per]));
+source('c-parkw', [1201, 2412]);
+
+/* ---------- 07 人の流れ ---------- */
+const F = D.flow, AREAS = Object.keys(F);
+let flowArea = AREAS.includes('大宮駅') ? '大宮駅' : AREAS[0];
+{
+  const box = document.getElementById('flow-chips');
+  for (const a of AREAS) {
+    const b = document.createElement('button'); b.className = 'chip'; b.textContent = a; b.setAttribute('aria-pressed', String(a === flowArea));
+    b.addEventListener('click', () => { flowArea = a; box.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed', String(c === b))); flowH(); flowT(); });
+    box.append(b);
+  }
+}
+const HOURS = d3.range(5, 29);
+const hl = h => h >= 24 ? `翌${h - 24}時` : `${h}時`;
+legend(document.querySelector('#c-flowh .legend'), [['平日', S(0)], ['休日', S(1)]], true);
+legend(document.querySelector('#c-flowt .legend'), [['平日', S(0)], ['休日', S(1)]], true);
+let flowH, flowT;
+chart('c-flowh', (el, w) => {
+  flowH = () => {
+    el.replaceChildren(); const f = F[flowArea];
+    document.getElementById('flowh-title').textContent = `${flowArea}：時間帯別の滞在人口`;
+    document.getElementById('flowh-sub').textContent = `${f.recent} の平均（人）`;
+    lines(el, Math.max(260, el.clientWidth), { x: HOURS, series: [{ name: '平日', values: f.wd_profile, color: S(0) }, { name: '休日', values: f.hd_profile, color: S(1) }], xfmt: hl, tipTitle: h => `${flowArea} ${hl(h)}`, unit: '人', tickW: 48, yfmt: v => v >= 10000 ? nf(v / 10000, 1) + '万' : nf(v) });
+  };
+  flowH();
+});
+chart('c-flowt', (el, w) => {
+  flowT = () => {
+    el.replaceChildren(); const f = F[flowArea];
+    document.getElementById('flowt-title').textContent = `${flowArea}：14時の滞在人口の推移`;
+    lines(el, Math.max(260, el.clientWidth), { x: f.months, series: [{ name: '平日', values: f.wd14, color: S(0) }, { name: '休日', values: f.hd14, color: S(1) }], tickIdx: i => f.months[i].endsWith('-01'), xfmt: s => s.slice(0, 4), tipTitle: s => `${flowArea} ${ym(s)} 14時`, unit: '人', yfmt: v => v >= 10000 ? nf(v / 10000, 1) + '万' : nf(v) });
+  };
+  flowT();
+});
+tableView('c-flowh', ['エリア', '平日14時', '休日14時', '平日ピーク'], AREAS.map(a => [a, F[a].wd_profile[9], F[a].hd_profile[9], d3.max(F[a].wd_profile)]));
+source('c-flowh', [1224]);
+const CK = ['居住者', '勤務者', '来街者'];
+legend(document.querySelector('#c-flowc .legend'), CK.map((k, i) => [k, S(i)]));
+chart('c-flowc', (el, w) => stackH(el, w, AREAS.map(a => ({ label: a, values: F[a].wd_comp })).sort((a, b) => b.values[1] / d3.sum(b.values) - a.values[1] / d3.sum(a.values)), CK, [S(0), S(1), S(2)], { pct: true, unit: '人', labelW: 120 }));
+tableView('c-flowc', ['エリア', ...CK], AREAS.map(a => [a, ...F[a].wd_comp]));
+source('c-flowc', [1224]);
+
+/* ---------- 08 まちづくり・防災 ---------- */
+const STAT = ['完了', '事業中', '都市計画決定'];
+legend(document.querySelector('#c-redev .legend'), STAT.map((s, i) => [s, S(i)]));
+chart('c-redev', (el, w) => {
+  const now = +M.checked.slice(0, 4);
+  const rows = [...D.redev].sort((a, b) => (a.start || 9999) - (b.start || 9999));
+  const rowH = 20, m = { t: 8, r: 20, b: 26, l: Math.min(190, w * .34) }, h = m.t + m.b + rows.length * rowH;
+  const x = d3.scaleLinear().domain([1970, now + 5]).range([m.l, w - m.r]);
+  const svg = d3.select(el).append('svg').attr('width', w).attr('height', h);
+  for (const t of d3.range(1970, now + 6, w < 600 ? 10 : 5)) {
+    svg.append('line').attr('class', 'gridl').attr('x1', x(t)).attr('x2', x(t)).attr('y1', m.t).attr('y2', h - m.b);
+    svg.append('text').attr('class', 'tick').attr('x', x(t)).attr('y', h - 8).attr('text-anchor', 'middle').text(t);
+  }
+  svg.append('line').attr('x1', x(now)).attr('x2', x(now)).attr('y1', m.t).attr('y2', h - m.b).style('stroke', 'var(--ink2)').style('stroke-width', 1);
+  rows.forEach((r, i) => {
+    const y = m.t + i * rowH, si = Math.max(0, STAT.indexOf(r.status));
+    const g = svg.append('g').attr('class', 'mk');
+    g.append('text').attr('class', 'lab').attr('x', m.l - 8).attr('y', y + rowH / 2).attr('dy', '.35em').attr('text-anchor', 'end').text(trunc(`${r.name}（${r.ward}）`, 16));
+    if (r.start) {
+      const end = r.end || now, x0 = x(r.start), wd = Math.max(6, x(end + 1) - x0);
+      g.append('path').attr('class', 'bar').attr('d', r.end ? `M${x0 + 2},${y + 4}h${wd - 4}a3,3 0 0 1 0,${rowH - 8}h${-(wd - 4)}a3,3 0 0 1 0,${-(rowH - 8)}z` : hbarPath(x0, y + 4, wd, rowH - 8, 3)).style('fill', S(si)).style('opacity', r.end ? 1 : .55);
+    }
+    const hit = g.append('rect').attr('class', 'hit').attr('x', 0).attr('y', y).attr('width', w).attr('height', rowH);
+    hover(hit, () => [`${r.name}（${r.ward}）`, [[r.start ? `${r.start}〜${r.end || ''}年度` : '開始未定', r.status, cssv(`--s${si + 1}`)], [r.cost ? nf(r.cost / 1e8, 0) + '億円' : '—', '総事業費'], [r.floor ? nf(r.floor) + ' m²' : '—', `延床面積・${r.scale || ''}`]]]);
+  });
+});
+tableView('c-redev', ['地区', '区', '開始', '完了', '進捗', '総事業費（億円）'], D.redev.map(r => [r.name, r.ward, r.start || '—', r.end || '—', r.status, r.cost ? Math.round(r.cost / 1e8) : '—']));
+source('c-redev', [1231]);
+chart('c-kukaku', (el, w) => hbar(el, w, D.kukaku.map(k => ({ label: k.status, value: k.area, note: `${k.count}地区` })), { fmt: v => nf(v, 1), unit: 'ha', labelW: 90 }));
+tableView('c-kukaku', ['施行状況', '地区数', '面積（ha）'], D.kukaku.map(k => [k.status, k.count, k.area]));
+source('c-kukaku', [1247]);
+const HZ = ['可', '条件付き', '不可', '指定なし'], HZC = ['var(--good)', 'var(--warn)', 'var(--crit)', 'var(--none)'];
+const HZL = ['使用可', '上階のみ可（2F以上など）', '使用不可', '指定なし'];
+legend(document.querySelector('#c-shelter .legend'), HZL.map((k, i) => [k, HZC[i]]));
+document.getElementById('shelter-sub').textContent = `全 ${nf(D.layers.find(l => l.key === 'emergency').count)} か所の災害種別ごとの指定状況`;
+chart('c-shelter', (el, w) => stackH(el, w, D.shelters.map(s => ({ label: s.hazard, values: HZ.map(k => s[k] || 0) })), HZL, HZC, { pct: true, unit: 'か所', labelW: 100 }));
+tableView('c-shelter', ['災害', ...HZL], D.shelters.map(s => [s.hazard, ...HZ.map(k => s[k] || 0)]));
+source('c-shelter', [1209]);
+chart('c-hyd', (el, w) => hbar(el, w, D.hyd_station.map(([k, v]) => ({ label: k, value: v })), { unit: 'か所', labelW: 70 }));
+tableView('c-hyd', ['署所', '消火栓', '防火水槽（推定区）'], D.hyd_station.map(([k, v]) => [k, v, D.matrix.tank[WARDS.indexOf(k)] ?? '—']));
+source('c-hyd', [1208]);
+chart('c-land', (el, w) => hbar(el, w, D.land.map(([k, v]) => ({ label: k.replace(/^[a-d]\)/, ''), value: v })), { unit: '件', labelW: 150 }));
+tableView('c-land', ['面積区分', '件数'], D.land.map(([k, v]) => [k.replace(/^[a-d]\)/, ''), v]));
+source('c-land', [1193]);
+{
+  const rowsK = ['国指定文化財', '国登録有形文化財', '県指定文化財', '市指定文化財'], colsK = ['有形文化財', '民俗文化財', '記念物'];
+  const val = (a, b) => (D.bunka.find(x => x[0] === a && x[1] === b) || [0, 0, 0])[2];
+  const mx = d3.max(D.bunka, d => d[2]);
+  const t = document.createElement('table'); const hr = t.createTHead().insertRow();
+  for (const h of ['', ...colsK]) { const th = document.createElement('th'); th.textContent = h; if (h) th.className = 'n'; hr.append(th); }
+  const tb = t.createTBody();
+  const paint = () => {
+    const ip = d3.interpolateRgb(cssv('--seq-lo'), cssv('--seq-hi'));
+    tb.querySelectorAll('td[data-v]').forEach(td => { const v = +td.dataset.v; const c = d3.color(ip(v ? .15 + .85 * v / mx : 0)); td.style.background = c.formatRgb(); td.style.color = d3.lab(c).l < 55 ? '#fff' : '#0b0b0b'; });
+  };
+  for (const a of rowsK) {
+    const tr = tb.insertRow(); const td0 = tr.insertCell(); td0.textContent = a;
+    for (const b of colsK) { const td = tr.insertCell(); td.className = 'n'; const v = val(a, b); td.textContent = nf(v); td.dataset.v = v; }
+  }
+  document.querySelector('#c-bunka .tbl').append(t); paint(); charts.push(paint);
+  source('c-bunka', [1196]);
+}
+
+/* ---------- 09 行政 ---------- */
+const EA = D.eapp.map(r => { const fy = +r.fy.slice(0, 4), m = +r.m.replace('月', ''); return { k: `${m <= 3 ? fy + 1 : fy}-${String(m).padStart(2, '0')}`, v: r.v }; });
+document.getElementById('eapp-sub').textContent = `${ym(EA[0].k)}〜${ym(EA.at(-1).k)}（件）。2021年7〜8月の山はワクチン接種関連`;
+chart('c-eapp', (el, w) => lines(el, w, { x: EA.map(d => d.k), series: [{ name: '利用件数', values: EA.map(d => d.v), color: S(0) }], area: true, tickIdx: i => EA[i].k.endsWith('-04'), xfmt: s => s.slice(0, 4) + '年度', tipTitle: ym, unit: '件', tickW: 70, yfmt: v => v >= 10000 ? nf(v / 10000, 1) + '万' : nf(v) }));
+tableView('c-eapp', ['月', '件数'], EA.map(d => [ym(d.k), d.v]).reverse());
+source('c-eapp', [1195]);
+const MONTHS = ['4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月', '1月', '2月', '3月'];
+legend(document.querySelector('#c-teian .legend'), D.teian.map((t, i) => [`${t.fy}（計 ${nf(t.total)}）`, S(i)]), true);
+chart('c-teian', (el, w) => lines(el, w, { x: MONTHS, series: D.teian.map((t, i) => ({ name: t.fy, values: t.months, color: S(i) })), unit: '件', tickW: 30, endLabels: true }));
+tableView('c-teian', ['月', ...D.teian.map(t => t.fy)], MONTHS.map((m, i) => [m, ...D.teian.map(t => t.months[i] ?? '—')]));
+source('c-teian', [1202]);
+{
+  const known = D.teian_age.filter(a => !/不/.test(a.age)), unk = D.teian_age.find(a => /不/.test(a.age));
+  document.getElementById('teiana-sub').textContent = `${D.teian.at(-1).fy}。年代不明 ${nf(unk ? unk.v : 0)}件を除く`;
+  chart('c-teiana', (el, w) => vbar(el, w, known.map(a => ({ label: a.age.replace('歳代', '').replace('以上', '+').replace('歳未満', '未満'), full: a.age, value: a.v })), { h: 180, unit: '件', tickW: 30, highlight: [d3.maxIndex(known, a => a.v)] }));
+  tableView('c-teiana', ['年代', '件数'], D.teian_age.map(a => [a.age, a.v]));
+  source('c-teiana', [1202]);
+}
+{
+  const SH = D.shitei;
+  document.getElementById('shitei-sub').textContent = `${nf(SH.total)}施設。所管課別の上位`;
+  const st = document.getElementById('shitei-stats');
+  for (const [k, v] of SH.senkou) { const d = document.createElement('div'); d.className = 'stat'; const b = document.createElement('b'); b.textContent = `${nf(v)}`; const s = document.createElement('span'); s.textContent = `${k}で選定（${pct(v / d3.sum(SH.senkou, x => x[1]), 0)}）`; d.append(b, s); st.append(d); }
+  chart('c-shitei', (el, w) => hbar(el, w, SH.shokan.map(([k, v]) => ({ label: k, value: v })), { unit: '施設', labelW: 150, rowH: 22 }));
+  tableView('c-shitei', ['所管課', '施設数'], SH.shokan);
+  source('c-shitei', [1204]);
+}
+const TX = D.tax;
+legend(document.querySelector('#c-tax .legend'), TX.uses.map((u, i) => [u, S(i)]));
+chart('c-tax', (el, w) => stackH(el, w, TX.models.map(m => ({ label: m.name, values: m.use })), TX.uses, TX.uses.map((u, i) => S(i)), { unit: '円', labelW: Math.min(230, w * .38), trunc: 22, rowH: 24, bh: 14, fmt: v => nf(v) }));
+tableView('c-tax', ['世帯モデル', ...TX.uses, ...TX.sources], TX.models.map(m => [m.name, ...m.use, ...m.src]));
+source('c-tax', [1205]);
+chart('c-vote', (el, w) => hbar(el, w, WARDS.map((wd, i) => ({ label: wd, value: D.matrix.vote[i] })), { unit: 'か所', labelW: 70 }));
+tableView('c-vote', ['区', '投票所'], WARDS.map((wd, i) => [wd, D.matrix.vote[i]]));
+source('c-vote', [3449]);
+chart('c-gsp', (el, w) => hbar(el, w, D.gsp.map(g => ({ label: g.title, value: g.size / 1048576, note: `${g.n}ファイル・${g.fmts.join('/')}・${g.modified}` })), { fmt: v => v >= 1 ? nf(v, 0) + ' MB' : nf(v * 1024, 0) + ' KB', labelW: Math.min(200, w * .45), trunc: 15, rowH: 22, valW: 70 }));
+tableView('c-gsp', ['データセット', 'ファイル数', 'サイズ（MB）', '更新日'], D.gsp.map(g => [g.title, g.n, Math.round(g.size / 1048576), g.modified]));
+
+/* ---------- 10 データ一覧 ---------- */
+function drawCatalog() {
+  const q = document.getElementById('q').value.trim();
+  const box = document.getElementById('cat-table'); box.replaceChildren();
+  const t = document.createElement('table'); const hr = t.createTHead().insertRow();
+  for (const [h, n] of [['ID', 1], ['データセット', 0], ['分類', 0], ['更新頻度', 0], ['最終更新', 0], ['ファイル', 0]]) { const th = document.createElement('th'); th.textContent = h; if (n) th.className = 'n'; hr.append(th); }
+  const tb = t.createTBody();
+  for (const d of D.datasets) {
+    if (q && !(d.title + d.cat + d.tags.join()).includes(q)) continue;
+    const tr = tb.insertRow();
+    const id = tr.insertCell(); id.className = 'n'; id.textContent = d.id;
+    const ti = tr.insertCell(); ti.className = 'wrap-c'; const a = document.createElement('a'); a.href = PORTAL(d.id); a.target = '_blank'; a.rel = 'noopener'; a.textContent = d.title; ti.append(a);
+    tr.insertCell().textContent = d.cat; tr.insertCell().textContent = d.freq || '—'; tr.insertCell().textContent = d.modified;
+    const fc = tr.insertCell(); fc.className = 'wrap-c';
+    d.res.forEach((r, i) => {
+      if (i) fc.append(document.createElement('br'));
+      fc.append(document.createTextNode(trunc(r.name, 30)));
+      const b = document.createElement('span'); b.className = 'badge'; b.textContent = r.rows != null ? `${r.fmt} ${nf(r.rows)}行` : r.fmt; fc.append(b);
+      if (r.geo) { const g = document.createElement('span'); g.className = 'badge geo'; g.textContent = '位置'; fc.append(g); }
+    });
+  }
+  box.append(t);
+}
+document.getElementById('q').addEventListener('input', drawCatalog);
+drawCatalog();
+
+/* ---------- 再描画（幅・テーマの変化） ---------- */
+let lastW = document.querySelector('main').clientWidth, raf;
+const rerender = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(() => { hideTip(); charts.forEach(f => f()); mapChips(); }); };
+new ResizeObserver(() => { const w = document.querySelector('main').clientWidth; if (w !== lastW) { lastW = w; rerender(); } }).observe(document.querySelector('main'));
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', rerender);
+new MutationObserver(rerender).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+</script>
