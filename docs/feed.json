@@ -1,0 +1,385 @@
+{
+  "version": "https://jsonfeed.org/version/1.1",
+  "title": "さいたま市オープンデータ更新情報",
+  "description": "埼玉県オープンデータポータル・G空間情報センターに公開されたさいたま市オープンデータの更新日記",
+  "home_page_url": "https://github.com/CivicTechSaitamaCity/SaitamaCityOpendata",
+  "feed_url": "https://raw.githubusercontent.com/CivicTechSaitamaCity/SaitamaCityOpendata/main/docs/feed.json",
+  "language": "ja",
+  "items": [
+    {
+      "id": "tag:github.com,2026:CivicTechSaitamaCity/SaitamaCityOpendata/reports/2026/2026-10-03",
+      "url": "https://github.com/CivicTechSaitamaCity/SaitamaCityOpendata/blob/main/reports/2026/2026-10-03.md",
+      "title": "2026-10-03 初回取得（60データセット）",
+      "summary": "データセット 追加60件",
+      "content_html": "<p>データセット 追加60件</p><p>初回の自動取得です。2022〜2023年に手作業で取得した旧データ（raw/・utf8/・umap/）は、埼玉県オープンデータポータルからの自動取得データに置き換えました。旧データはタグ v2022-snapshot から参照できます。</p><h2>埼玉県オープンデータポータル</h2><ul><li>【追加】<a href=\"https://opendata.pref.saitama.lg.jp/datasets/1206\">【さいたま市】AED設置状況</a><ul><li>ファイル: 【さいたま市】AED設置場所一覧（pdf）（PDF・399.7KB）</li><li>ファイル: 【さいたま市】AED設置場所一覧（csv）（CSV・620行）</li></ul></li><li>【追加】<a href=\"https://opendata.pref.saitama.lg.jp/datasets/1202\">【さいたま市】「わたしの提案」提出数</a><ul><li>ファイル: 【さいたま市】「わたしの提案」提出件数（CSV・44行）</li></ul></li><li>【追加】<a href=\"https://opendata.pref.saitama.lg.jp/datasets/1220\">【さいたま市】いきいき活動リスト</a><ul><li>ファイル: 【さいたま市】地域資源情報一覧（CSV・2,306行）</li></ul></li><li>【追加】<a href=\"https://opendata.pref.saitama.lg.jp/datasets/1196\">【さいたま市】さいたま市の文化財</a><ul><li>ファイル: さいたま市文化財マップ_地図面(令和3年3月改訂)（PDF・15.7MB）</li><li>ファイル: さいたま市文化財マップ_記事面(令和3年3月改訂)（PDF・10.2MB）</li><li>ファイル: 【さいたま市】文化財一覧（令和6年8月1日現在）（PDF・278.1KB）</li><li>ファイル: さいたま市の文化財件数（令和6年8月1日現在）（PDF・45.1KB）</li><li>ファイル: 【さいたま市】市所有文化財一覧（令和6年8月1日現在）（CSV・96行）</li></ul></li><li>【追加】<a href=\"https://opendata.pref.saitama.lg.jp/datasets/1200\">【さいたま市】さいたま市健康づくり協力店一覧</a><ul><li>ファイル: 【さいたま市】店舗情報(浦和区,南区,緑区,岩槻区)（JPEG・292.2KB）</li><li>ファイル: 【さいたま市】店舗情報(西区,北区,大宮区,見沼区,中央区,桜区)（JPEG・328.3KB）</li><li>ファイル: 【さいたま市】健康づくり協力店一覧（CSV・97行）</li></ul></li><li>【追加】<a href=\"https://opendata.pref.saitama.lg.jp/datasets/1205\">【さいたま市】さいたま市市税の使いみちモデルケース別データ</a><ul><li>ファイル: 【さいたま市】市税の使いみちモデルケース別データ（CSV・22行）</li></ul></li><li>【追加】<a href=\"https://opendata.pref.saitama.lg.jp/datasets/2318\">【さいたま市】さいたま市統計書</a><ul><li>ファイル: さいたま市統計書(令和７年版)（ZIP・2.3MB）</li><li>ファイル: さいたま市統計書(令和６年版)（ZIP・2.6MB）</li></ul></li><li>【追加】<a href=\"https://opendata.pref.saitama.lg.jp/datasets/1151\">【さいたま市】オープンデータ一覧</a><ul><li>ファイル: 【さいたま市】データセット一覧（CSV・45行）</li></ul></li><li>【追加】<a href=\"https://opendata.pref.saitama.lg.jp/datasets/1225\">【さいたま市】コミュニティバス・乗合タクシーのバス情報(GTFS-JP)</a><ul><li>ファイル: 【さいたま市】全地区乗合タクシーのバス情報(GTFS-JP)（ZIP・135.9KB）</li><li>ファイル: 【さいたま市】全区コミュニティバスのバス情報(GTFS-JP)（ZIP・160.1KB）</li></ul></li><li>【追加】<a href=\"https://opendata.pref.saitama.lg.jp/datasets/1221\">【さいたま市】シニアサポートセンター一覧</a><ul><li>ファイル: 【さいたま市】シニアサポートセンター一覧（CSV・27行）</li></ul></li><li>【追加】<a href=\"https://opendata.pref.saitama.lg.jp/datasets/3076\">【さいたま市】スマート水道メーター検針データ一覧</a><ul><li>ファイル: 【さいたま市】スマート水道メーター検針データ一覧期間別集計（CSV・6行）</li><li>ファイル: 【さいたま市】スマート水道メーター検針データ一覧（CSV・14,616行）</li></ul></li><li>【追加】<a href=\"https://opendata.pref.saitama.lg.jp/datasets/1210\">【さいたま市】下水道普及率</a><ul><li>ファイル: 【さいたま市】下水道普及率の推移（CSV・11行）</li><li>ファイル: 【さいたま市】行政区別の下水道普及率（CSV・10行）</li></ul></li><li>【追加】<a href=\"https://opendata.pref.saitama.lg.jp/datasets/1203\">【さいたま市】不在者投票指定施設一覧</a><ul><li>ファイル: 【さいたま市】不在者投票指定施設一覧（CSV・127行）</li></ul></li><li>【追加】<a href=\"https://opendata.pref.saitama.lg.jp/datasets/1224\">【さいたま市】人流データ（都心・副都心）</a><ul><li>ファイル: 【さいたま市】滞在人口分析_浦和（CSV・2,208行）</li><li>ファイル: 【さいたま市】滞在人口分析_さいたま新都心（CSV・2,208行）</li><li>ファイル: 【さいたま市】滞在人口分析_大宮（CSV・2,208行）</li><li>ファイル: 【さいたま市】滞在人口分析_日進・宮原（CSV・2,208行）</li><li>ファイル: 【さいたま市】滞在人口分析_武蔵浦和（CSV・2,208行）</li><li>ファイル: 【さいたま市】滞在人口分析_美園（CSV・2,208行）</li><li>ファイル: 【さいたま市】滞在人口分析_岩槻（CSV・2,208行）</li></ul></li><li>【追加】<a href=\"https://opendata.pref.saitama.lg.jp/datasets/1191\">【さいたま市】公共施設の位置情報（緯度経度）一覧</a><ul><li>ファイル: 【さいたま市】公共施設の位置情報（緯度経度）一覧（CSV・908行）</li></ul></li><li>【追加】<a href=\"https://opendata.pref.saitama.lg.jp/datasets/1194\">【さいたま市】公衆無線LANサービス『Saitama City Free Wi-Fi』導入施設一覧</a><ul><li>ファイル: 【さいたま市】Saitama City Free Wi-Fi導入施設一覧.csv（CSV・51行）</li></ul></li><li>【追加】<a href=\"https://opendata.pref.saitama.lg.jp/datasets/1211\">【さいたま市】公開型緑地一覧</a><ul><li>ファイル: 【さいたま市】公開型緑地(R7.4.1)（CSV・33行）</li></ul></li><li>【追加】<a href=\"https://opendata.pref.saitama.lg.jp/datasets/1230\">【さいたま市】医療機関一覧</a><ul><li>ファイル: 【さいたま市】医療機関情報ダウンロードファイル（令和8年8月末）（CSV・1,849行）</li><li>ファイル: 【さいたま市】医療機関情報ダウンロードファイル（令和8年7月末）（CSV・1,848行）</li><li>ファイル: 【さいたま市】医療機関情報ダウンロードファイル（令和8年6月末）（CSV・1,848行）</li><li>ファイル: 【さいたま市】医療機関情報ダウンロードファイル（令和8年5月末）（CSV・1,844行）</li></ul></li><li>【追加】<a href=\"https://opendata.pref.saitama.lg.jp/datasets/1247\">【さいたま市】土地区画整理事業一覧表</a><ul><li>ファイル: 【さいたま市】土地区画整理事業一覧表（CSV・87行）</li></ul></li><li>【追加】<a href=\"https://opendata.pref.saitama.lg.jp/datasets/2412\">【さいたま市】地域・年齢別人口</a><ul><li>ファイル: 年齢別人口表（令和6年6月1日から）（CSV・140行）</li></ul></li><li>【追加】<a href=\"https://opendata.pref.saitama.lg.jp/datasets/1229\">【さいたま市】小型家電リサイクル回収ボックス設置場所一覧</a><ul><li>ファイル: 【さいたま市】小型家電リサイクル回収ボックス設置場所一覧表（CSV・55行）</li></ul></li><li>【追加】<a href=\"https://opendata.pref.saitama.lg.jp/datasets/1192\">【さいたま市】市営住宅等一覧</a><ul><li>ファイル: 【さいたま市】市営住宅等一覧（CSV・37行）</li></ul></li><li>【追加】<a href=\"https://opendata.pref.saitama.lg.jp/datasets/1201\">【さいたま市】市所管の公園等一覧（オープンデータ）</a><ul><li>ファイル: 【さいたま市】市所管の公園等一覧（オープンデータ）（CSV・1,093行）</li></ul></li><li>【追加】<a href=\"https://opendata.pref.saitama.lg.jp/datasets/1227\">【さいたま市】市立学校一覧</a><ul><li>ファイル: 【さいたま市】特別支援学校情報（CSV・2行）</li><li>ファイル: 【さいたま市】中等教育学校情報（CSV・1行）</li><li>ファイル: 【さいたま市】高等学校情報（CSV・3行）</li><li>ファイル: 【さいたま市】中学校情報（CSV・58行）</li><li>ファイル: 【さいたま市】小学校情報（CSV・104行）</li></ul></li><li>【追加】<a href=\"https://opendata.pref.saitama.lg.jp/datasets/1231\">【さいたま市】市街地再開発事業一覧</a><ul><li>ファイル: 【さいたま市】市街地再開発事業一覧（CSV・28行）</li></ul></li><li>【追加】<a href=\"https://opendata.pref.saitama.lg.jp/datasets/1213\">【さいたま市】年度別水質検査結果</a><ul><li>ファイル: 【さいたま市】2025年度水質検査結果（CSV・24,354行）</li><li>ファイル: 【さいたま市】2026年度水質検査結果（CSV・2,035行）</li><li>ファイル: 【さいたま市】2023年度水質検査結果（CSV・24,462行）</li><li>ファイル: 【さいたま市】2024年度水質検査結果（CSV・24,624行）</li></ul></li><li>【追加】<a href=\"https://opendata.pref.saitama.lg.jp/datasets/1207\">【さいたま市】応急給水場所一覧</a><ul><li>ファイル: 【さいたま市】Emergency Water Supply Locations for Times of Crisis（English Version）（PDF・2.0MB）</li><li>ファイル: 【さいたま市】応急給水場所マップ（日本語版）（PDF・2.3MB）</li><li>ファイル: 【さいたま市】応急給水場所一覧（区名別）（CSV・111行）</li></ul></li><li>【追加】<a href=\"https://opendata.pref.saitama.lg.jp/datasets/3449\">【さいたま市】投票所一覧</a><ul><li>ファイル: 【さいたま市】投票所一覧（衆議院議員総選挙）（CSV・276行）</li></ul></li><li>【追加】<a href=\"https://opendata.pref.saitama.lg.jp/datasets/1204\">【さいたま市】指定管理者制度導入施設一覧</a><ul><li>ファイル: 【さいたま市】指定管理者制度導入施設一覧（R8.4）（CSV・87行）</li></ul></li><li>【追加】<a href=\"https://opendata.pref.saitama.lg.jp/datasets/1209\">【さいたま市】指定避難所・指定緊急避難場所一覧</a><ul><li>ファイル: 【さいたま市】指定緊急避難場所（CSV・274行）</li><li>ファイル: 【さいたま市】指定避難所（CSV・259行）</li></ul></li><li>【追加】<a href=\"https://opendata.pref.saitama.lg.jp/datasets/1218\">【さいたま市】放課後児童クラブ地図情報一覧</a><ul><li>ファイル: 【さいたま市】放課後児童クラブ地図情報（CSV・324行）</li></ul></li><li>【追加】<a href=\"https://opendata.pref.saitama.lg.jp/datasets/2615\">【さいたま市】放課後子ども居場所事業地図情報一覧</a><ul><li>ファイル: 【さいたま市】放課後子ども居場所事業地図情報（CSV・13行）</li></ul></li><li>【追加】<a href=\"https://opendata.pref.saitama.lg.jp/datasets/1525\">【さいたま市】施術所一覧</a><ul><li>ファイル: 【さいたま市】施術所情報ダウンロードファイル（令和8年8月末）（CSV・1,298行）</li><li>ファイル: 【さいたま市】施術所情報ダウンロードファイル（令和8年7月末）（CSV・1,299行）</li><li>ファイル: 【さいたま市】施術所情報ダウンロードファイル（令和8年6月末）（CSV・1,298行）</li><li>ファイル: 【さいたま市】施術所情報ダウンロードファイル（令和8年5月末）（CSV・1,297行）</li></ul></li><li>【追加】<a href=\"https://opendata.pref.saitama.lg.jp/datasets/1193\">【さいたま市】未利用市有地一覧</a><ul><li>ファイル: 【さいたま市】未利用市有地一覧（CSV・214行）</li></ul></li><li>【追加】<a href=\"https://opendata.pref.saitama.lg.jp/datasets/1219\">【さいたま市】浄化槽保守点検業者・清掃業許可業者リスト</a><ul><li>ファイル: 【さいたま市】浄化槽清掃業許可業者リスト（PDF・54.8KB）</li><li>ファイル: 【さいたま市】登録浄化槽保守点検業者リスト（PDF・334.6KB）</li><li>ファイル: 【さいたま市】浄化槽清掃業許可業者リスト(csv形式)（CSV・24行）</li><li>ファイル: 【さいたま市】登録浄化槽保守点検業者リスト(csv形式)（CSV・170行）</li></ul></li><li>【追加】<a href=\"https://opendata.pref.saitama.lg.jp/datasets/1208\">【さいたま市】消防水利一覧（公設消火栓・公設防火水そう）</a><ul><li>ファイル: 【さいたま市】公設防火水そうオープンデータ（CSV・1,157行）</li><li>ファイル: 【さいたま市】公設消火栓オープンデータ（CSV・12,918行）</li></ul></li><li>【追加】<a href=\"https://opendata.pref.saitama.lg.jp/datasets/1217\">【さいたま市】無料低額診療施設一覧</a><ul><li>ファイル: 【さいたま市】市内の無料低額診療施設一覧（xls）（XLS・29.0KB）</li><li>ファイル: 【さいたま市】市内の無料低額診療施設一覧（csv）（CSV・4行）</li></ul></li><li>【追加】<a href=\"https://opendata.pref.saitama.lg.jp/datasets/3314\">【さいたま市】町丁字別年齢別人口・世帯数</a><ul><li>ファイル: 【さいたま市】町丁字別・年齢別人口（CSV・65,586行）</li><li>ファイル: 【さいたま市】町丁字別・年齢別世帯数（CSV・643行）</li></ul></li><li>【追加】<a href=\"https://opendata.pref.saitama.lg.jp/datasets/978\">【さいたま市】町名別人口表（時系列結果）</a><ul><li>ファイル: 町名別時系列人口表（平成24年8月1日から）（CSV・112,180行）</li></ul></li><li>【追加】<a href=\"https://opendata.pref.saitama.lg.jp/datasets/2466\">【さいたま市】移動販売実施場所MAP</a><ul><li>ファイル: 【さいたま市】移動販売実施場所MAP（CSV・41行）</li></ul></li><li>【追加】<a href=\"https://opendata.pref.saitama.lg.jp/datasets/1199\">【さいたま市】自治会名一覧</a><ul><li>ファイル: 【さいたま市】自治会名一覧（pdf）（PDF・177.6KB）</li><li>ファイル: 【さいたま市】自治会名一覧（csv）（CSV・106行）</li></ul></li><li>【追加】<a href=\"https://opendata.pref.saitama.lg.jp/datasets/1214\">【さいたま市】認可保育所（認可保育園）一覧</a><ul><li>ファイル: 【さいたま市】認可保育所（私立）一覧（CSV・275行）</li><li>ファイル: 【さいたま市】家庭的保育事業所（CSV・3行）</li><li>ファイル: 【さいたま市】事業所内保育事業所一覧（CSV・15行）</li><li>ファイル: 【さいたま市】小規模保育事業所一覧（CSV・160行）</li><li>ファイル: 【さいたま市】認定こども園一覧（CSV・21行）</li><li>ファイル: 【さいたま市】公立保育園一覧（CSV・59行）</li></ul></li><li>【追加】<a href=\"https://opendata.pref.saitama.lg.jp/datasets/1215\">【さいたま市】認可外保育施設一覧</a><ul><li>ファイル: 【さいたま市】認可外保育施設一覧（CSV・94行）</li></ul></li><li>【追加】<a href=\"https://opendata.pref.saitama.lg.jp/datasets/979\">【さいたま市】都市計画基礎調査（基準年令和２年）</a><ul><li>ファイル: 【さいたま市】さいたま市都市計画基礎調査（基準年令和２年）（形式不明・不明）</li></ul></li><li>【追加】<a href=\"https://opendata.pref.saitama.lg.jp/datasets/1195\">【さいたま市】電子申請利用状況</a><ul><li>ファイル: 【さいたま市】月別電子申請利用状況（CSV・39行）</li></ul></li></ul><h2>G空間情報センター</h2><ul><li>【追加】<a href=\"https://www.geospatial.jp/ckan/dataset/11100-103\">111007_埼玉県_さいたま市_不在者投票指定施設一覧</a><ul><li>ファイル: 不在者投票指定施設一覧（CSV・不明）</li></ul></li><li>【追加】<a href=\"https://www.geospatial.jp/ckan/dataset/11100-009\">111007_埼玉県_さいたま市_保育・子育て支援施設</a><ul><li>ファイル: 【さいたま市】私立保育園情報（CSV・不明）</li><li>ファイル: 【さいたま市】公立保育園情報（CSV・不明）</li><li>ファイル: 放課後児童クラブ地図情報（CSV・不明）</li><li>ファイル: 保育課_市立保育園一覧（CSV・不明）</li><li>ファイル: 保育課_認可保育園一覧（CSV・不明）</li></ul></li><li>【追加】<a href=\"https://www.geospatial.jp/ckan/dataset/11100-102\">111007_埼玉県_さいたま市_公共施設情報</a><ul><li>ファイル: 公共施設情報（CSV・不明）</li></ul></li><li>【追加】<a href=\"https://www.geospatial.jp/ckan/dataset/11100-014\">111007_埼玉県_さいたま市_公園・スポーツ施設</a><ul><li>ファイル: さいたま市の体育館・武道館の一覧（CSV・不明）</li></ul></li><li>【追加】<a href=\"https://www.geospatial.jp/ckan/dataset/11100-104\">111007_埼玉県_さいたま市_公開型緑地のご紹介</a><ul><li>ファイル: 公開型緑地のご紹介（CSV・不明）</li></ul></li><li>【追加】<a href=\"https://www.geospatial.jp/ckan/dataset/11100-010\">111007_埼玉県_さいたま市_医療施設</a><ul><li>ファイル: さいたま市内の無料低額診療施設一覧（CSV・不明）</li></ul></li><li>【追加】<a href=\"https://www.geospatial.jp/ckan/dataset/11100-008\">111007_埼玉県_さいたま市_学校教育施設</a><ul><li>ファイル: 小学校情報（CSV・不明）</li><li>ファイル: 中学校情報（CSV・不明）</li><li>ファイル: 高等学校情報（CSV・不明）</li><li>ファイル: 特別支援学校情報（CSV・不明）</li></ul></li><li>【追加】<a href=\"https://www.geospatial.jp/ckan/dataset/11100-106\">111007_埼玉県_さいたま市_小型家電を回収しています！</a><ul><li>ファイル: 小型家電リサイクル回収ボックス設置場所一覧表（CSV・不明）</li></ul></li><li>【追加】<a href=\"https://www.geospatial.jp/ckan/dataset/11100-105\">111007_埼玉県_さいたま市_市営住宅一覧</a><ul><li>ファイル: 市営住宅一覧（CSV・不明）</li></ul></li><li>【追加】<a href=\"https://www.geospatial.jp/ckan/dataset/11100-101\">111007_埼玉県_さいたま市_応急給水場所について</a><ul><li>ファイル: 応急給水場所について（CSV・不明）</li></ul></li><li>【追加】<a href=\"https://www.geospatial.jp/ckan/dataset/11100-013\">111007_埼玉県_さいたま市_文化・コミュニティ施設</a><ul><li>ファイル: 文化施設等一覧（CSV・不明）</li></ul></li><li>【追加】<a href=\"https://www.geospatial.jp/ckan/dataset/saitama-minecraft\">さいたま市Minecraftワールドデータ（マイクラ）</a><ul><li>ファイル: 【Java版】大宮・さいたま新都心エリア.zip（ZIP・38.5MB）</li><li>ファイル: 【統合版】omiya_shintoshin_21.mcworld（MCWORLD・7.1MB）</li><li>ファイル: 【統合版】omiya_shintoshin_20.mcworld（MCWORLD・7.1MB）</li><li>ファイル: 【Java版】浦和エリア.zip（ZIP・18.3MB）</li><li>ファイル: 【統合版】urawa_21.mcworld（MCWORLD・3.5MB）</li><li>ファイル: 【統合版】urawa_20.mcworld（MCWORLD・3.5MB）</li><li>ファイル: 【Java版】浦和エリア（市役所更地）.zip（ZIP・19.1MB）</li><li>ファイル: 【統合版】urawa_ver2_21.mcworld（MCWORLD・3.5MB）</li><li>ファイル: 【統合版】urawa_ver2_20.mcworld（MCWORLD・3.5MB）</li><li>ファイル: 【統合版】iwatsuki.mcworld（MCWORLD・1.6MB）</li><li>ファイル: さいたま市Minecraftワールドデータ利用マニュアル_ver1.1.0.pdf（PDF・4.5MB）</li></ul></li><li>【追加】<a href=\"https://www.geospatial.jp/ckan/dataset/saitamacity-toshikeikaku_r2\">さいたま市都市計画基礎調査（基準年令和２年）</a><ul><li>ファイル: 調査区（ZIP・2.3MB）</li><li>ファイル: 人口（ZIP・58.9KB）</li><li>ファイル: 土地利用現況（ZIP・43.9MB）</li><li>ファイル: 市街化区域内農地・未利用地（ZIP・38.6KB）</li><li>ファイル: 非可住地現況（ZIP・1.9MB）</li><li>ファイル: 工場跡地の土地利用転換状況（ZIP・78.3KB）</li><li>ファイル: 市街地開発事業等（ZIP・448.3KB）</li><li>ファイル: 市街化調整区域内開発許可状況（ZIP・137.5KB）</li><li>ファイル: 農地転用状況（ZIP・102.3KB）</li><li>ファイル: 農林漁業関係施策状況（ZIP・97.8KB）</li><li>ファイル: 建築状況（ZIP・68.0KB）</li><li>ファイル: 大型店・商店街（ZIP・142.7KB）</li><li>ファイル: 空き家の状況（ZIP・36.7KB）</li><li>ファイル: 建物現況調査（市独自調査）（ZIP・50.1MB）</li><li>ファイル: 都市防災機能状況（ZIP・317.8KB）</li></ul></li><li>【追加】<a href=\"https://www.geospatial.jp/ckan/dataset/saitamacity-toshikeikaku_h27\">さいたま市都市計画基礎調査（基準年平成27年）</a><ul><li>ファイル: 調査区（形式不明・2.2MB）</li><li>ファイル: 人口（形式不明・57.6KB）</li><li>ファイル: 土地利用現況（形式不明・52.3MB）</li><li>ファイル: 市街化区域内農地・未利用地（形式不明・38.5KB）</li><li>ファイル: 非可住地現況（形式不明・1.5MB）</li><li>ファイル: 工場跡地の土地利用転換状況（形式不明・82.5KB）</li><li>ファイル: 市街地開発事業等（形式不明・448.0KB）</li><li>ファイル: 市街化調整区域内開発許可状況（形式不明・104.4KB）</li><li>ファイル: 農地転用状況（形式不明・99.9KB）</li><li>ファイル: 農林漁業関係施策状況（形式不明・110.8KB）</li><li>ファイル: 建築状況（形式不明・59.2KB）</li><li>ファイル: 大型店・商店街（形式不明・492.5KB）</li><li>ファイル: 建物現況調査（市独自調査）（形式不明・59.7MB）</li><li>ファイル: 都市防災機能状況（形式不明・420.4KB）</li><li>ファイル: 都市公園（形式不明・301.1KB）</li></ul></li><li>【追加】<a href=\"https://www.geospatial.jp/ckan/dataset/saitamacity-toshikeikaku_h22\">さいたま市都市計画基礎調査（基準年平成２２年）</a><ul><li>ファイル: 調査区（形式不明・1.9MB）</li><li>ファイル: 人口（形式不明・56.0KB）</li><li>ファイル: 土地利用現況（形式不明・39.6MB）</li><li>ファイル: 市街化区域内農地・未利用地（形式不明・38.5KB）</li><li>ファイル: 非可住地現況（形式不明・1.7MB）</li><li>ファイル: 工場跡地の土地利用転換状況（形式不明・80.6KB）</li><li>ファイル: 市街地開発事業等（形式不明・500.2KB）</li><li>ファイル: 市街化調整区域内開発許可状況（形式不明・88.4KB）</li><li>ファイル: 農地転用状況（形式不明・101.0KB）</li><li>ファイル: 建築状況（形式不明・57.3KB）</li><li>ファイル: 大型店・商店街（形式不明・352.0KB）</li><li>ファイル: 建物現況調査（市独自調査）（形式不明・49.1MB）</li><li>ファイル: 都市防災機能状況（形式不明・335.4KB）</li><li>ファイル: 都市公園（形式不明・309.0KB）</li></ul></li></ul><p><a href=\"https://github.com/CivicTechSaitamaCity/SaitamaCityOpendata/blob/main/reports/2026/2026-10-03.md\">詳細なレポート</a></p>",
+      "date_published": "2026-10-03T11:44:14+09:00",
+      "_saitama": {
+        "counts": {
+          "added": 60
+        },
+        "datasets": [
+          {
+            "source": "pref",
+            "kind": "added",
+            "title": "【さいたま市】AED設置状況",
+            "url": "https://opendata.pref.saitama.lg.jp/datasets/1206"
+          },
+          {
+            "source": "pref",
+            "kind": "added",
+            "title": "【さいたま市】「わたしの提案」提出数",
+            "url": "https://opendata.pref.saitama.lg.jp/datasets/1202"
+          },
+          {
+            "source": "pref",
+            "kind": "added",
+            "title": "【さいたま市】いきいき活動リスト",
+            "url": "https://opendata.pref.saitama.lg.jp/datasets/1220"
+          },
+          {
+            "source": "pref",
+            "kind": "added",
+            "title": "【さいたま市】さいたま市の文化財",
+            "url": "https://opendata.pref.saitama.lg.jp/datasets/1196"
+          },
+          {
+            "source": "pref",
+            "kind": "added",
+            "title": "【さいたま市】さいたま市健康づくり協力店一覧",
+            "url": "https://opendata.pref.saitama.lg.jp/datasets/1200"
+          },
+          {
+            "source": "pref",
+            "kind": "added",
+            "title": "【さいたま市】さいたま市市税の使いみちモデルケース別データ",
+            "url": "https://opendata.pref.saitama.lg.jp/datasets/1205"
+          },
+          {
+            "source": "pref",
+            "kind": "added",
+            "title": "【さいたま市】さいたま市統計書",
+            "url": "https://opendata.pref.saitama.lg.jp/datasets/2318"
+          },
+          {
+            "source": "pref",
+            "kind": "added",
+            "title": "【さいたま市】オープンデータ一覧",
+            "url": "https://opendata.pref.saitama.lg.jp/datasets/1151"
+          },
+          {
+            "source": "pref",
+            "kind": "added",
+            "title": "【さいたま市】コミュニティバス・乗合タクシーのバス情報(GTFS-JP)",
+            "url": "https://opendata.pref.saitama.lg.jp/datasets/1225"
+          },
+          {
+            "source": "pref",
+            "kind": "added",
+            "title": "【さいたま市】シニアサポートセンター一覧",
+            "url": "https://opendata.pref.saitama.lg.jp/datasets/1221"
+          },
+          {
+            "source": "pref",
+            "kind": "added",
+            "title": "【さいたま市】スマート水道メーター検針データ一覧",
+            "url": "https://opendata.pref.saitama.lg.jp/datasets/3076"
+          },
+          {
+            "source": "pref",
+            "kind": "added",
+            "title": "【さいたま市】下水道普及率",
+            "url": "https://opendata.pref.saitama.lg.jp/datasets/1210"
+          },
+          {
+            "source": "pref",
+            "kind": "added",
+            "title": "【さいたま市】不在者投票指定施設一覧",
+            "url": "https://opendata.pref.saitama.lg.jp/datasets/1203"
+          },
+          {
+            "source": "pref",
+            "kind": "added",
+            "title": "【さいたま市】人流データ（都心・副都心）",
+            "url": "https://opendata.pref.saitama.lg.jp/datasets/1224"
+          },
+          {
+            "source": "pref",
+            "kind": "added",
+            "title": "【さいたま市】公共施設の位置情報（緯度経度）一覧",
+            "url": "https://opendata.pref.saitama.lg.jp/datasets/1191"
+          },
+          {
+            "source": "pref",
+            "kind": "added",
+            "title": "【さいたま市】公衆無線LANサービス『Saitama City Free Wi-Fi』導入施設一覧",
+            "url": "https://opendata.pref.saitama.lg.jp/datasets/1194"
+          },
+          {
+            "source": "pref",
+            "kind": "added",
+            "title": "【さいたま市】公開型緑地一覧",
+            "url": "https://opendata.pref.saitama.lg.jp/datasets/1211"
+          },
+          {
+            "source": "pref",
+            "kind": "added",
+            "title": "【さいたま市】医療機関一覧",
+            "url": "https://opendata.pref.saitama.lg.jp/datasets/1230"
+          },
+          {
+            "source": "pref",
+            "kind": "added",
+            "title": "【さいたま市】土地区画整理事業一覧表",
+            "url": "https://opendata.pref.saitama.lg.jp/datasets/1247"
+          },
+          {
+            "source": "pref",
+            "kind": "added",
+            "title": "【さいたま市】地域・年齢別人口",
+            "url": "https://opendata.pref.saitama.lg.jp/datasets/2412"
+          },
+          {
+            "source": "pref",
+            "kind": "added",
+            "title": "【さいたま市】小型家電リサイクル回収ボックス設置場所一覧",
+            "url": "https://opendata.pref.saitama.lg.jp/datasets/1229"
+          },
+          {
+            "source": "pref",
+            "kind": "added",
+            "title": "【さいたま市】市営住宅等一覧",
+            "url": "https://opendata.pref.saitama.lg.jp/datasets/1192"
+          },
+          {
+            "source": "pref",
+            "kind": "added",
+            "title": "【さいたま市】市所管の公園等一覧（オープンデータ）",
+            "url": "https://opendata.pref.saitama.lg.jp/datasets/1201"
+          },
+          {
+            "source": "pref",
+            "kind": "added",
+            "title": "【さいたま市】市立学校一覧",
+            "url": "https://opendata.pref.saitama.lg.jp/datasets/1227"
+          },
+          {
+            "source": "pref",
+            "kind": "added",
+            "title": "【さいたま市】市街地再開発事業一覧",
+            "url": "https://opendata.pref.saitama.lg.jp/datasets/1231"
+          },
+          {
+            "source": "pref",
+            "kind": "added",
+            "title": "【さいたま市】年度別水質検査結果",
+            "url": "https://opendata.pref.saitama.lg.jp/datasets/1213"
+          },
+          {
+            "source": "pref",
+            "kind": "added",
+            "title": "【さいたま市】応急給水場所一覧",
+            "url": "https://opendata.pref.saitama.lg.jp/datasets/1207"
+          },
+          {
+            "source": "pref",
+            "kind": "added",
+            "title": "【さいたま市】投票所一覧",
+            "url": "https://opendata.pref.saitama.lg.jp/datasets/3449"
+          },
+          {
+            "source": "pref",
+            "kind": "added",
+            "title": "【さいたま市】指定管理者制度導入施設一覧",
+            "url": "https://opendata.pref.saitama.lg.jp/datasets/1204"
+          },
+          {
+            "source": "pref",
+            "kind": "added",
+            "title": "【さいたま市】指定避難所・指定緊急避難場所一覧",
+            "url": "https://opendata.pref.saitama.lg.jp/datasets/1209"
+          },
+          {
+            "source": "pref",
+            "kind": "added",
+            "title": "【さいたま市】放課後児童クラブ地図情報一覧",
+            "url": "https://opendata.pref.saitama.lg.jp/datasets/1218"
+          },
+          {
+            "source": "pref",
+            "kind": "added",
+            "title": "【さいたま市】放課後子ども居場所事業地図情報一覧",
+            "url": "https://opendata.pref.saitama.lg.jp/datasets/2615"
+          },
+          {
+            "source": "pref",
+            "kind": "added",
+            "title": "【さいたま市】施術所一覧",
+            "url": "https://opendata.pref.saitama.lg.jp/datasets/1525"
+          },
+          {
+            "source": "pref",
+            "kind": "added",
+            "title": "【さいたま市】未利用市有地一覧",
+            "url": "https://opendata.pref.saitama.lg.jp/datasets/1193"
+          },
+          {
+            "source": "pref",
+            "kind": "added",
+            "title": "【さいたま市】浄化槽保守点検業者・清掃業許可業者リスト",
+            "url": "https://opendata.pref.saitama.lg.jp/datasets/1219"
+          },
+          {
+            "source": "pref",
+            "kind": "added",
+            "title": "【さいたま市】消防水利一覧（公設消火栓・公設防火水そう）",
+            "url": "https://opendata.pref.saitama.lg.jp/datasets/1208"
+          },
+          {
+            "source": "pref",
+            "kind": "added",
+            "title": "【さいたま市】無料低額診療施設一覧",
+            "url": "https://opendata.pref.saitama.lg.jp/datasets/1217"
+          },
+          {
+            "source": "pref",
+            "kind": "added",
+            "title": "【さいたま市】町丁字別年齢別人口・世帯数",
+            "url": "https://opendata.pref.saitama.lg.jp/datasets/3314"
+          },
+          {
+            "source": "pref",
+            "kind": "added",
+            "title": "【さいたま市】町名別人口表（時系列結果）",
+            "url": "https://opendata.pref.saitama.lg.jp/datasets/978"
+          },
+          {
+            "source": "pref",
+            "kind": "added",
+            "title": "【さいたま市】移動販売実施場所MAP",
+            "url": "https://opendata.pref.saitama.lg.jp/datasets/2466"
+          },
+          {
+            "source": "pref",
+            "kind": "added",
+            "title": "【さいたま市】自治会名一覧",
+            "url": "https://opendata.pref.saitama.lg.jp/datasets/1199"
+          },
+          {
+            "source": "pref",
+            "kind": "added",
+            "title": "【さいたま市】認可保育所（認可保育園）一覧",
+            "url": "https://opendata.pref.saitama.lg.jp/datasets/1214"
+          },
+          {
+            "source": "pref",
+            "kind": "added",
+            "title": "【さいたま市】認可外保育施設一覧",
+            "url": "https://opendata.pref.saitama.lg.jp/datasets/1215"
+          },
+          {
+            "source": "pref",
+            "kind": "added",
+            "title": "【さいたま市】都市計画基礎調査（基準年令和２年）",
+            "url": "https://opendata.pref.saitama.lg.jp/datasets/979"
+          },
+          {
+            "source": "pref",
+            "kind": "added",
+            "title": "【さいたま市】電子申請利用状況",
+            "url": "https://opendata.pref.saitama.lg.jp/datasets/1195"
+          },
+          {
+            "source": "gsp",
+            "kind": "added",
+            "title": "111007_埼玉県_さいたま市_不在者投票指定施設一覧",
+            "url": "https://www.geospatial.jp/ckan/dataset/11100-103"
+          },
+          {
+            "source": "gsp",
+            "kind": "added",
+            "title": "111007_埼玉県_さいたま市_保育・子育て支援施設",
+            "url": "https://www.geospatial.jp/ckan/dataset/11100-009"
+          },
+          {
+            "source": "gsp",
+            "kind": "added",
+            "title": "111007_埼玉県_さいたま市_公共施設情報",
+            "url": "https://www.geospatial.jp/ckan/dataset/11100-102"
+          },
+          {
+            "source": "gsp",
+            "kind": "added",
+            "title": "111007_埼玉県_さいたま市_公園・スポーツ施設",
+            "url": "https://www.geospatial.jp/ckan/dataset/11100-014"
+          },
+          {
+            "source": "gsp",
+            "kind": "added",
+            "title": "111007_埼玉県_さいたま市_公開型緑地のご紹介",
+            "url": "https://www.geospatial.jp/ckan/dataset/11100-104"
+          },
+          {
+            "source": "gsp",
+            "kind": "added",
+            "title": "111007_埼玉県_さいたま市_医療施設",
+            "url": "https://www.geospatial.jp/ckan/dataset/11100-010"
+          },
+          {
+            "source": "gsp",
+            "kind": "added",
+            "title": "111007_埼玉県_さいたま市_学校教育施設",
+            "url": "https://www.geospatial.jp/ckan/dataset/11100-008"
+          },
+          {
+            "source": "gsp",
+            "kind": "added",
+            "title": "111007_埼玉県_さいたま市_小型家電を回収しています！",
+            "url": "https://www.geospatial.jp/ckan/dataset/11100-106"
+          },
+          {
+            "source": "gsp",
+            "kind": "added",
+            "title": "111007_埼玉県_さいたま市_市営住宅一覧",
+            "url": "https://www.geospatial.jp/ckan/dataset/11100-105"
+          },
+          {
+            "source": "gsp",
+            "kind": "added",
+            "title": "111007_埼玉県_さいたま市_応急給水場所について",
+            "url": "https://www.geospatial.jp/ckan/dataset/11100-101"
+          },
+          {
+            "source": "gsp",
+            "kind": "added",
+            "title": "111007_埼玉県_さいたま市_文化・コミュニティ施設",
+            "url": "https://www.geospatial.jp/ckan/dataset/11100-013"
+          },
+          {
+            "source": "gsp",
+            "kind": "added",
+            "title": "さいたま市Minecraftワールドデータ（マイクラ）",
+            "url": "https://www.geospatial.jp/ckan/dataset/saitama-minecraft"
+          },
+          {
+            "source": "gsp",
+            "kind": "added",
+            "title": "さいたま市都市計画基礎調査（基準年令和２年）",
+            "url": "https://www.geospatial.jp/ckan/dataset/saitamacity-toshikeikaku_r2"
+          },
+          {
+            "source": "gsp",
+            "kind": "added",
+            "title": "さいたま市都市計画基礎調査（基準年平成27年）",
+            "url": "https://www.geospatial.jp/ckan/dataset/saitamacity-toshikeikaku_h27"
+          },
+          {
+            "source": "gsp",
+            "kind": "added",
+            "title": "さいたま市都市計画基礎調査（基準年平成２２年）",
+            "url": "https://www.geospatial.jp/ckan/dataset/saitamacity-toshikeikaku_h22"
+          }
+        ]
+      }
+    }
+  ]
+}

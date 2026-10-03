@@ -1,0 +1,52 @@
+name: オープンデータ更新
+
+on:
+  schedule:
+    - cron: '0 21 * * *' # 毎日 6:00 JST
+  workflow_dispatch:
+    inputs:
+      force:
+        description: 'メタデータに変化がなくても全 CSV を再取得・再変換する'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-data
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.13'
+
+      - name: 取得・変換・レポート作成
+        id: update
+        continue-on-error: true
+        run: python scripts/update.py --commit-message "$RUNNER_TEMP/commit-message.txt" ${{ inputs.force && '--force' || '' }}
+
+      - name: 変更をコミット
+        run: |
+          git add -A data catalog.json CATALOG.md reports docs
+          if git diff --cached --quiet; then
+            echo "変更なし"
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -F "$RUNNER_TEMP/commit-message.txt"
+          git push
+
+      - name: 取得エラーを通知
+        if: steps.update.outcome == 'failure'
+        run: |
+          echo "::error::取得に失敗したデータがあります。ジョブのサマリを確認してください。"
+          exit 1
