@@ -43,15 +43,18 @@ scripts/update.py 取得・変換・レポート作成スクリプト
 
 ## 更新の仕組み
 
-GitHub Actions（[.github/workflows/update.yml](.github/workflows/update.yml)）が毎日 6:00（日本時間）に `scripts/update.py` を実行します。
+現在は手元の環境で `scripts/update.py` を実行し、結果を main に push しています（[ローカルでの実行](#ローカルでの実行)）。
+
+> GitHub Actions のワークフロー（[.github/workflows/update.yml](.github/workflows/update.yml)、毎日 6:00 JST）も用意していますが、埼玉県オープンデータポータルが GitHub Actions からのアクセスを 403 で拒否するため、無効にしています。
+
+`scripts/update.py` は次の処理を行います。
 
 1. 両サイトの API からさいたま市分のメタデータを取得し、前回の `catalog.json` と比較する
 2. 最終更新日・サイズ・URL が変わった CSV だけをダウンロードし、SHA-256 で内容の変化を確認する
 3. 変化したファイルを UTF-8・uMap 用に変換し、行・列の差分を計算する
-4. 変更があれば `reports/` にレポートを書き、フィード・`CATALOG.md` を更新して main にコミットする
+4. 変更があれば `reports/` にレポートを書き、フィード・`CATALOG.md` を更新する
 
-ダウンロードに失敗したファイルは前回の状態を残して次回に再試行し、ジョブは失敗として通知されます。
-Actions の画面から手動実行するときに `force` を指定すると、全 CSV を再取得・再変換します。
+ダウンロードに失敗したファイルは前回の状態を残して次回に再試行し、終了コード 2 で終わります。
 
 ### レポートとフィード
 
@@ -65,8 +68,10 @@ Actions の画面から手動実行するときに `force` を指定すると、
 Python 3.11 以上（標準ライブラリのみ）で動きます。
 
 ```sh
-python3 scripts/update.py           # 差分取得
-python3 scripts/update.py --force   # 全件再取得・再変換
+git pull --ff-only
+python3 scripts/update.py --commit-message /tmp/msg.txt   # 差分取得（--force で全件再取得・再変換）
+git add -A data catalog.json CATALOG.md reports docs
+git diff --cached --quiet || { git commit -F /tmp/msg.txt && git push; }
 ```
 
 ## 旧データ
